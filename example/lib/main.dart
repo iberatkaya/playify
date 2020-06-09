@@ -1,59 +1,125 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:playify/playify.dart';
+import 'package:playify/class/generalinfo/generalinfo.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
-  _MyAppState createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Playify',
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+      ),
+      home: MyHomePage(),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePage createState() => _MyHomePage();
+}
+
+class _MyHomePage extends State<MyHomePage> {
+
+  GeneralInfo data;
+    var myplayer = Playify();
+
+  updateInfo() async {
+    GeneralInfo res = await myplayer.nowPlaying();
+    setState(() {
+      data = res;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    updateInfo();
   }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      platformVersion = await Playify.platformVersion;
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
-
-  var myplayer = Playify();
 
   @override
   Widget build(BuildContext context) {
-    myplayer.play();
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                if(data != null)
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        if(data.album.coverArt != null)
+                          Image(image: data.album.coverArt.image, height: MediaQuery.of(context).size.height * 0.3,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.arrow_back_ios),
+                              onPressed: () async {
+                                await myplayer.previous(); 
+                                await updateInfo();                               
+                              },
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Text(data.artist.name),
+                                Text(data.album.title),
+                                Text(data.song.title),
+                                Text(data.song.trackNumber.toString() + "/" + data.album.albumTrackCount.toString()),
+                              ],
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.arrow_forward_ios),
+                              onPressed: () async {
+                                await myplayer.next(); 
+                                await updateInfo();                               
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                FlatButton(
+                  child: Text("play"),
+                  onPressed: () async {
+                    var res = await myplayer.play();
+                  },
+                ),
+                FlatButton(
+                  child: Text("pause"),
+                  onPressed: () async {
+                    var res = await myplayer.pause();
+                  },
+                ),
+                FlatButton(
+                  child: Text("nowPlaying Print"),
+                  onPressed: () async {
+                    await updateInfo();
+                  },
+                ),
+                FlatButton(
+                  child: Text("All Songs"),
+                  onPressed: () async {
+                    await myplayer.getAllSongs();
+                  },
+                )
+
+              ],
+            ),
+          ),
         ),
       ),
     );
