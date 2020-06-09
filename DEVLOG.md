@@ -1,7 +1,5 @@
 # Dev Log
 
-<br/>
-
 #### 09.05.2020:
 
 * Created the project.
