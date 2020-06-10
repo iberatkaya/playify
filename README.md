@@ -47,8 +47,8 @@ Future<void> previous(){
 ## Screenshots
 
 <p align="center">
-    <img alt="Screenshot" style="margin-top: 4px;" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/1.png" width="180" height="340">
-    <img alt="Screenshot" style="margin-top: 4px;" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/2.png" width="180" height="340">
-    <img alt="Screenshot" style="margin-top: 4px;" alt="Screenshot" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/3.png" width="180" height="340">
-	<img alt="Screenshot" style="margin-top: 4px;" alt="Screenshot" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/4.png" width="180" height="340">
+    <img alt="Screenshot" style="margin-top: 4px;" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/1.png" width="220" height="380">
+    <img alt="Screenshot" style="margin-top: 4px;" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/2.png" width="220" height="380">
+    <img alt="Screenshot" style="margin-top: 4px;" alt="Screenshot" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/3.png" width="220" height="380">
+	<img alt="Screenshot" style="margin-top: 4px;" alt="Screenshot" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/4.png" width="220" height="380">
 </p>
