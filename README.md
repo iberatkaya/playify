@@ -1,6 +1,6 @@
 # Playify
 
-<b>Playify</b> is a Flutter plugin for playing music and fetching music metadata. Supports only iOS. Still in development. A detailed README will be added in the future. Checkout the [Development Log](https://github.com/iberatkaya/playify/blob/master/DEVLOG.md).
+<b>Playify</b> is a Flutter plugin for playing music and fetching music metadata. Currently supports only iOS. Still in development. Checkout the [Development Log](https://github.com/iberatkaya/playify/blob/master/DEVLOG.md).
 
 Requirements: 
 * iOS: >= iOS 10.1 (Due to [MPMusicPlayerMediaItemQueueDescriptor](https://developer.apple.com/documentation/mediaplayer/mpmusicplayermediaitemqueuedescriptor))

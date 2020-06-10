@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
 class Song {
-  Song({@required String iOSSongID, @required String title, @required String artistName, @required String albumTitle, @required int trackNumber, @required int playCount, @required int discNumber, @required bool isExplicit}){
+  Song(
+      {@required String iOSSongID,
+      @required String title,
+      @required String artistName,
+      @required String albumTitle,
+      @required int trackNumber,
+      @required int playCount,
+      @required int discNumber,
+      @required bool isExplicit}) {
     this.title = title;
     this.trackNumber = trackNumber;
     this.albumTitle = albumTitle;

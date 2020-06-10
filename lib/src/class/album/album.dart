@@ -1,9 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:playify/src/class/song/song.dart';
 
 class Album {
-  Album({@required String title, @required List<Song> songs, @required int albumTrackCount, @required String artistName, @required Image coverArt, @required int diskCount}) {
+  Album(
+      {@required String title,
+      @required List<Song> songs,
+      @required int albumTrackCount,
+      @required String artistName,
+      @required Image coverArt,
+      @required int diskCount}) {
     this.title = title;
     this.songs = songs;
     this.albumTrackCount = albumTrackCount;
