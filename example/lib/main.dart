@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:flutter/services.dart';
 import 'package:playify/playify.dart';
-import 'package:playify/class/generalinfo/generalinfo.dart';
+import 'package:playify_example/artists.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Playify',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.blue,
       ),
       home: MyHomePage(),
     );
@@ -29,8 +27,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePage extends State<MyHomePage> {
 
+  bool fetchingAllSong = false;
+  bool playing = false;
   GeneralInfo data;
-    var myplayer = Playify();
+  var myplayer = Playify();
+  List<Artist> artists = [];
 
   updateInfo() async {
     GeneralInfo res = await myplayer.nowPlaying();
@@ -47,13 +48,14 @@ class _MyHomePage extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: SingleChildScrollView(
-          child: Center(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Playify'),
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: IgnorePointer(
+            ignoring: fetchingAllSong,
             child: Column(
               children: <Widget>[
                 if(data != null)
@@ -92,18 +94,26 @@ class _MyHomePage extends State<MyHomePage> {
                       ],
                     ),
                   ),
-                FlatButton(
-                  child: Text("play"),
-                  onPressed: () async {
-                    var res = await myplayer.play();
-                  },
-                ),
-                FlatButton(
-                  child: Text("pause"),
-                  onPressed: () async {
-                    var res = await myplayer.pause();
-                  },
-                ),
+                if(!playing)
+                  IconButton(
+                    icon: Icon(Icons.play_arrow),
+                    onPressed: () async {
+                      var res = await myplayer.play();
+                      setState(() {
+                        playing = true;
+                      });
+                    },
+                  )
+                else
+                  IconButton(
+                    icon: Icon(Icons.pause),
+                    onPressed: () async {
+                      var res = await myplayer.pause();
+                      setState(() {
+                        playing = false;
+                      });
+                    },
+                  ),
                 FlatButton(
                   child: Text("nowPlaying Print"),
                   onPressed: () async {
@@ -113,10 +123,23 @@ class _MyHomePage extends State<MyHomePage> {
                 FlatButton(
                   child: Text("All Songs"),
                   onPressed: () async {
-                    await myplayer.getAllSongs();
+                    setState(() {
+                      fetchingAllSong = true;
+                    });
+                    var res = await myplayer.getAllSongs(sort: true);
+                    print(res.length);
+                    setState(() {
+                      artists = res;
+                      fetchingAllSong = false;
+                    });
                   },
-                )
-
+                ),
+                FlatButton(
+                  child: Text("Artists"),
+                  onPressed: () async {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Artists(artists: artists,)));
+                  },
+                ),
               ],
             ),
           ),
