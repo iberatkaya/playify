@@ -14,27 +14,45 @@ import 'package:playify/playify.dart';
 Playify myplayer = Playify();
 
 //Play from the latest queue.
-Future<void> play(){
+Future<void> play() async {
 	await myplayer.play();
 }
 
 //Fetch all songs from iOS's Apple Music.
-Future<List<Artist>> getAllSongs(){
-	await myplayer.getAllSongs(sort: true)
+Future<List<Artist>> getAllSongs() async {
+	var artist = await myplayer.getAllSongs(sort: true);
+	return artists;
+}
+
+//Fetch song information about the currently playing song in the queue.
+Future<SongInfo> nowPlaying() async {
+	var artist = await myplayer.nowPlaying();
+	return artists;
 }
 
 //Set the queue using songIDs for iOS.
-Future<void> setQueue(songs: List<String>, index: int){
+Future<void> setQueue(songs: List<String>, index: int) async {
 	await myplayer.setQueue(songIDs: songs, startIndex: index);
 }
 
 //Skip to the next song in the queue.
-Future<void> next(){
+Future<void> next() async {
 	await myplayer.next();
 }
+
 //Skip to the previous song in the queue.
-Future<void> previous(){
+Future<void> previous() async {
 	await myplayer.previous();
+}
+
+//Set the playback time of the song.
+Future<void> setPlaybackTime(double time) async {
+	await myplayer.setPlaybackTime(time);
+}
+
+//Set the shuffle mode.
+Future<void> setShuffleMode(Shuffle mode) async {
+	await myplayer.setShuffleMode(mode);
 }
 ```
 

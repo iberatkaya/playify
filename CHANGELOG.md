@@ -1,3 +1,9 @@
+## 0.0.3
+
+* Added shuffle and repeat.
+* Added setting and getting playback time.
+* Added seeking forward and backward.
+
 ## 0.0.2
 
 * Minor code formatting changes

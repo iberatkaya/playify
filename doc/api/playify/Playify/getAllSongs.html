@@ -64,13 +64,20 @@
         <li class="inherited"><a href="../../playify/Playify/runtimeType.html">runtimeType</a></li>
     
         <li class="section-title"><a href="../../playify/Playify-class.html#instance-methods">Methods</a></li>
+        <li><a href="../../playify/Playify/endSeeking.html">endSeeking</a></li>
         <li><a href="../../playify/Playify/getAllSongs.html">getAllSongs</a></li>
+        <li><a href="../../playify/Playify/getPlaybackTime.html">getPlaybackTime</a></li>
         <li><a href="../../playify/Playify/next.html">next</a></li>
         <li><a href="../../playify/Playify/nowPlaying.html">nowPlaying</a></li>
         <li><a href="../../playify/Playify/pause.html">pause</a></li>
         <li><a href="../../playify/Playify/play.html">play</a></li>
         <li><a href="../../playify/Playify/previous.html">previous</a></li>
+        <li><a href="../../playify/Playify/seekBackward.html">seekBackward</a></li>
+        <li><a href="../../playify/Playify/seekForward.html">seekForward</a></li>
+        <li><a href="../../playify/Playify/setPlaybackTime.html">setPlaybackTime</a></li>
         <li><a href="../../playify/Playify/setQueue.html">setQueue</a></li>
+        <li><a href="../../playify/Playify/setRepeatMode.html">setRepeatMode</a></li>
+        <li><a href="../../playify/Playify/setShuffleMode.html">setShuffleMode</a></li>
         <li class="inherited"><a href="../../playify/Playify/noSuchMethod.html">noSuchMethod</a></li>
         <li class="inherited"><a href="../../playify/Playify/toString.html">toString</a></li>
     
@@ -93,7 +100,7 @@
       <span class="returntype">Future<span class="signature">&lt;<wbr><span class="type-parameter">List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../playify/Artist-class.html">Artist</a></span>&gt;</span></span>&gt;</span></span>
             <span class="name ">getAllSongs</span>
 (<wbr><ol class="parameter-list"><li><span class="parameter" id="getAllSongs-param-sort">{<span class="type-annotation">bool</span> <span class="parameter-name">sort</span>: <span class="default-value">false</span>, </span></li>
-<li><span class="parameter" id="getAllSongs-param-coverArtSize"><span class="type-annotation">int</span> <span class="parameter-name">coverArtSize</span>: <span class="default-value">50</span>}</span></li>
+<li><span class="parameter" id="getAllSongs-param-coverArtSize"><span class="type-annotation">int</span> <span class="parameter-name">coverArtSize</span>: <span class="default-value">500</span>}</span></li>
 </ol>)
       
     </section>
@@ -101,59 +108,81 @@
       <p>Fetch all songs in the Apple Music library.
 This method may take up significant time due to the amount of songs available on the phone.
 Make sure to display a waiting animation while this is fetching.
-All cover art is fetched when using this function. Due the amount of songs, the app may crash if the device does not have enough memory. In this case, the size of the cover art should be reduced.</p>
+All cover art for each album is fetched when using this function. Due the amount of songs, the app may crash if the device does not have enough memory. In this case, the size of the cover art should be reduced.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Artist&gt;&gt; getAllSongs({bool sort = false, int coverArtSize = 50}) async {
-  if(Platform.isIOS){
-    try{
-      List&lt;Artist&gt; artists = [];
-      var result = await playerChannel.invokeMethod(&#39;getAllSongs&#39;, &lt;String, dynamic&gt;{
-        &quot;size&quot;: coverArtSize
-      });
-    &#47;&#47; print(result[0]);
-      for(int a=0; a&lt;result.length; a++) {
-        stdout.write(a.toString() + &quot;, &quot;);
-        var resobj = new Map&lt;String, dynamic&gt;.from(result[a]);
-        Artist artist = Artist(albums: [], name: resobj[&quot;artist&quot;]);
-        Image image = resobj[&quot;image&quot;] != null ? Image.memory(resobj[&quot;image&quot;]) : null;
-        Album album = Album(songs: [], title: resobj[&quot;albumTitle&quot;], albumTrackCount: resobj[&quot;albumTrackCount&quot;], coverArt: image, diskCount: resobj[&quot;diskCount&quot;], artistName: artist.name);
-        Song song = Song(albumTitle: album.title, title: resobj[&quot;songTitle&quot;], trackNumber: resobj[&quot;albumTrackNumber&quot;], discNumber: resobj[&quot;discNumber&quot;], isExplicit: resobj[&quot;isExplicitItem&quot;], playCount: resobj[&quot;playCount&quot;], iOSSongID: resobj[&quot;songID&quot;].toString(), artistName: artist.name);
-        album.songs.add(song);
-        artist.albums.add(album);
-        album.artistName = artist.name;
-        bool foundArtist = false;
-        for(int i=0; i&lt;artists.length; i++){
-          if(artist.name == artists[i].name){
-            foundArtist = true;
-            bool foundAlbum = false;
-            for(int j=0; j&lt;artists[i].albums.length; j++){
-              if(artists[i].albums[j].title == album.title){
-                artists[i].albums[j].songs.add(song);
-                print(&quot;sorted&quot;);
-                artists[i].albums[j].songs.sort((a, b) =&gt; a.trackNumber - b.trackNumber);
-                foundAlbum = true;
-                break;
+      <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Artist&gt;&gt; getAllSongs(
+    {bool sort = false, int coverArtSize = 500}) async {
+  if (Platform.isIOS) {
+    List&lt;Artist&gt; artists = [];
+    var result = await playerChannel
+        .invokeMethod(&#39;getAllSongs&#39;, &lt;String, dynamic&gt;{&quot;size&quot;: coverArtSize});
+    for (int a = 0; a &lt; result.length; a++) {
+&#47;&#47;          stdout.write(a.toString() + &quot;, &quot;);
+      var resobj = new Map&lt;String, dynamic&gt;.from(result[a]);
+      Artist artist = Artist(albums: [], name: resobj[&quot;artist&quot;]);
+      dynamic image =
+          resobj[&quot;image&quot;] != null ? Image.memory(resobj[&quot;image&quot;]) : null;
+      Album album = Album(
+          songs: [],
+          title: resobj[&quot;albumTitle&quot;],
+          albumTrackCount: resobj[&quot;albumTrackCount&quot;],
+          coverArt: image,
+          diskCount: resobj[&quot;diskCount&quot;],
+          artistName: artist.name);
+      Song song = Song(
+          albumTitle: album.title,
+          title: resobj[&quot;songTitle&quot;],
+          duration: resobj[&quot;playbackDuration&quot;],
+          trackNumber: resobj[&quot;albumTrackNumber&quot;],
+          discNumber: resobj[&quot;discNumber&quot;],
+          isExplicit: resobj[&quot;isExplicitItem&quot;],
+          playCount: resobj[&quot;playCount&quot;],
+          iOSSongID: resobj[&quot;songID&quot;].toString(),
+          artistName: artist.name);
+      album.songs.add(song);
+      artist.albums.add(album);
+      album.artistName = artist.name;
+      bool foundArtist = false;
+      for (int i = 0; i &lt; artists.length; i++) {
+        if (artist.name == artists[i].name) {
+          foundArtist = true;
+          bool foundAlbum = false;
+          for (int j = 0; j &lt; artists[i].albums.length; j++) {
+            if (artists[i].albums[j].title == album.title) {
+              &#47;&#47;If the album does not have a cover art
+              if (artists[i].albums[j].coverArt == null &amp;&amp;
+                  album.coverArt != null) {
+                artists[i].albums[j].coverArt = album.coverArt;
               }
-            }
-            if(!foundAlbum){
-              artists[i].albums.add(album);
+              artists[i].albums[j].songs.add(song);
+              artists[i]
+                  .albums[j]
+                  .songs
+                  .sort((a, b) =&gt; a.trackNumber - b.trackNumber);
+              foundAlbum = true;
+              break;
             }
           }
-        }
-        if(!foundArtist){
-          artists.add(artist);
+          if (!foundAlbum) {
+            artists[i].albums.add(album);
+            artists[i].albums.sort((a, b) =&gt; a.title.compareTo(b.title));
+          }
         }
       }
-      if(sort)
-        artists.sort((a, b) =&gt; a.name.compareTo(b.name));
-      return artists;
-    } catch(e){
-      print(e);
-      return [];
+      if (!foundArtist) {
+        artists.add(artist);
+      }
     }
+    if (sort) artists.sort((a, b) =&gt; a.name.compareTo(b.name));
+    return artists;
+  } else {
+    throw PlatformException(
+        code: &quot;Device is not iOS!&quot;,
+        message:
+            &quot;Currently only iOS is supported. Feel free to contribute to Playify to help support Android.&quot;);
   }
 }</code></pre>
     </section>
@@ -168,7 +197,7 @@ All cover art is fetched when using this function. Due the amount of songs, the 
 <footer>
   <span class="no-break">
     playify
-      0.0.1
+      0.0.3
   </span>
 
 </footer>

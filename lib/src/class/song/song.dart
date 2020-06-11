@@ -9,8 +9,10 @@ class Song {
       @required int trackNumber,
       @required int playCount,
       @required int discNumber,
+      @required double duration,
       @required bool isExplicit}) {
     this.title = title;
+    this.duration = duration;
     this.trackNumber = trackNumber;
     this.albumTitle = albumTitle;
     this.artistName = artistName;
@@ -26,5 +28,6 @@ class Song {
   int trackNumber;
   int playCount;
   int discNumber;
+  double duration;
   bool isExplicit;
 }

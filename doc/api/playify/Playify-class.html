@@ -54,15 +54,18 @@
       <li class="section-title"><a href="../playify/playify-library.html#classes">Classes</a></li>
       <li><a href="../playify/Album-class.html">Album</a></li>
       <li><a href="../playify/Artist-class.html">Artist</a></li>
-      <li><a href="../playify/GeneralInfo-class.html">GeneralInfo</a></li>
       <li><a href="../playify/Playify-class.html">Playify</a></li>
       <li><a href="../playify/Song-class.html">Song</a></li>
+      <li><a href="../playify/SongInfo-class.html">SongInfo</a></li>
     
     
     
     
     
     
+      <li class="section-title"><a href="../playify/playify-library.html#enums">Enums</a></li>
+      <li><a href="../playify/Repeat-class.html">Repeat</a></li>
+      <li><a href="../playify/Shuffle-class.html">Shuffle</a></li>
     
     
     </ol>
@@ -112,8 +115,17 @@
     <section class="summary offset-anchor" id="instance-methods">
       <h2>Methods</h2>
       <dl class="callables">
+        <dt id="endSeeking" class="callable">
+          <span class="name"><a href="../playify/Playify/endSeeking.html">endSeeking</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Stop seeking. 
+                  
+</dd>
         <dt id="getAllSongs" class="callable">
-          <span class="name"><a href="../playify/Playify/getAllSongs.html">getAllSongs</a></span><span class="signature">(<wbr><span class="parameter" id="getAllSongs-param-sort">{<span class="type-annotation">bool</span> <span class="parameter-name">sort</span>: <span class="default-value">false</span>, </span><wbr><span class="parameter" id="getAllSongs-param-coverArtSize"><span class="type-annotation">int</span> <span class="parameter-name">coverArtSize</span>: <span class="default-value">50</span>}</span><wbr>)
+          <span class="name"><a href="../playify/Playify/getAllSongs.html">getAllSongs</a></span><span class="signature">(<wbr><span class="parameter" id="getAllSongs-param-sort">{<span class="type-annotation">bool</span> <span class="parameter-name">sort</span>: <span class="default-value">false</span>, </span><wbr><span class="parameter" id="getAllSongs-param-coverArtSize"><span class="type-annotation">int</span> <span class="parameter-name">coverArtSize</span>: <span class="default-value">500</span>}</span><wbr>)
             <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="../playify/Artist-class.html">Artist</a></span>&gt;</span></span>&gt;</span></span>
           </span>
                   </dt>
@@ -121,7 +133,16 @@
           Fetch all songs in the Apple Music library.
 This method may take up significant time due to the amount of songs available on the phone.
 Make sure to display a waiting animation while this is fetching.
-All cover art is fetched when using this function. Due the amount of songs, the app may crash if the device does not have enough memory. In this case, the size of the cover art should be reduced. 
+All cover art for each album is fetched when using this function. Due the amount of songs, the app may crash if the device does not have enough memory. In this case, the size of the cover art should be reduced. 
+                  
+</dd>
+        <dt id="getPlaybackTime" class="callable">
+          <span class="name"><a href="../playify/Playify/getPlaybackTime.html">getPlaybackTime</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">double</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Get the playback time of the current song in the queue. 
                   
 </dd>
         <dt id="next" class="callable">
@@ -135,7 +156,7 @@ All cover art is fetched when using this function. Due the amount of songs, the 
 </dd>
         <dt id="nowPlaying" class="callable">
           <span class="name"><a href="../playify/Playify/nowPlaying.html">nowPlaying</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter"><a href="../playify/GeneralInfo-class.html">GeneralInfo</a></span>&gt;</span></span>
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter"><a href="../playify/SongInfo-class.html">SongInfo</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
@@ -169,6 +190,35 @@ All cover art is fetched when using this function. Due the amount of songs, the 
           Skip to the previous song in the queue. 
                   
 </dd>
+        <dt id="seekBackward" class="callable">
+          <span class="name"><a href="../playify/Playify/seekBackward.html">seekBackward</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Seek backward in the song currently playing in the queue.
+Must call endSeeking() or will not stop seeking. 
+                  
+</dd>
+        <dt id="seekForward" class="callable">
+          <span class="name"><a href="../playify/Playify/seekForward.html">seekForward</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Seek forward in the song currently playing in the queue.
+Must call endSeeking() or will not stop seeking. 
+                  
+</dd>
+        <dt id="setPlaybackTime" class="callable">
+          <span class="name"><a href="../playify/Playify/setPlaybackTime.html">setPlaybackTime</a></span><span class="signature">(<wbr><span class="parameter" id="setPlaybackTime-param-time"><span class="type-annotation">double</span> <span class="parameter-name">time</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Set the playback time of the current song in the queue. 
+                  
+</dd>
         <dt id="setQueue" class="callable">
           <span class="name"><a href="../playify/Playify/setQueue.html">setQueue</a></span><span class="signature">(<wbr><span class="parameter" id="setQueue-param-songIDs">{<span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">songIDs</span>, </span><wbr><span class="parameter" id="setQueue-param-startIndex"><span class="type-annotation">int</span> <span class="parameter-name">startIndex</span>: <span class="default-value">0</span>}</span><wbr>)
             <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
@@ -177,6 +227,24 @@ All cover art is fetched when using this function. Due the amount of songs, the 
         <dd>
           Set the queue by giving the songIDs desired to be added to the queue.
 Does not require the play function to be called after setting the queue. It will autoplay 
+                  
+</dd>
+        <dt id="setRepeatMode" class="callable">
+          <span class="name"><a href="../playify/Playify/setRepeatMode.html">setRepeatMode</a></span><span class="signature">(<wbr><span class="parameter" id="setRepeatMode-param-mode"><span class="type-annotation"><a href="../playify/Repeat-class.html">Repeat</a></span> <span class="parameter-name">mode</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Set the repeat mode. 
+                  
+</dd>
+        <dt id="setShuffleMode" class="callable">
+          <span class="name"><a href="../playify/Playify/setShuffleMode.html">setShuffleMode</a></span><span class="signature">(<wbr><span class="parameter" id="setShuffleMode-param-mode"><span class="type-annotation"><a href="../playify/Shuffle-class.html">Shuffle</a></span> <span class="parameter-name">mode</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Set the shuffle mode. 
                   
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
@@ -250,13 +318,20 @@ Does not require the play function to be called after setting the queue. It will
       <li class="inherited"><a href="../playify/Playify/runtimeType.html">runtimeType</a></li>
     
       <li class="section-title"><a href="../playify/Playify-class.html#instance-methods">Methods</a></li>
+      <li><a href="../playify/Playify/endSeeking.html">endSeeking</a></li>
       <li><a href="../playify/Playify/getAllSongs.html">getAllSongs</a></li>
+      <li><a href="../playify/Playify/getPlaybackTime.html">getPlaybackTime</a></li>
       <li><a href="../playify/Playify/next.html">next</a></li>
       <li><a href="../playify/Playify/nowPlaying.html">nowPlaying</a></li>
       <li><a href="../playify/Playify/pause.html">pause</a></li>
       <li><a href="../playify/Playify/play.html">play</a></li>
       <li><a href="../playify/Playify/previous.html">previous</a></li>
+      <li><a href="../playify/Playify/seekBackward.html">seekBackward</a></li>
+      <li><a href="../playify/Playify/seekForward.html">seekForward</a></li>
+      <li><a href="../playify/Playify/setPlaybackTime.html">setPlaybackTime</a></li>
       <li><a href="../playify/Playify/setQueue.html">setQueue</a></li>
+      <li><a href="../playify/Playify/setRepeatMode.html">setRepeatMode</a></li>
+      <li><a href="../playify/Playify/setShuffleMode.html">setShuffleMode</a></li>
       <li class="inherited"><a href="../playify/Playify/noSuchMethod.html">noSuchMethod</a></li>
       <li class="inherited"><a href="../playify/Playify/toString.html">toString</a></li>
     
@@ -276,7 +351,7 @@ Does not require the play function to be called after setting the queue. It will
 <footer>
   <span class="no-break">
     playify
-      0.0.1
+      0.0.3
   </span>
 
 </footer>

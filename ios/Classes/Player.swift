@@ -28,6 +28,50 @@ public class Player {
         })
     }
     
+    func seekForward(){
+        player.beginSeekingForward()
+    }
+    
+    func seekBackward(){
+        player.beginSeekingBackward()
+    }
+    
+    func endSeeking(){
+        player.endSeeking()
+    }
+    
+    func getPlaybackTime() -> Float{
+        return Float(player.currentPlaybackTime)
+    }
+    
+    func setPlaybackTime(time: Float){
+        player.currentPlaybackTime = TimeInterval(time)
+    }
+    
+    func setShuffleMode(mode: String){
+        if(mode == "off"){
+            player.shuffleMode =  MPMusicShuffleMode.off
+        }
+        else if(mode == "songs"){
+            player.shuffleMode =  MPMusicShuffleMode.songs
+        }
+        else if(mode == "albums"){
+            player.shuffleMode = MPMusicShuffleMode.albums
+        }
+    }
+    
+    func setRepeatMode(mode: String){
+        if(mode == "none"){
+            player.repeatMode =  MPMusicRepeatMode.none
+        }
+        else if(mode == "one"){
+            player.repeatMode =  MPMusicRepeatMode.one
+        }
+        else if(mode == "all"){
+            player.repeatMode = MPMusicRepeatMode.all
+        }
+    }
+    
     //Play the current queue
     //Requires 2 plays due to this bug: https://stackoverflow.com/a/61697108
     func play(){

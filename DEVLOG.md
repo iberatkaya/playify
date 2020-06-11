@@ -1,6 +1,12 @@
 # Dev Log
 
-### 10.05.2020:
+#### 11.05.2020:
+
+* Added shuffle and repeat.
+* Added setting and getting playback time.
+* Added seeking forward and backward.
+
+#### 10.05.2020:
 
 * Bug fixes in song fetching. Instead of fetching each song's artwork, only one of each for an album is fetched to use less RAM and improve speed.
 * Added song queues, setting a queue, and playing a queue.

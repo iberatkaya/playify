@@ -64,13 +64,20 @@
         <li class="inherited"><a href="../../playify/Playify/runtimeType.html">runtimeType</a></li>
     
         <li class="section-title"><a href="../../playify/Playify-class.html#instance-methods">Methods</a></li>
+        <li><a href="../../playify/Playify/endSeeking.html">endSeeking</a></li>
         <li><a href="../../playify/Playify/getAllSongs.html">getAllSongs</a></li>
+        <li><a href="../../playify/Playify/getPlaybackTime.html">getPlaybackTime</a></li>
         <li><a href="../../playify/Playify/next.html">next</a></li>
         <li><a href="../../playify/Playify/nowPlaying.html">nowPlaying</a></li>
         <li><a href="../../playify/Playify/pause.html">pause</a></li>
         <li><a href="../../playify/Playify/play.html">play</a></li>
         <li><a href="../../playify/Playify/previous.html">previous</a></li>
+        <li><a href="../../playify/Playify/seekBackward.html">seekBackward</a></li>
+        <li><a href="../../playify/Playify/seekForward.html">seekForward</a></li>
+        <li><a href="../../playify/Playify/setPlaybackTime.html">setPlaybackTime</a></li>
         <li><a href="../../playify/Playify/setQueue.html">setQueue</a></li>
+        <li><a href="../../playify/Playify/setRepeatMode.html">setRepeatMode</a></li>
+        <li><a href="../../playify/Playify/setShuffleMode.html">setShuffleMode</a></li>
         <li class="inherited"><a href="../../playify/Playify/noSuchMethod.html">noSuchMethod</a></li>
         <li class="inherited"><a href="../../playify/Playify/toString.html">toString</a></li>
     
@@ -90,7 +97,7 @@
       <div><h1><span class="kind-method">nowPlaying</span> method</h1></div>
 
     <section class="multi-line-signature">
-      <span class="returntype">Future<span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../playify/GeneralInfo-class.html">GeneralInfo</a></span>&gt;</span></span>
+      <span class="returntype">Future<span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../playify/SongInfo-class.html">SongInfo</a></span>&gt;</span></span>
             <span class="name ">nowPlaying</span>
 (<wbr>)
       
@@ -101,23 +108,39 @@
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;GeneralInfo&gt; nowPlaying() async {
-  if(Platform.isIOS){
-    try {
-      var result = await playerChannel.invokeMethod(&#39;nowPlaying&#39;);
-      var resobj = new Map&lt;String, dynamic&gt;.from(result);
-      Artist artist = Artist(albums: [], name: resobj[&quot;artist&quot;]);
-      Album album = Album(songs: [], title: resobj[&quot;albumTitle&quot;], albumTrackCount: resobj[&quot;albumTrackCount&quot;], coverArt: Image.memory(resobj[&quot;image&quot;]), diskCount: resobj[&quot;diskCount&quot;], artistName: artist.name);
-      Song song = Song(albumTitle: album.title, title: resobj[&quot;songTitle&quot;], trackNumber: resobj[&quot;albumTrackNumber&quot;], discNumber: resobj[&quot;discNumber&quot;], isExplicit: resobj[&quot;isExplicitItem&quot;], playCount: resobj[&quot;playCount&quot;], artistName: artist.name, iOSSongID: resobj[&quot;songID&quot;]);
-      album.songs.add(song);
-      artist.albums.add(album);
-      album.artistName = artist.name;
-      GeneralInfo info = GeneralInfo(album: album, artist: artist, song: song);
-      return info;
-    } catch(e){
-      print(e);
-      return null;
-    }
+      <pre class="language-dart"><code class="language-dart">Future&lt;SongInfo&gt; nowPlaying() async {
+  if (Platform.isIOS) {
+    var result = await playerChannel.invokeMethod(&#39;nowPlaying&#39;);
+    var resobj = new Map&lt;String, dynamic&gt;.from(result);
+    Artist artist = Artist(albums: [], name: resobj[&quot;artist&quot;]);
+    print(resobj[&quot;albumTrackCount&quot;]);
+    Album album = Album(
+        songs: [],
+        title: resobj[&quot;albumTitle&quot;],
+        albumTrackCount: resobj[&quot;albumTrackCount&quot;],
+        coverArt: Image.memory(resobj[&quot;image&quot;]),
+        diskCount: resobj[&quot;diskCount&quot;],
+        artistName: artist.name);
+    Song song = Song(
+        albumTitle: album.title,
+        duration: resobj[&quot;playbackDuration&quot;],
+        title: resobj[&quot;songTitle&quot;],
+        trackNumber: resobj[&quot;trackNumber&quot;],
+        discNumber: resobj[&quot;discNumber&quot;],
+        isExplicit: resobj[&quot;isExplicitItem&quot;],
+        playCount: resobj[&quot;playCount&quot;],
+        artistName: artist.name,
+        iOSSongID: resobj[&quot;songID&quot;].toString());
+    album.songs.add(song);
+    artist.albums.add(album);
+    album.artistName = artist.name;
+    SongInfo info = SongInfo(album: album, artist: artist, song: song);
+    return info;
+  } else {
+    throw PlatformException(
+        code: &quot;Device is not iOS!&quot;,
+        message:
+            &quot;Currently only iOS is supported. Feel free to contribute to Playify to help support Android.&quot;);
   }
 }</code></pre>
     </section>
@@ -132,7 +155,7 @@
 <footer>
   <span class="no-break">
     playify
-      0.0.1
+      0.0.3
   </span>
 
 </footer>

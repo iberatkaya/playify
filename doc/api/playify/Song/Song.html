@@ -63,6 +63,7 @@
       <li><a href="../../playify/Song/albumTitle.html">albumTitle</a></li>
       <li><a href="../../playify/Song/artistName.html">artistName</a></li>
       <li><a href="../../playify/Song/discNumber.html">discNumber</a></li>
+      <li><a href="../../playify/Song/duration.html">duration</a></li>
       <li><a href="../../playify/Song/iOSSongID.html">iOSSongID</a></li>
       <li><a href="../../playify/Song/isExplicit.html">isExplicit</a></li>
       <li><a href="../../playify/Song/playCount.html">playCount</a></li>
@@ -96,6 +97,7 @@
 <li><span class="parameter" id="-param-trackNumber"><span>@required</span> <span class="type-annotation">int</span> <span class="parameter-name">trackNumber</span>, </span></li>
 <li><span class="parameter" id="-param-playCount"><span>@required</span> <span class="type-annotation">int</span> <span class="parameter-name">playCount</span>, </span></li>
 <li><span class="parameter" id="-param-discNumber"><span>@required</span> <span class="type-annotation">int</span> <span class="parameter-name">discNumber</span>, </span></li>
+<li><span class="parameter" id="-param-duration"><span>@required</span> <span class="type-annotation">double</span> <span class="parameter-name">duration</span>, </span></li>
 <li><span class="parameter" id="-param-isExplicit"><span>@required</span> <span class="type-annotation">bool</span> <span class="parameter-name">isExplicit</span>}</span></li>
 </ol>)
     </section>
@@ -103,8 +105,18 @@
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Song({@required String iOSSongID, @required String title, @required String artistName, @required String albumTitle, @required int trackNumber, @required int playCount, @required int discNumber, @required bool isExplicit}){
+      <pre class="language-dart"><code class="language-dart">Song(
+    {@required String iOSSongID,
+    @required String title,
+    @required String artistName,
+    @required String albumTitle,
+    @required int trackNumber,
+    @required int playCount,
+    @required int discNumber,
+    @required double duration,
+    @required bool isExplicit}) {
   this.title = title;
+  this.duration = duration;
   this.trackNumber = trackNumber;
   this.albumTitle = albumTitle;
   this.artistName = artistName;
@@ -125,7 +137,7 @@
 <footer>
   <span class="no-break">
     playify
-      0.0.1
+      0.0.3
   </span>
 
 </footer>
