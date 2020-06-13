@@ -20,14 +20,14 @@ Future<void> play() async {
 
 //Fetch all songs from iOS's Apple Music.
 Future<List<Artist>> getAllSongs() async {
-	var artist = await myplayer.getAllSongs(sort: true);
+	var artists = await myplayer.getAllSongs(sort: true);
 	return artists;
 }
 
 //Fetch song information about the currently playing song in the queue.
 Future<SongInfo> nowPlaying() async {
-	var artist = await myplayer.nowPlaying();
-	return artists;
+	var songinfo = await myplayer.nowPlaying();
+	return songinfo;
 }
 
 //Set the queue using songIDs for iOS.
@@ -65,8 +65,8 @@ Future<void> setShuffleMode(Shuffle mode) async {
 ## Screenshots
 
 <p align="center">
-    <img alt="Screenshot" style="margin-top: 4px;" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/1.png" width="220" height="380">
-    <img alt="Screenshot" style="margin-top: 4px;" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/2.png" width="220" height="380">
-    <img alt="Screenshot" style="margin-top: 4px;" alt="Screenshot" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/3.png" width="220" height="380">
-	<img alt="Screenshot" style="margin-top: 4px;" alt="Screenshot" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/4.png" width="220" height="380">
+    <img alt="Screenshot" style="margin-top: 4px;" alt="Screenshot" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/1.png" width="220" height="400">
+    <img alt="Screenshot" style="margin-top: 4px;" alt="Screenshot" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/2.png" width="220" height="400">
+    <img alt="Screenshot" style="margin-top: 4px;" alt="Screenshot" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/3.png" width="220" height="400">
+	<img alt="Screenshot" style="margin-top: 4px;" alt="Screenshot" src="https://raw.githubusercontent.com/iberatkaya/playify/master/example/screenshots/4.png" width="220" height="400">
 </p>
