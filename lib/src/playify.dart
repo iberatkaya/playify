@@ -8,16 +8,15 @@ import 'package:playify/src/class/songinfo/songinfo.dart';
 import 'package:playify/src/class/song/song.dart';
 
 class Playify {
-  static const MethodChannel playerChannel =
-      const MethodChannel('com.kaya.playify/playify');
+  static const MethodChannel playerChannel = const MethodChannel('com.kaya.playify/playify');
 
   ///Set the queue by giving the songIDs desired to be added to the queue.
   ///Does not require the play function to be called after setting the queue. It will autoplay
 
   Future<bool> setQueue({List<String> songIDs, int startIndex = 0}) async {
     if (Platform.isIOS) {
-      var result = await playerChannel.invokeMethod('setQueue',
-          <String, dynamic>{"songIDs": songIDs, "startIndex": startIndex});
+      var result = await playerChannel
+          .invokeMethod('setQueue', <String, dynamic>{"songIDs": songIDs, "startIndex": startIndex});
       return result;
     } else {
       throw PlatformException(
@@ -57,6 +56,19 @@ class Playify {
   Future<bool> next() async {
     if (Platform.isIOS) {
       var result = await playerChannel.invokeMethod('next');
+      return result;
+    } else {
+      throw PlatformException(
+          code: "Device is not iOS!",
+          message:
+              "Currently only iOS is supported. Feel free to contribute to Playify to help support Android.");
+    }
+  }
+
+  ///Check if there is a song currently playing.
+  Future<bool> isPlaying() async {
+    if (Platform.isIOS) {
+      var result = await playerChannel.invokeMethod('isPlaying');
       return result;
     } else {
       throw PlatformException(
@@ -136,8 +148,7 @@ class Playify {
   ///Set the playback time of the current song in the queue.
   Future<bool> setPlaybackTime(double time) async {
     if (Platform.isIOS) {
-      bool result = await playerChannel
-          .invokeMethod('setPlaybackTime', <String, dynamic>{"time": time});
+      bool result = await playerChannel.invokeMethod('setPlaybackTime', <String, dynamic>{"time": time});
       return result;
     } else {
       throw PlatformException(
@@ -164,8 +175,7 @@ class Playify {
         default:
           throw "Incorrent mode!";
       }
-      bool result = await playerChannel
-          .invokeMethod('setShuffleMode', <String, dynamic>{"mode": mymode});
+      bool result = await playerChannel.invokeMethod('setShuffleMode', <String, dynamic>{"mode": mymode});
       return result;
     } else {
       throw PlatformException(
@@ -192,8 +202,7 @@ class Playify {
         default:
           throw "Incorrent mode!";
       }
-      bool result = await playerChannel
-          .invokeMethod('setRepeatMode', <String, dynamic>{"mode": mymode});
+      bool result = await playerChannel.invokeMethod('setRepeatMode', <String, dynamic>{"mode": mymode});
       return result;
     } else {
       throw PlatformException(
@@ -207,18 +216,15 @@ class Playify {
   ///This method may take up significant time due to the amount of songs available on the phone.
   ///Make sure to display a waiting animation while this is fetching.
   ///All cover art for each album is fetched when using this function. Due the amount of songs, the app may crash if the device does not have enough memory. In this case, the size of the cover art should be reduced.
-  Future<List<Artist>> getAllSongs(
-      {bool sort = false, int coverArtSize = 500}) async {
+  Future<List<Artist>> getAllSongs({bool sort = false, int coverArtSize = 500}) async {
     if (Platform.isIOS) {
       List<Artist> artists = [];
-      var result = await playerChannel
-          .invokeMethod('getAllSongs', <String, dynamic>{"size": coverArtSize});
+      var result = await playerChannel.invokeMethod('getAllSongs', <String, dynamic>{"size": coverArtSize});
       for (int a = 0; a < result.length; a++) {
 //          stdout.write(a.toString() + ", ");
         var resobj = new Map<String, dynamic>.from(result[a]);
         Artist artist = Artist(albums: [], name: resobj["artist"]);
-        dynamic image =
-            resobj["image"] != null ? Image.memory(resobj["image"]) : null;
+        dynamic image = resobj["image"] != null ? Image.memory(resobj["image"]) : null;
         Album album = Album(
             songs: [],
             title: resobj["albumTitle"],
@@ -247,15 +253,11 @@ class Playify {
             for (int j = 0; j < artists[i].albums.length; j++) {
               if (artists[i].albums[j].title == album.title) {
                 //If the album does not have a cover art
-                if (artists[i].albums[j].coverArt == null &&
-                    album.coverArt != null) {
+                if (artists[i].albums[j].coverArt == null && album.coverArt != null) {
                   artists[i].albums[j].coverArt = album.coverArt;
                 }
                 artists[i].albums[j].songs.add(song);
-                artists[i]
-                    .albums[j]
-                    .songs
-                    .sort((a, b) => a.trackNumber - b.trackNumber);
+                artists[i].albums[j].songs.sort((a, b) => a.trackNumber - b.trackNumber);
                 foundAlbum = true;
                 break;
               }
@@ -284,9 +286,11 @@ class Playify {
   Future<SongInfo> nowPlaying() async {
     if (Platform.isIOS) {
       var result = await playerChannel.invokeMethod('nowPlaying');
+      if (result == null) {
+        return null;
+      }
       var resobj = new Map<String, dynamic>.from(result);
       Artist artist = Artist(albums: [], name: resobj["artist"]);
-      print(resobj["albumTrackCount"]);
       Album album = Album(
           songs: [],
           title: resobj["albumTitle"],

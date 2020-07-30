@@ -105,4 +105,8 @@ public class Player {
         let songs = songsQuery.items ?? []
         return songs
     }
+    
+    func isPlaying() -> Bool {
+        return player.playbackState == MPMusicPlaybackState.playing
+    }
 }

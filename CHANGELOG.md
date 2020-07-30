@@ -1,3 +1,11 @@
+## 1.0.0+1
+
+* Added isPlaying() to check if a song is currently playing.
+
+## 1.0.0+1
+
+* Added returning null if no song was playing.
+
 ## 1.0.0
 
 * Stable release.

@@ -42,6 +42,10 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                 self.endSeeking()
                 result(Bool(true))
             }
+            else if(call.method == "isPlaying"){
+                let isplaying = self.isPlaying();
+                result(Bool(isplaying))
+            }
             else if(call.method == "setShuffleMode") {
                 guard let args = call.arguments as? [String: Any] else {
                     print("Param is empty")
@@ -89,6 +93,11 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
             }
             else if(call.method == "nowPlaying") {
                 let metadata = self.nowPlaying()
+                if(metadata == nil){
+                    result(nil)
+                    return
+                }
+                
                 let image = metadata?.artwork?.image(at: CGSize(width: 800, height: 800))
                 //Convert image to Uint8 Array to send to Flutter (Taken from https://stackoverflow.com/a/29734526)
                 guard let imgdata = image?.jpegData(compressionQuality: 1.0) else {
@@ -224,6 +233,11 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
     @available(iOS 10.1, *)
     public func endSeeking(){
         player.endSeeking()
+    }
+    
+    @available(iOS 10.1, *)
+    public func isPlaying() -> Bool{
+        return player.isPlaying()
     }
     
     @available(iOS 10.1, *)

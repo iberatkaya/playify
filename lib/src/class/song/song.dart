@@ -30,4 +30,17 @@ class Song {
   int discNumber;
   double duration;
   bool isExplicit;
+
+  @override
+  String toString() {
+    return "Album Title: " +
+        this.albumTitle +
+        ", Artist Name: " +
+        this.artistName +
+        ", title: " +
+        this.title +
+        ", Duration: " +
+        this.duration.toString() +
+        "\n";
+  }
 }

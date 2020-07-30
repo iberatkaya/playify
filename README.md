@@ -66,7 +66,7 @@ Future<void> setShuffleMode(Shuffle mode) async {
 
 ## Android
 
-* For Android, I plan to use a popular audio playing library such as [audioplayers](https://pub.dev/packages/audioplayers). Feel free to suggest better implementation plans by creating an [issue](https://github.com/iberatkaya/playify/issues) or by contributing. Checkout the [Development Log](https://github.com/iberatkaya/playify/blob/master/DEVLOG.md).
+* For Android, I plan to use a popular audio playing library such as [audioplayers](https://pub.dev/packages/audioplayers). Feel free to suggest better implementation plans by creating an [issue](https://github.com/iberatkaya/playify/issues) or by contributing.
 
 ## Screenshots
 

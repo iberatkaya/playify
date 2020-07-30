@@ -22,4 +22,15 @@ class Album {
   int albumTrackCount;
   Image coverArt;
   int diskCount;
+
+  @override
+  String toString() {
+    return "Title: " +
+        this.title +
+        " has " +
+        songs.length.toString() +
+        " songs and artist is " +
+        this.artistName +
+        "\n";
+  }
 }
