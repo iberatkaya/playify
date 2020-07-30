@@ -1,5 +1,11 @@
 # Dev Log
 
+#### 30.07.2020:
+
+* Prepared for release.
+* Planned for Android.
+* Edited example.
+
 #### 11.05.2020:
 
 * Added shuffle and repeat.

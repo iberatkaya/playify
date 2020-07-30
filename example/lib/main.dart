@@ -85,29 +85,38 @@ class _MyHomePage extends State<MyHomePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.arrow_back_ios),
-                              onPressed: () async {
-                                await myplayer.previous();
-                                await updateInfo();
-                              },
+                            Expanded(
+                              flex: 2,
+                              child: IconButton(
+                                icon: Icon(Icons.arrow_back_ios),
+                                onPressed: () async {
+                                  await myplayer.previous();
+                                  await updateInfo();
+                                },
+                              ),
                             ),
-                            Column(
-                              children: <Widget>[
-                                Text(data.artist.name),
-                                Text(data.album.title),
-                                Text(data.song.title),
-                                Text(data.song.trackNumber.toString() +
-                                    "/" +
-                                    data.album.albumTrackCount.toString()),
-                              ],
+                            Expanded(
+                              flex: 10,
+                              child: Column(
+                                children: <Widget>[
+                                  Text(data.artist.name),
+                                  Text(data.album.title),
+                                  Text(data.song.title),
+                                  Text(data.song.trackNumber.toString() +
+                                      "/" +
+                                      data.album.albumTrackCount.toString()),
+                                ],
+                              ),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.arrow_forward_ios),
-                              onPressed: () async {
-                                await myplayer.next();
-                                await updateInfo();
-                              },
+                            Expanded(
+                              flex: 2,
+                              child: IconButton(
+                                icon: Icon(Icons.arrow_forward_ios),
+                                onPressed: () async {
+                                  await myplayer.next();
+                                  await updateInfo();
+                                },
+                              ),
                             ),
                           ],
                         )
@@ -189,6 +198,7 @@ class _MyHomePage extends State<MyHomePage> {
                     var res = await myplayer.endSeeking();
                   },
                 ),
+                Text("Shuffle:"),
                 DropdownButton<Shuffle>(
                   hint: Text("Shuffle"),
                   onChanged: (mode) async {
@@ -213,6 +223,7 @@ class _MyHomePage extends State<MyHomePage> {
                     )
                   ],
                 ),
+                Text("Repeat:"),
                 DropdownButton<Repeat>(
                   hint: Text("Repeat"),
                   onChanged: (mode) async {
