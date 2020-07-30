@@ -72,7 +72,7 @@
   </div>
 
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
-      <div><h1><span class="kind-class">Playify</span> class </h1></div>
+      <div><h1><span class="kind-class">Playify</span> class  </h1></div>
 
     
 
@@ -94,16 +94,16 @@
 
       <dl class="properties">
         <dt id="hashCode" class="property inherited">
-          <span class="name"><a href="../playify/Playify/hashCode.html">hashCode</a></span>
-          <span class="signature">&#8594; int</span>         
+          <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>         
         </dt>
         <dd class="inherited">
-          The hash code for this object. <a href="../playify/Playify/hashCode.html">[...]</a>
+          The hash code for this object. <a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">[...]</a>
                   <div class="features">read-only, inherited</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
-          <span class="name"><a href="../playify/Playify/runtimeType.html">runtimeType</a></span>
-          <span class="signature">&#8594; Type</span>         
+          <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>         
         </dt>
         <dd class="inherited">
           A representation of the runtime type of the object. 
@@ -117,7 +117,7 @@
       <dl class="callables">
         <dt id="endSeeking" class="callable">
           <span class="name"><a href="../playify/Playify/endSeeking.html">endSeeking</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
@@ -125,8 +125,8 @@
                   
 </dd>
         <dt id="getAllSongs" class="callable">
-          <span class="name"><a href="../playify/Playify/getAllSongs.html">getAllSongs</a></span><span class="signature">(<wbr><span class="parameter" id="getAllSongs-param-sort">{<span class="type-annotation">bool</span> <span class="parameter-name">sort</span>: <span class="default-value">false</span>, </span><wbr><span class="parameter" id="getAllSongs-param-coverArtSize"><span class="type-annotation">int</span> <span class="parameter-name">coverArtSize</span>: <span class="default-value">500</span>}</span><wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="../playify/Artist-class.html">Artist</a></span>&gt;</span></span>&gt;</span></span>
+          <span class="name"><a href="../playify/Playify/getAllSongs.html">getAllSongs</a></span><span class="signature">(<wbr><span class="parameter" id="getAllSongs-param-sort">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">sort</span>: <span class="default-value">false</span>, </span><wbr><span class="parameter" id="getAllSongs-param-coverArtSize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">coverArtSize</span>: <span class="default-value">500</span>}</span><wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../playify/Artist-class.html">Artist</a></span>&gt;</span></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
@@ -138,25 +138,43 @@ All cover art for each album is fetched when using this function. Due the amount
 </dd>
         <dt id="getPlaybackTime" class="callable">
           <span class="name"><a href="../playify/Playify/getPlaybackTime.html">getPlaybackTime</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">double</span>&gt;</span></span>
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
           Get the playback time of the current song in the queue. 
                   
 </dd>
+        <dt id="isPlaying" class="callable">
+          <span class="name"><a href="../playify/Playify/isPlaying.html">isPlaying</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Check if there is a song currently playing. 
+                  
+</dd>
         <dt id="next" class="callable">
           <span class="name"><a href="../playify/Playify/next.html">next</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
           Skip to the next song in the queue. 
                   
 </dd>
+        <dt id="noSuchMethod" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span><wbr>)
+            <span class="returntype parameter">&#8594; dynamic</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Invoked when a non-existent method or property is accessed. <a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
         <dt id="nowPlaying" class="callable">
           <span class="name"><a href="../playify/Playify/nowPlaying.html">nowPlaying</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter"><a href="../playify/SongInfo-class.html">SongInfo</a></span>&gt;</span></span>
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../playify/SongInfo-class.html">SongInfo</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
@@ -165,7 +183,7 @@ All cover art for each album is fetched when using this function. Due the amount
 </dd>
         <dt id="pause" class="callable">
           <span class="name"><a href="../playify/Playify/pause.html">pause</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
@@ -174,7 +192,7 @@ All cover art for each album is fetched when using this function. Due the amount
 </dd>
         <dt id="play" class="callable">
           <span class="name"><a href="../playify/Playify/play.html">play</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
@@ -183,7 +201,7 @@ All cover art for each album is fetched when using this function. Due the amount
 </dd>
         <dt id="previous" class="callable">
           <span class="name"><a href="../playify/Playify/previous.html">previous</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
@@ -192,7 +210,7 @@ All cover art for each album is fetched when using this function. Due the amount
 </dd>
         <dt id="seekBackward" class="callable">
           <span class="name"><a href="../playify/Playify/seekBackward.html">seekBackward</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
@@ -202,7 +220,7 @@ Must call endSeeking() or will not stop seeking.
 </dd>
         <dt id="seekForward" class="callable">
           <span class="name"><a href="../playify/Playify/seekForward.html">seekForward</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
@@ -211,8 +229,8 @@ Must call endSeeking() or will not stop seeking.
                   
 </dd>
         <dt id="setPlaybackTime" class="callable">
-          <span class="name"><a href="../playify/Playify/setPlaybackTime.html">setPlaybackTime</a></span><span class="signature">(<wbr><span class="parameter" id="setPlaybackTime-param-time"><span class="type-annotation">double</span> <span class="parameter-name">time</span></span><wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+          <span class="name"><a href="../playify/Playify/setPlaybackTime.html">setPlaybackTime</a></span><span class="signature">(<wbr><span class="parameter" id="setPlaybackTime-param-time"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">time</span></span><wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
@@ -220,8 +238,8 @@ Must call endSeeking() or will not stop seeking.
                   
 </dd>
         <dt id="setQueue" class="callable">
-          <span class="name"><a href="../playify/Playify/setQueue.html">setQueue</a></span><span class="signature">(<wbr><span class="parameter" id="setQueue-param-songIDs">{<span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">songIDs</span>, </span><wbr><span class="parameter" id="setQueue-param-startIndex"><span class="type-annotation">int</span> <span class="parameter-name">startIndex</span>: <span class="default-value">0</span>}</span><wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+          <span class="name"><a href="../playify/Playify/setQueue.html">setQueue</a></span><span class="signature">(<wbr><span class="parameter" id="setQueue-param-songIDs">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">songIDs</span>, </span><wbr><span class="parameter" id="setQueue-param-startIndex"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">startIndex</span>: <span class="default-value">0</span>}</span><wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
@@ -231,7 +249,7 @@ Does not require the play function to be called after setting the queue. It will
 </dd>
         <dt id="setRepeatMode" class="callable">
           <span class="name"><a href="../playify/Playify/setRepeatMode.html">setRepeatMode</a></span><span class="signature">(<wbr><span class="parameter" id="setRepeatMode-param-mode"><span class="type-annotation"><a href="../playify/Repeat-class.html">Repeat</a></span> <span class="parameter-name">mode</span></span><wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
@@ -240,25 +258,16 @@ Does not require the play function to be called after setting the queue. It will
 </dd>
         <dt id="setShuffleMode" class="callable">
           <span class="name"><a href="../playify/Playify/setShuffleMode.html">setShuffleMode</a></span><span class="signature">(<wbr><span class="parameter" id="setShuffleMode-param-mode"><span class="type-annotation"><a href="../playify/Shuffle-class.html">Shuffle</a></span> <span class="parameter-name">mode</span></span><wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">bool</span>&gt;</span></span>
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
           Set the shuffle mode. 
                   
 </dd>
-        <dt id="noSuchMethod" class="callable inherited">
-          <span class="name"><a href="../playify/Playify/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span><wbr>)
-            <span class="returntype parameter">&#8594; dynamic</span>
-          </span>
-                  </dt>
-        <dd class="inherited">
-          Invoked when a non-existent method or property is accessed. <a href="../playify/Playify/noSuchMethod.html">[...]</a>
-                  <div class="features">inherited</div>
-</dd>
         <dt id="toString" class="callable inherited">
-          <span class="name"><a href="../playify/Playify/toString.html">toString</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; String</span>
+          <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
           </span>
                   </dt>
         <dd class="inherited">
@@ -272,12 +281,12 @@ Does not require the play function to be called after setting the queue. It will
       <h2>Operators</h2>
       <dl class="callables">
         <dt id="operator ==" class="callable inherited">
-          <span class="name"><a href="../playify/Playify/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span><wbr>)
-            <span class="returntype parameter">&#8594; bool</span>
+          <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span><wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
           </span>
                   </dt>
         <dd class="inherited">
-          The equality operator. <a href="../playify/Playify/operator_equals.html">[...]</a>
+          The equality operator. <a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">[...]</a>
                   <div class="features">inherited</div>
 </dd>
       </dl>
@@ -291,13 +300,13 @@ Does not require the play function to be called after setting the queue. It will
       <dl class="properties">
         <dt id="playerChannel" class="constant">
           <span class="name "><a href="../playify/Playify/playerChannel-constant.html">playerChannel</a></span>
-          <span class="signature">&#8594; const MethodChannel</span>
+          <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/services/MethodChannel-class.html">MethodChannel</a></span>
                   </dt>
         <dd>
            
                   
   <div>
-            <span class="signature"><code>const MethodChannel(&#39;com.kaya.playify&#47;playify&#39;)</code></span>
+            <span class="signature"><code>const <a href="https://api.flutter.dev/flutter/services/MethodChannel/MethodChannel.html">MethodChannel</a>(&#39;com.kaya.playify&#47;playify&#39;)</code></span>
           </div>
         </dd>
       </dl>
@@ -314,14 +323,16 @@ Does not require the play function to be called after setting the queue. It will
       <li class="section-title inherited">
         <a href="../playify/Playify-class.html#instance-properties">Properties</a>
       </li>
-      <li class="inherited"><a href="../playify/Playify/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="../playify/Playify/runtimeType.html">runtimeType</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
     
       <li class="section-title"><a href="../playify/Playify-class.html#instance-methods">Methods</a></li>
       <li><a href="../playify/Playify/endSeeking.html">endSeeking</a></li>
       <li><a href="../playify/Playify/getAllSongs.html">getAllSongs</a></li>
       <li><a href="../playify/Playify/getPlaybackTime.html">getPlaybackTime</a></li>
+      <li><a href="../playify/Playify/isPlaying.html">isPlaying</a></li>
       <li><a href="../playify/Playify/next.html">next</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
       <li><a href="../playify/Playify/nowPlaying.html">nowPlaying</a></li>
       <li><a href="../playify/Playify/pause.html">pause</a></li>
       <li><a href="../playify/Playify/play.html">play</a></li>
@@ -332,11 +343,10 @@ Does not require the play function to be called after setting the queue. It will
       <li><a href="../playify/Playify/setQueue.html">setQueue</a></li>
       <li><a href="../playify/Playify/setRepeatMode.html">setRepeatMode</a></li>
       <li><a href="../playify/Playify/setShuffleMode.html">setShuffleMode</a></li>
-      <li class="inherited"><a href="../playify/Playify/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a href="../playify/Playify/toString.html">toString</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
     
       <li class="section-title inherited"><a href="../playify/Playify-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="../playify/Playify/operator_equals.html">operator ==</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
     
     
     
@@ -351,7 +361,7 @@ Does not require the play function to be called after setting the queue. It will
 <footer>
   <span class="no-break">
     playify
-      0.0.3
+      1.0.0+2
   </span>
 
 </footer>

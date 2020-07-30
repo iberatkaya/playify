@@ -60,14 +60,16 @@
         <li class="section-title inherited">
             <a href="../../playify/Playify-class.html#instance-properties">Properties</a>
         </li>
-        <li class="inherited"><a href="../../playify/Playify/hashCode.html">hashCode</a></li>
-        <li class="inherited"><a href="../../playify/Playify/runtimeType.html">runtimeType</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
     
         <li class="section-title"><a href="../../playify/Playify-class.html#instance-methods">Methods</a></li>
         <li><a href="../../playify/Playify/endSeeking.html">endSeeking</a></li>
         <li><a href="../../playify/Playify/getAllSongs.html">getAllSongs</a></li>
         <li><a href="../../playify/Playify/getPlaybackTime.html">getPlaybackTime</a></li>
+        <li><a href="../../playify/Playify/isPlaying.html">isPlaying</a></li>
         <li><a href="../../playify/Playify/next.html">next</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
         <li><a href="../../playify/Playify/nowPlaying.html">nowPlaying</a></li>
         <li><a href="../../playify/Playify/pause.html">pause</a></li>
         <li><a href="../../playify/Playify/play.html">play</a></li>
@@ -78,11 +80,10 @@
         <li><a href="../../playify/Playify/setQueue.html">setQueue</a></li>
         <li><a href="../../playify/Playify/setRepeatMode.html">setRepeatMode</a></li>
         <li><a href="../../playify/Playify/setShuffleMode.html">setShuffleMode</a></li>
-        <li class="inherited"><a href="../../playify/Playify/noSuchMethod.html">noSuchMethod</a></li>
-        <li class="inherited"><a href="../../playify/Playify/toString.html">toString</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
     
         <li class="section-title inherited"><a href="../../playify/Playify-class.html#operators">Operators</a></li>
-        <li class="inherited"><a href="../../playify/Playify/operator_equals.html">operator ==</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
     
     
     
@@ -94,13 +95,13 @@
   </div><!--/.sidebar-offcanvas-->
 
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
-      <div><h1><span class="kind-method">getAllSongs</span> method</h1></div>
+      <div><h1><span class="kind-method">getAllSongs</span> method </h1></div>
 
     <section class="multi-line-signature">
-      <span class="returntype">Future<span class="signature">&lt;<wbr><span class="type-parameter">List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../playify/Artist-class.html">Artist</a></span>&gt;</span></span>&gt;</span></span>
+      <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../playify/Artist-class.html">Artist</a></span>&gt;</span></span>&gt;</span></span>
             <span class="name ">getAllSongs</span>
-(<wbr><ol class="parameter-list"><li><span class="parameter" id="getAllSongs-param-sort">{<span class="type-annotation">bool</span> <span class="parameter-name">sort</span>: <span class="default-value">false</span>, </span></li>
-<li><span class="parameter" id="getAllSongs-param-coverArtSize"><span class="type-annotation">int</span> <span class="parameter-name">coverArtSize</span>: <span class="default-value">500</span>}</span></li>
+(<wbr><ol class="parameter-list"><li><span class="parameter" id="getAllSongs-param-sort">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">sort</span>: <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="getAllSongs-param-coverArtSize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">coverArtSize</span>: <span class="default-value">500</span>}</span></li>
 </ol>)
       
     </section>
@@ -113,18 +114,15 @@ All cover art for each album is fetched when using this function. Due the amount
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Artist&gt;&gt; getAllSongs(
-    {bool sort = false, int coverArtSize = 500}) async {
+      <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Artist&gt;&gt; getAllSongs({bool sort = false, int coverArtSize = 500}) async {
   if (Platform.isIOS) {
     List&lt;Artist&gt; artists = [];
-    var result = await playerChannel
-        .invokeMethod(&#39;getAllSongs&#39;, &lt;String, dynamic&gt;{&quot;size&quot;: coverArtSize});
+    var result = await playerChannel.invokeMethod(&#39;getAllSongs&#39;, &lt;String, dynamic&gt;{&quot;size&quot;: coverArtSize});
     for (int a = 0; a &lt; result.length; a++) {
 &#47;&#47;          stdout.write(a.toString() + &quot;, &quot;);
       var resobj = new Map&lt;String, dynamic&gt;.from(result[a]);
       Artist artist = Artist(albums: [], name: resobj[&quot;artist&quot;]);
-      dynamic image =
-          resobj[&quot;image&quot;] != null ? Image.memory(resobj[&quot;image&quot;]) : null;
+      dynamic image = resobj[&quot;image&quot;] != null ? Image.memory(resobj[&quot;image&quot;]) : null;
       Album album = Album(
           songs: [],
           title: resobj[&quot;albumTitle&quot;],
@@ -153,15 +151,11 @@ All cover art for each album is fetched when using this function. Due the amount
           for (int j = 0; j &lt; artists[i].albums.length; j++) {
             if (artists[i].albums[j].title == album.title) {
               &#47;&#47;If the album does not have a cover art
-              if (artists[i].albums[j].coverArt == null &amp;&amp;
-                  album.coverArt != null) {
+              if (artists[i].albums[j].coverArt == null &amp;&amp; album.coverArt != null) {
                 artists[i].albums[j].coverArt = album.coverArt;
               }
               artists[i].albums[j].songs.add(song);
-              artists[i]
-                  .albums[j]
-                  .songs
-                  .sort((a, b) =&gt; a.trackNumber - b.trackNumber);
+              artists[i].albums[j].songs.sort((a, b) =&gt; a.trackNumber - b.trackNumber);
               foundAlbum = true;
               break;
             }
@@ -197,7 +191,7 @@ All cover art for each album is fetched when using this function. Due the amount
 <footer>
   <span class="no-break">
     playify
-      0.0.3
+      1.0.0+2
   </span>
 
 </footer>

@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the runtimeType property from the Playify class, for the Dart programming language.">
-  <title>runtimeType property - Playify class - playify library - Dart API</title>
+  <meta name="description" content="API docs for the isPlaying method from the Playify class, for the Dart programming language.">
+  <title>isPlaying method - Playify class - playify library - Dart API</title>
 
   
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
@@ -27,9 +27,9 @@
     <li><a href="../../index.html">playify</a></li>
     <li><a href="../../playify/playify-library.html">playify</a></li>
     <li><a href="../../playify/Playify-class.html">Playify</a></li>
-    <li class="self-crumb">runtimeType property</li>
+    <li class="self-crumb">isPlaying method</li>
   </ol>
-  <div class="self-name">runtimeType</div>
+  <div class="self-name">isPlaying</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -48,7 +48,7 @@
       <li><a href="../../index.html">playify</a></li>
       <li><a href="../../playify/playify-library.html">playify</a></li>
       <li><a href="../../playify/Playify-class.html">Playify</a></li>
-      <li class="self-crumb">runtimeType property</li>
+      <li class="self-crumb">isPlaying method</li>
     </ol>
     
     <h5>Playify class</h5>
@@ -60,14 +60,16 @@
         <li class="section-title inherited">
             <a href="../../playify/Playify-class.html#instance-properties">Properties</a>
         </li>
-        <li class="inherited"><a href="../../playify/Playify/hashCode.html">hashCode</a></li>
-        <li class="inherited"><a href="../../playify/Playify/runtimeType.html">runtimeType</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
     
         <li class="section-title"><a href="../../playify/Playify-class.html#instance-methods">Methods</a></li>
         <li><a href="../../playify/Playify/endSeeking.html">endSeeking</a></li>
         <li><a href="../../playify/Playify/getAllSongs.html">getAllSongs</a></li>
         <li><a href="../../playify/Playify/getPlaybackTime.html">getPlaybackTime</a></li>
+        <li><a href="../../playify/Playify/isPlaying.html">isPlaying</a></li>
         <li><a href="../../playify/Playify/next.html">next</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
         <li><a href="../../playify/Playify/nowPlaying.html">nowPlaying</a></li>
         <li><a href="../../playify/Playify/pause.html">pause</a></li>
         <li><a href="../../playify/Playify/play.html">play</a></li>
@@ -78,11 +80,10 @@
         <li><a href="../../playify/Playify/setQueue.html">setQueue</a></li>
         <li><a href="../../playify/Playify/setRepeatMode.html">setRepeatMode</a></li>
         <li><a href="../../playify/Playify/setShuffleMode.html">setShuffleMode</a></li>
-        <li class="inherited"><a href="../../playify/Playify/noSuchMethod.html">noSuchMethod</a></li>
-        <li class="inherited"><a href="../../playify/Playify/toString.html">toString</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
     
         <li class="section-title inherited"><a href="../../playify/Playify-class.html#operators">Operators</a></li>
-        <li class="inherited"><a href="../../playify/Playify/operator_equals.html">operator ==</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
     
     
     
@@ -94,26 +95,33 @@
   </div><!--/.sidebar-offcanvas-->
 
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
-      <div><h1><span class="kind-property">runtimeType</span> property</h1></div>
+      <div><h1><span class="kind-method">isPlaying</span> method </h1></div>
 
+    <section class="multi-line-signature">
+      <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+            <span class="name ">isPlaying</span>
+(<wbr>)
+      
+    </section>
+    <section class="desc markdown">
+      <p>Check if there is a song currently playing.</p>
+    </section>
+    
+    <section class="summary source-code" id="source">
+      <h2><span>Implementation</span></h2>
+      <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; isPlaying() async {
+  if (Platform.isIOS) {
+    var result = await playerChannel.invokeMethod(&#39;isPlaying&#39;);
+    return result;
+  } else {
+    throw PlatformException(
+        code: &quot;Device is not iOS!&quot;,
+        message:
+            &quot;Currently only iOS is supported. Feel free to contribute to Playify to help support Android.&quot;);
+  }
+}</code></pre>
+    </section>
 
-        <section id="getter">
-        
-        <section class="multi-line-signature">
-          <span class="returntype">Type</span>
-                  <span class="name ">runtimeType</span>
-          <div class="features">inherited</div>
-</section>
-        
-                <section class="desc markdown">
-          <p>A representation of the runtime type of the object.</p>
-        </section>
-                <section class="summary source-code" id="source">
-          <h2><span>Implementation</span></h2>
-          <pre class="language-dart"><code class="language-dart">external Type get runtimeType;</code></pre>
-        </section>
-</section>
-        
   </div> <!-- /.main-content -->
 
   <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
@@ -124,7 +132,7 @@
 <footer>
   <span class="no-break">
     playify
-      0.0.3
+      1.0.0+2
   </span>
 
 </footer>
