@@ -75,7 +75,6 @@ class _MyHomePage extends State<MyHomePage> {
                           min: 0,
                           max: data.song.duration,
                           onChanged: (val) async {
-                            print(val);
                             setState(() {
                               time = val;
                             });
@@ -128,6 +127,7 @@ class _MyHomePage extends State<MyHomePage> {
                     icon: Icon(Icons.play_arrow),
                     onPressed: () async {
                       var res = await myplayer.play();
+                      var isplaying = await myplayer.isPlaying();
                       setState(() {
                         playing = true;
                       });
@@ -138,6 +138,7 @@ class _MyHomePage extends State<MyHomePage> {
                     icon: Icon(Icons.pause),
                     onPressed: () async {
                       var res = await myplayer.pause();
+                      var isplaying = await myplayer.isPlaying();
                       setState(() {
                         playing = false;
                       });
@@ -177,7 +178,6 @@ class _MyHomePage extends State<MyHomePage> {
                   child: Text("Get Playback Time"),
                   onPressed: () async {
                     var res = await myplayer.getPlaybackTime();
-                    print(res);
                   },
                 ),
                 FlatButton(
