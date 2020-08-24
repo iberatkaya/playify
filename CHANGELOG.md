@@ -1,3 +1,13 @@
+## 1.1.0+1
+
+* Fixed an issue where the album covers would not be resized.
+
+## 1.1.0
+
+### Breaking Changes:
+
+* The cover art now returns as binary data (List<int>). This is done in order to give more control over the cover art to the user.
+
 ## 1.0.0+2
 
 * Added isPlaying() to check if a song is currently playing.

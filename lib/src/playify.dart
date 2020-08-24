@@ -224,7 +224,7 @@ class Playify {
 //          stdout.write(a.toString() + ", ");
         var resobj = new Map<String, dynamic>.from(result[a]);
         Artist artist = Artist(albums: [], name: resobj["artist"]);
-        dynamic image = resobj["image"] != null ? Image.memory(resobj["image"]) : null;
+        List<int> image = resobj["image"] != null ? resobj["image"] : null;
         Album album = Album(
             songs: [],
             title: resobj["albumTitle"],
@@ -283,9 +283,9 @@ class Playify {
   }
 
   ///Retrieve information about the current playing song on the queue.
-  Future<SongInfo> nowPlaying() async {
+  Future<SongInfo> nowPlaying({int coverArtSize = 800}) async {
     if (Platform.isIOS) {
-      var result = await playerChannel.invokeMethod('nowPlaying');
+      var result = await playerChannel.invokeMethod('nowPlaying', <String, dynamic>{"size": coverArtSize});
       if (result == null) {
         return null;
       }
@@ -295,7 +295,7 @@ class Playify {
           songs: [],
           title: resobj["albumTitle"],
           albumTrackCount: resobj["albumTrackCount"],
-          coverArt: Image.memory(resobj["image"]),
+          coverArt: resobj["image"],
           diskCount: resobj["diskCount"],
           artistName: artist.name);
       Song song = Song(

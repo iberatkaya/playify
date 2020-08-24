@@ -36,30 +36,20 @@ class _AlbumsState extends State<Albums> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => Songs(
-                                              songs:
-                                                  widget.albums[index].songs)));
+                                          builder: (context) => Songs(songs: widget.albums[index].songs)));
                                 },
                                 color: Colors.blueGrey[50],
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                                 child: Padding(
                                   padding: EdgeInsets.all(12),
                                   child: Column(
                                     children: <Widget>[
                                       if (widget.albums[index].coverArt != null)
                                         Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.3,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.3,
+                                            width: MediaQuery.of(context).size.height * 0.3,
+                                            height: MediaQuery.of(context).size.height * 0.3,
                                             child: Image(
-                                              image: widget
-                                                  .albums[index].coverArt.image,
+                                              image: Image.memory(widget.albums[index].coverArt).image,
                                               fit: BoxFit.fill,
                                             )),
                                       Text(

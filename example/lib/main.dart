@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:playify/playify.dart';
 import 'package:playify_example/artists.dart';
+import 'dart:developer' as logger;
 
 void main() {
   runApp(MyApp());
@@ -50,6 +51,7 @@ class _MyHomePage extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    logger.log("s");
     return Scaffold(
       appBar: AppBar(
         title: const Text('Playify'),
@@ -66,7 +68,10 @@ class _MyHomePage extends State<MyHomePage> {
                       children: <Widget>[
                         if (data.album.coverArt != null)
                           Image(
-                            image: data.album.coverArt.image,
+                            image: Image.memory(
+                              data.album.coverArt,
+                              width: 800,
+                            ).image,
                             height: MediaQuery.of(context).size.height * 0.3,
                           ),
                         Slider(

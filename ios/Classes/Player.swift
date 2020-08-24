@@ -27,7 +27,7 @@ public class Player {
             }
         })
     }
-    
+        
     func seekForward(){
         player.beginSeekingForward()
     }

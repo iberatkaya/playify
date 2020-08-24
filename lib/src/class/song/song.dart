@@ -2,25 +2,16 @@ import 'package:flutter/material.dart';
 
 class Song {
   Song(
-      {@required String iOSSongID,
-      @required String title,
-      @required String artistName,
-      @required String albumTitle,
-      @required int trackNumber,
-      @required int playCount,
-      @required int discNumber,
-      @required double duration,
-      @required bool isExplicit}) {
-    this.title = title;
-    this.duration = duration;
-    this.trackNumber = trackNumber;
-    this.albumTitle = albumTitle;
-    this.artistName = artistName;
-    this.playCount = playCount;
-    this.discNumber = discNumber;
-    this.isExplicit = isExplicit;
-    this.iOSSongID = iOSSongID;
-  }
+      {@required this.iOSSongID,
+      @required this.title,
+      @required this.artistName,
+      @required this.albumTitle,
+      @required this.trackNumber,
+      @required this.playCount,
+      @required this.discNumber,
+      @required this.duration,
+      @required this.isExplicit});
+
   String albumTitle;
   String artistName;
   String title;

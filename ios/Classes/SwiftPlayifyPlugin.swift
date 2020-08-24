@@ -92,18 +92,26 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                 result(Bool(true))
             }
             else if(call.method == "nowPlaying") {
+                guard let args = call.arguments as? [String: Any] else {
+                    print("Param is empty")
+                    return
+                }
                 let metadata = self.nowPlaying()
                 if(metadata == nil){
                     result(nil)
                     return
                 }
                 
-                let image = metadata?.artwork?.image(at: CGSize(width: 800, height: 800))
+                let image = metadata?.artwork?.image(at: CGSize(width: (args["size"]! as! NSNumber).intValue, height: (args["size"]! as! NSNumber).intValue))
+                
+                //Resize image since there is an issue with getting the album cover with the desired size
+                let resizedImage = (image != nil) ? resizeImage(image: image!, targetSize: CGSize(width: (args["size"]! as! NSNumber).intValue, height: (args["size"]! as! NSNumber).intValue)) : nil
+                
                 //Convert image to Uint8 Array to send to Flutter (Taken from https://stackoverflow.com/a/29734526)
-                guard let imgdata = image?.jpegData(compressionQuality: 1.0) else {
+                guard let imgdata = resizedImage?.jpegData(compressionQuality: 1.0) else {
                     return
                 }
-                
+
                 guard let duration = metadata?.playbackDuration else {
                     return
                 }
@@ -161,9 +169,12 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                     }
                     if(!albumExists){
                         let image = metadata.artwork?.image(at: CGSize(width: (args["size"]! as! NSNumber).intValue, height: (args["size"]!  as! NSNumber).intValue))
-                        //Convert image to Uint8 Array to send to Flutter (Taken from https://stackoverflow.com/a/29734526)
+                        
+                        //Resize image since there is an issue with getting the album cover with the desired size
+                        let resizedImage = (image != nil) ? resizeImage(image: image!, targetSize: CGSize(width: (args["size"]! as! NSNumber).intValue, height: (args["size"]! as! NSNumber).intValue)) : nil
 
-                        let imgdata = image?.jpegData(compressionQuality: 0.85)
+                        //Convert image to Uint8 Array to send to Flutter (Taken from https://stackoverflow.com/a/29734526)
+                        let imgdata = resizedImage?.jpegData(compressionQuality: 0.85)
                         
                         let song: [String: Any] = [
                             "artist": artist ?? "",
@@ -208,6 +219,34 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
         else {
             print("Requires min iOS 10.3")
          }
+    }
+    
+    
+    //Taken from https://stackoverflow.com/a/39681316/11701504
+    public func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+
+        let widthRatio  = targetSize.width  / image.size.width
+        let heightRatio = targetSize.height / image.size.height
+
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage!
     }
     
     @available(iOS 10.1, *)
