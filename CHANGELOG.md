@@ -1,3 +1,7 @@
+## 1.1.1+1
+
+* Changed Release Year to DateTime.
+
 ## 1.1.1
 
 * Added Release Year and Genre for each song.

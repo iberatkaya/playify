@@ -221,7 +221,6 @@ class Playify {
       List<Artist> artists = [];
       var result = await playerChannel.invokeMethod('getAllSongs', <String, dynamic>{"size": coverArtSize});
       for (int a = 0; a < result.length; a++) {
-//          stdout.write(a.toString() + ", ");
         var resobj = new Map<String, dynamic>.from(result[a]);
         Artist artist = Artist(albums: [], name: resobj["artist"]);
         List<int> image = resobj["image"] != null ? resobj["image"] : null;
@@ -238,7 +237,7 @@ class Playify {
             duration: resobj["playbackDuration"],
             trackNumber: resobj["albumTrackNumber"],
             genre: resobj["genre"],
-            releaseYear: resobj["releaseYear"],
+            releaseDate: DateTime.fromMillisecondsSinceEpoch(resobj["releaseDate"]),
             discNumber: resobj["discNumber"],
             isExplicit: resobj["isExplicitItem"],
             playCount: resobj["playCount"],
@@ -308,7 +307,7 @@ class Playify {
           discNumber: resobj["discNumber"],
           isExplicit: resobj["isExplicitItem"],
           genre: resobj["genre"],
-          releaseYear: resobj["releaseYear"],
+          releaseDate: DateTime.fromMillisecondsSinceEpoch(resobj["releaseDate"]),
           playCount: resobj["playCount"],
           artistName: artist.name,
           iOSSongID: resobj["songID"].toString());

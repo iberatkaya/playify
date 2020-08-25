@@ -115,12 +115,7 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                 guard let duration = metadata?.playbackDuration else {
                     return
                 }
-                //Get year of the song (Taken from https://stackoverflow.com/a/46063421/11701504)
-                let yearNumber: NSNumber = metadata?.value(forProperty: "year") as! NSNumber
-                var year = 0
-                if (yearNumber.isKind(of: NSNumber.self)) {
-                    year = yearNumber.intValue
-                }
+                
                 let data: [String: Any] = [
                     "artist": metadata?.artist ?? "",
                     "songTitle": metadata?.title ?? "",
@@ -132,7 +127,7 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                     "discCount": metadata?.discCount ?? -1,
                     "discNumber": metadata?.discNumber ?? -1,
                     "genre": metadata?.genre ?? "",
-                    "releaseYear": year,
+                    "releaseDate": Int64((metadata?.releaseDate?.timeIntervalSince1970 ?? 0) * 1000),
                     "isExplicitItem": metadata?.isExplicitItem ?? "",
                     "songID": metadata?.persistentID ?? "",
                     "playbackDuration": Float(duration),
@@ -147,12 +142,8 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                     print("Param is empty")
                     return
                 }
-                //var ctr = 0
                 var albums: [String] = []
                 for metadata in allsongs {
-                    //ctr += 1
-                    //print(ctr, terminator: ", ")
-    
                     let artist = metadata.artist
                     let songTitle = metadata.title
                     let albumTitle = metadata.albumTitle
@@ -166,12 +157,7 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                     let isExplicitItem = metadata.isExplicitItem
                     let songID = metadata.persistentID
                     let playbackDuration = Float(metadata.playbackDuration)
-                    //Get year of the song (Taken from https://stackoverflow.com/a/46063421/11701504)
-                    let yearNumber: NSNumber = metadata.value(forProperty: "year") as! NSNumber
-                    var year = 0
-                    if (yearNumber.isKind(of: NSNumber.self)) {
-                        year = yearNumber.intValue
-                    }
+                    let releaseDate = Int64((metadata.releaseDate?.timeIntervalSince1970 ?? 0) * 1000)
                 
                     
                     var albumExists = false
@@ -200,7 +186,7 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                             "albumTrackNumber": albumTrackNumber,
                             "albumTrackCount": albumTrackCount,
                             "genre": genre ?? "",
-                            "releaseYear": year,
+                            "releaseDate": releaseDate,
                             "playCount": playCount,
                             "discCount": discCount,
                             "discNumber": discNumber,
@@ -223,7 +209,7 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                             "albumTrackCount": albumTrackCount,
                             "playCount": playCount,
                             "genre": genre ?? "",
-                            "year": year,
+                            "releaseDate": releaseDate,
                             "discCount": discCount,
                             "discNumber": discNumber,
                             "isExplicitItem": isExplicitItem,
