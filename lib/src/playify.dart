@@ -237,6 +237,8 @@ class Playify {
             title: resobj["songTitle"],
             duration: resobj["playbackDuration"],
             trackNumber: resobj["albumTrackNumber"],
+            genre: resobj["genre"],
+            releaseYear: resobj["releaseYear"],
             discNumber: resobj["discNumber"],
             isExplicit: resobj["isExplicitItem"],
             playCount: resobj["playCount"],
@@ -305,6 +307,8 @@ class Playify {
           trackNumber: resobj["trackNumber"],
           discNumber: resobj["discNumber"],
           isExplicit: resobj["isExplicitItem"],
+          genre: resobj["genre"],
+          releaseYear: resobj["releaseYear"],
           playCount: resobj["playCount"],
           artistName: artist.name,
           iOSSongID: resobj["songID"].toString());

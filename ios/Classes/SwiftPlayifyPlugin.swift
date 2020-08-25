@@ -115,7 +115,12 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                 guard let duration = metadata?.playbackDuration else {
                     return
                 }
-                
+                //Get year of the song (Taken from https://stackoverflow.com/a/46063421/11701504)
+                let yearNumber: NSNumber = metadata?.value(forProperty: "year") as! NSNumber
+                var year = 0
+                if (yearNumber.isKind(of: NSNumber.self)) {
+                    year = yearNumber.intValue
+                }
                 let data: [String: Any] = [
                     "artist": metadata?.artist ?? "",
                     "songTitle": metadata?.title ?? "",
@@ -126,6 +131,8 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                     "playCount": metadata?.playCount ?? -1,
                     "discCount": metadata?.discCount ?? -1,
                     "discNumber": metadata?.discNumber ?? -1,
+                    "genre": metadata?.genre ?? "",
+                    "releaseYear": year,
                     "isExplicitItem": metadata?.isExplicitItem ?? "",
                     "songID": metadata?.persistentID ?? "",
                     "playbackDuration": Float(duration),
@@ -152,13 +159,21 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                     let albumArtist = metadata.albumArtist
                     let albumTrackNumber = metadata.albumTrackNumber
                     let albumTrackCount = metadata.albumTrackCount
+                    let genre = metadata.genre
                     let playCount = metadata.playCount
                     let discCount = metadata.discCount
                     let discNumber = metadata.discNumber
                     let isExplicitItem = metadata.isExplicitItem
                     let songID = metadata.persistentID
                     let playbackDuration = Float(metadata.playbackDuration)
-
+                    //Get year of the song (Taken from https://stackoverflow.com/a/46063421/11701504)
+                    let yearNumber: NSNumber = metadata.value(forProperty: "year") as! NSNumber
+                    var year = 0
+                    if (yearNumber.isKind(of: NSNumber.self)) {
+                        year = yearNumber.intValue
+                    }
+                
+                    
                     var albumExists = false
 
                     for album in albums {
@@ -184,13 +199,15 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                             "trackNumber": albumTrackNumber,
                             "albumTrackNumber": albumTrackNumber,
                             "albumTrackCount": albumTrackCount,
+                            "genre": genre ?? "",
+                            "releaseYear": year,
                             "playCount": playCount,
                             "discCount": discCount,
                             "discNumber": discNumber,
                             "isExplicitItem": isExplicitItem,
                             "songID": songID,
                             "playbackDuration": playbackDuration,
-                            "image": imgdata
+                            "image": imgdata ?? []
                         ];
                         mysongs.append(song)
                         albums.append(albumTitle!)
@@ -205,6 +222,8 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                             "albumTrackNumber": albumTrackNumber,
                             "albumTrackCount": albumTrackCount,
                             "playCount": playCount,
+                            "genre": genre ?? "",
+                            "year": year,
                             "discCount": discCount,
                             "discNumber": discNumber,
                             "isExplicitItem": isExplicitItem,

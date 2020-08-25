@@ -1,3 +1,7 @@
+## 1.1.1
+
+* Added Release Year and Genre for each song.
+
 ## 1.1.0+1
 
 * Fixed an issue where the album covers would not be resized.

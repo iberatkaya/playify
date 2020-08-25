@@ -9,11 +9,15 @@ class Song {
       @required this.trackNumber,
       @required this.playCount,
       @required this.discNumber,
+      @required this.genre,
+      @required this.releaseYear,
       @required this.duration,
       @required this.isExplicit});
 
   String albumTitle;
   String artistName;
+  int releaseYear;
+  String genre;
   String title;
   String iOSSongID;
   int trackNumber;
