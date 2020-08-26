@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:playify/playify.dart';
 import 'package:playify_example/artists.dart';
-import 'dart:developer' as logger;
 
 void main() {
   runApp(MyApp());
@@ -51,7 +50,6 @@ class _MyHomePage extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    logger.log("s");
     return Scaffold(
       appBar: AppBar(
         title: const Text('Playify'),
