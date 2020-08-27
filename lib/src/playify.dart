@@ -11,9 +11,8 @@ class Playify {
   static const MethodChannel playerChannel = const MethodChannel('com.kaya.playify/playify');
 
   ///Set the queue by giving the songIDs desired to be added to the queue.
-  ///Does not require the play function to be called after setting the queue. It will autoplay
-
-  Future<bool> setQueue({List<String> songIDs, int startIndex = 0}) async {
+  ///If @param startIndex is -1, the queue will not autoplay.
+  Future<bool> setQueue({List<String> songIDs, int startIndex = -1}) async {
     if (Platform.isIOS) {
       var result = await playerChannel
           .invokeMethod('setQueue', <String, dynamic>{"songIDs": songIDs, "startIndex": startIndex});
@@ -30,6 +29,19 @@ class Playify {
   Future<bool> play() async {
     if (Platform.isIOS) {
       var result = await playerChannel.invokeMethod('play');
+      return result;
+    } else {
+      throw PlatformException(
+          code: "Device is not iOS!",
+          message:
+              "Currently only iOS is supported. Feel free to contribute to Playify to help support Android.");
+    }
+  }
+
+  ///Play a single song by giving its song ID.
+  Future<bool> playItem({String songID}) async {
+    if (Platform.isIOS) {
+      var result = await playerChannel.invokeMethod('playItem', <String, dynamic>{"songID": songID});
       return result;
     } else {
       throw PlatformException(

@@ -1,3 +1,10 @@
+## 1.2.0
+
+### Breaking Changes:
+
+* Setting the queue no longer autoplays as a default value.
+* Added a function to play a single song.
+
 ## 1.1.1+1
 
 * Changed Release Year to DateTime.

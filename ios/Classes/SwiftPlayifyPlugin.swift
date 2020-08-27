@@ -18,6 +18,15 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                 self.play()
                 result(Bool(true))
             }
+            else if(call.method == "playItem"){
+                guard let args = call.arguments as? [String: Any] else {
+                    print("Param is empty")
+                    result(Bool(false))
+                    return
+                }
+                self.playItem(songID: args["songID"] as! String)
+                result(Bool(true))
+            }
             else if(call.method == "pause") {
                 self.pause()
                 result(Bool(true))
@@ -262,6 +271,11 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
     @available(iOS 10.1, *)
     public func play(){
         player.play()
+    }
+    
+    @available(iOS 10.1, *)
+    public func playItem(songID: String){
+        player.playItem(songID: songID)
     }
     
     @available(iOS 10.1, *)

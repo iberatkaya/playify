@@ -16,16 +16,19 @@ public class Player {
         }
         var descriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: MPMediaItemCollection(items: songs))
         
+        
         player.setQueue(with: descriptor)
-        player.prepareToPlay(completionHandler: {error in
-            //Go to the desired song to play
-            if error == nil {
-                while(self.player.indexOfNowPlayingItem != startIndex){
-                    self.player.skipToNextItem()
+        if(startIndex != -1){
+            player.prepareToPlay(completionHandler: {error in
+                //Go to the desired song to play
+                if error == nil {
+                    while(self.player.indexOfNowPlayingItem != startIndex){
+                        self.player.skipToNextItem()
+                    }
+                    self.play()
                 }
-                self.player.play()
-            }
-        })
+            })
+        }
     }
         
     func seekForward(){
@@ -70,6 +73,24 @@ public class Player {
         else if(mode == "all"){
             player.repeatMode = MPMusicRepeatMode.all
         }
+    }
+    
+    func playItem(songID: String){
+        var songs: [MPMediaItem] = []
+        let songFilter = MPMediaPropertyPredicate(value: songID, forProperty: MPMediaItemPropertyPersistentID, comparisonType: .equalTo)
+        var query = MPMediaQuery(filterPredicates: Set([songFilter]))
+        if(query.items != nil && query.items!.capacity > 0){
+            songs.append(query.items![0])
+        }
+        
+        var descriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: MPMediaItemCollection(items: songs))
+        
+        player.setQueue(with: descriptor)
+        player.prepareToPlay(completionHandler: {error in
+            if error == nil {
+                self.player.play()
+            }
+        })
     }
     
     //Play the current queue
