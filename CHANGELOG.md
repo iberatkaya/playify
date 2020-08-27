@@ -1,3 +1,7 @@
+## 1.2.0+1
+
+* Updated README to better explain the plugin. No functionality changes were made.
+
 ## 1.2.0
 
 ### Breaking Changes:
