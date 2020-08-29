@@ -1,3 +1,7 @@
+## 1.3.0
+
+* Fixed issue where some albums covers did not appear when the artist name was different even though the album was the same.
+
 ## 1.2.0+1
 
 * Updated README to better explain the plugin. No functionality changes were made.
