@@ -266,7 +266,8 @@ class Playify {
             for (int j = 0; j < artists[i].albums.length; j++) {
               if (artists[i].albums[j].title == album.title) {
                 //If the album does not have a cover art
-                if (artists[i].albums[j].coverArt == null && album.coverArt != null) {
+                if ((artists[i].albums[j].coverArt == null && album.coverArt != null) ||
+                    (artists[i].name != album.artistName)) {
                   artists[i].albums[j].coverArt = album.coverArt;
                 }
                 artists[i].albums[j].songs.add(song);
