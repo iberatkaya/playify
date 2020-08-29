@@ -151,7 +151,7 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                     print("Param is empty")
                     return
                 }
-                var albums: [String] = []
+                var albums: [[String: String]] = []
                 for metadata in allsongs {
                     let artist = metadata.artist
                     let songTitle = metadata.title
@@ -170,14 +170,16 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                 
                     
                     var albumExists = false
+                    var albumExistsArtistName = ""
 
                     for album in albums {
-                        let myalbumTitle = album
+                        let myalbumTitle = album["albumTitle"]
                         if myalbumTitle == albumTitle {
                             albumExists = true
+                            albumExistsArtistName = album["artistName"] ?? ""
                         }
                     }
-                    if(!albumExists){
+                    if(!albumExists && albumExistsArtistName == artist){
                         let image = metadata.artwork?.image(at: CGSize(width: (args["size"]! as! NSNumber).intValue, height: (args["size"]!  as! NSNumber).intValue))
                         
                         //Resize image since there is an issue with getting the album cover with the desired size
@@ -205,7 +207,7 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                             "image": imgdata ?? []
                         ];
                         mysongs.append(song)
-                        albums.append(albumTitle!)
+                        albums.append(["albumTitle": albumTitle!, "artistName": artist!])
                     }
                     else {
                         let song: [String: Any] = [
