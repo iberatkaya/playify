@@ -179,7 +179,7 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                             albumExistsArtistName = album["artistName"] ?? ""
                         }
                     }
-                    if(!albumExists && albumExistsArtistName == artist){
+                    if(!albumExists || (albumExists && albumExistsArtistName != artist)){
                         let image = metadata.artwork?.image(at: CGSize(width: (args["size"]! as! NSNumber).intValue, height: (args["size"]!  as! NSNumber).intValue))
                         
                         //Resize image since there is an issue with getting the album cover with the desired size

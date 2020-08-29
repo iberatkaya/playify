@@ -1,3 +1,7 @@
+## 1.3.1
+
+* Fixed previous pull request so album covers of albums with multiple artists are fetched. 
+
 ## 1.3.0
 
 * Fixed issue where some albums covers did not appear when the artist name was different even though the album was the same.
