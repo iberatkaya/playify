@@ -1,3 +1,7 @@
+## 1.3.1+1
+
+* Fixed previous issue with album covers in Dart.
+
 ## 1.3.1
 
 * Fixed previous pull request so album covers of albums with multiple artists are fetched. 
