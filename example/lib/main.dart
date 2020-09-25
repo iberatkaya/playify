@@ -129,8 +129,8 @@ class _MyHomePage extends State<MyHomePage> {
                   IconButton(
                     icon: Icon(Icons.play_arrow),
                     onPressed: () async {
-                      var res = await myplayer.play();
-                      var isplaying = await myplayer.isPlaying();
+                      await myplayer.play();
+                      await myplayer.isPlaying();
                       setState(() {
                         playing = true;
                       });
@@ -140,8 +140,8 @@ class _MyHomePage extends State<MyHomePage> {
                   IconButton(
                     icon: Icon(Icons.pause),
                     onPressed: () async {
-                      var res = await myplayer.pause();
-                      var isplaying = await myplayer.isPlaying();
+                      await myplayer.pause();
+                      await myplayer.isPlaying();
                       setState(() {
                         playing = false;
                       });
@@ -180,25 +180,25 @@ class _MyHomePage extends State<MyHomePage> {
                 FlatButton(
                   child: Text("Get Playback Time"),
                   onPressed: () async {
-                    var res = await myplayer.getPlaybackTime();
+                    await myplayer.getPlaybackTime();
                   },
                 ),
                 FlatButton(
                   child: Text("Seek Forward"),
                   onPressed: () async {
-                    var res = await myplayer.seekForward();
+                    await myplayer.seekForward();
                   },
                 ),
                 FlatButton(
                   child: Text("Seek Backward"),
                   onPressed: () async {
-                    var res = await myplayer.seekBackward();
+                    await myplayer.seekBackward();
                   },
                 ),
                 FlatButton(
                   child: Text("End Seek"),
                   onPressed: () async {
-                    var res = await myplayer.endSeeking();
+                    await myplayer.endSeeking();
                   },
                 ),
                 Text("Shuffle:"),

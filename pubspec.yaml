@@ -1,6 +1,6 @@
 name: playify
 description: Playify is a Flutter plugin for playing music and fetching music metadata. Currently supports only iOS.
-version: 1.3.1+1
+version: 1.4.0
 homepage: https://github.com/iberatkaya/playify
 repository: https://github.com/iberatkaya/playify
 
