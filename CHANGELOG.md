@@ -1,5 +1,10 @@
+## 1.4.0+1
+
+- Fixed changelog errors.
+
 ## 1.4.0
 
+- Breaking Changes:
 - Changed setting the queue to only start from the first song in the setQueue function.
 
 ## 1.3.1+1
@@ -38,8 +43,7 @@
 
 ## 1.1.0
 
-### Breaking Changes:
-
+- Breaking Changes:
 - The cover art now returns as binary data (List<int>). This is done in order to give more control over the cover art to the user.
 
 ## 1.0.0+2
