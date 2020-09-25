@@ -52,7 +52,7 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                 result(Bool(true))
             }
             else if(call.method == "isPlaying"){
-                let isplaying = self.isPlaying();
+                let isplaying = self.isPlaying()
                 result(Bool(isplaying))
             }
             else if(call.method == "setShuffleMode") {
@@ -96,8 +96,8 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                     return
                 }
                 let songIDs = args["songIDs"] as! [String]
-                let startIndex = (args["startIndex"] as! NSNumber).intValue
-                self.setQueue(songIDs: songIDs, startIndex: startIndex)
+                let startPlaying = args["startPlaying"] as! Bool
+                self.setQueue(songIDs: songIDs, startPlaying: startPlaying)
                 result(Bool(true))
             }
             else if(call.method == "nowPlaying") {
@@ -266,8 +266,8 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
     }
     
     @available(iOS 10.1, *)
-    public func setQueue(songIDs: [String], startIndex: Int){
-        player.setQueue(songIDs: songIDs, startIndex: startIndex)
+    public func setQueue(songIDs: [String], startPlaying: Bool){
+        player.setQueue(songIDs: songIDs, startPlaying: startPlaying)
     }
 
     @available(iOS 10.1, *)
