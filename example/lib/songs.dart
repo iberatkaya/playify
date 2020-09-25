@@ -26,44 +26,45 @@ class _SongsState extends State<Songs> {
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height * 0.85,
                     child: ListView.builder(
-                        itemCount: widget.songs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(
-                            children: <Widget>[
-                              FlatButton(
-                                onPressed: () async {
-                                  List<String> songs = [];
-                                  for (int i = 0; i < widget.songs.length; i++) {
-                                    songs.add(widget.songs[i].iOSSongID);
-                                  }
-                                  Playify myplayer = Playify();
-                                  var res = await myplayer.setQueue(songIDs: songs, startIndex: index);
-                                },
-                                color: Colors.blueGrey[50],
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                child: Padding(
-                                  padding: EdgeInsets.all(12),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Text(
-                                        widget.songs[index].trackNumber.toString() +
-                                            ". " +
-                                            widget.songs[index].title,
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
+                      itemCount: widget.songs.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Column(
+                          children: <Widget>[
+                            FlatButton(
+                              onPressed: () async {
+                                List<String> songs = [];
+                                for (int i = index; i < widget.songs.length; i++) {
+                                  songs.add(widget.songs[i].iOSSongID);
+                                }
+                                Playify myplayer = Playify();
+                                await myplayer.setQueue(songIDs: songs);
+                              },
+                              color: Colors.blueGrey[50],
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              child: Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      widget.songs[index].trackNumber.toString() +
+                                          ". " +
+                                          widget.songs[index].title,
+                                      style: TextStyle(
+                                        color: Colors.black,
                                       ),
-                                    ],
-                                  ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Divider(
-                                color: Color.fromRGBO(220, 220, 220, 1),
-                              )
-                            ],
-                          );
-                        }),
+                            ),
+                            Divider(
+                              color: Color.fromRGBO(220, 220, 220, 1),
+                            )
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 )
               ],
