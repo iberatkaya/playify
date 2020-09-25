@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:playify/src/class/album/album.dart';
 import 'package:playify/src/class/artist/artist.dart';
@@ -11,11 +11,11 @@ class Playify {
   static const MethodChannel playerChannel = const MethodChannel('com.kaya.playify/playify');
 
   ///Set the queue by giving the songIDs desired to be added to the queue.
-  ///If @param startIndex is -1, the queue will not autoplay.
-  Future<bool> setQueue({List<String> songIDs, int startIndex = -1}) async {
+  ///If @param startPlaying is false, the queue will not autoplay.
+  Future<bool> setQueue({@required List<String> songIDs, bool startPlaying = true}) async {
     if (Platform.isIOS) {
       var result = await playerChannel
-          .invokeMethod('setQueue', <String, dynamic>{"songIDs": songIDs, "startIndex": startIndex});
+          .invokeMethod('setQueue', <String, dynamic>{"songIDs": songIDs, "startPlaying": startPlaying});
       return result;
     } else {
       throw PlatformException(
@@ -39,7 +39,7 @@ class Playify {
   }
 
   ///Play a single song by giving its song ID.
-  Future<bool> playItem({String songID}) async {
+  Future<bool> playItem({@required String songID}) async {
     if (Platform.isIOS) {
       var result = await playerChannel.invokeMethod('playItem', <String, dynamic>{"songID": songID});
       return result;
