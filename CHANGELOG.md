@@ -1,3 +1,7 @@
+## 1.4.0+2
+
+- Updated README.
+
 ## 1.4.0+1
 
 - Fixed changelog errors.
@@ -7,15 +11,15 @@
 - Breaking Changes:
 - Changed setting the queue to only start from the first song in the setQueue function.
 
-## 1.3.1+1
+## 1.3.1+1
 
 - Fixed previous issue with album covers in Dart.
 
-## 1.3.1
+## 1.3.1
 
 - Fixed previous pull request so album covers of albums with multiple artists are fetched.
 
-## 1.3.0
+## 1.3.0
 
 - Fixed issue where some albums covers did not appear when the artist name was different even though the album was the same.
 
