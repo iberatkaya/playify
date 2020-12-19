@@ -152,7 +152,7 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
             }
             else if(call.method == "nowPlaying") {
                 guard let args = call.arguments as? [String: Any] else {
-                    print("Param is empty")
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
                     return
                 }
                 guard let size = args["size"] as? NSNumber else {
@@ -170,37 +170,19 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                 let resizedImage = (image != nil) ? resizeImage(image: image!, targetSize: CGSize(width: size.intValue, height: size.intValue)) : nil
                 
                 //Convert image to Uint8 Array to send to Flutter (Taken from https://stackoverflow.com/a/29734526)
-                guard let imgdata = resizedImage?.jpegData(compressionQuality: 1.0) else {
-                    result(FlutterError(code: "resizeError", message: "Resizing Artwork Error", details: "An error occured while resizing \(metadata.title ?? "")'s artwork!"))
-                    return
-                }
+                let imgdata = resizedImage?.jpegData(compressionQuality: 1.0)
 
-                let duration = metadata.playbackDuration
                 
-                let data: [String: Any] = [
-                    "artist": metadata.artist ?? "",
-                    "songTitle": metadata.title ?? "",
-                    "albumTitle": metadata.albumTitle ?? "",
-                    "albumArtist": metadata.albumArtist ?? "",
-                    "trackNumber": metadata.albumTrackNumber,
-                    "albumTrackCount": metadata.albumTrackCount,
-                    "playCount": metadata.playCount,
-                    "discCount": metadata.discCount,
-                    "discNumber": metadata.discNumber,
-                    "genre": metadata.genre ?? "",
-                    "releaseDate": Int64((metadata.releaseDate?.timeIntervalSince1970 ?? 0) * 1000),
-                    "isExplicitItem": metadata.isExplicitItem,
-                    "songID": metadata.persistentID,
-                    "playbackDuration": Float(duration),
-                    "image": imgdata
-                ]
+                var data = metadata.toDict()
+                data["image"] = imgdata ?? []
+                
                 result(data)
             }
             else if(call.method == "getAllSongs"){
                 let allsongs = player.getAllSongs()
                 var mysongs: [[String: Any]] = []
                 guard let args = call.arguments as? [String: Any] else {
-                    print("Param is empty")
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
                     return
                 }
                 guard let size = args["size"] as? NSNumber else {
@@ -209,33 +191,21 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                 }
                 var albums: [[String: String]] = []
                 for metadata in allsongs {
-                    let artist = metadata.artist
-                    let songTitle = metadata.title
-                    let albumTitle = metadata.albumTitle
-                    let albumArtist = metadata.albumArtist
-                    let albumTrackNumber = metadata.albumTrackNumber
-                    let albumTrackCount = metadata.albumTrackCount
-                    let genre = metadata.genre
-                    let playCount = metadata.playCount
-                    let discCount = metadata.discCount
-                    let discNumber = metadata.discNumber
-                    let isExplicitItem = metadata.isExplicitItem
-                    let songID = metadata.persistentID
-                    let playbackDuration = Float(metadata.playbackDuration)
-                    let releaseDate = Int64((metadata.releaseDate?.timeIntervalSince1970 ?? 0) * 1000)
-                
+                    var songDict = metadata.toDict()
                     
                     var albumExists = false
                     var albumExistsArtistName = ""
 
                     for album in albums {
                         let myalbumTitle = album["albumTitle"]
-                        if myalbumTitle == albumTitle {
+                        if myalbumTitle == metadata.albumTitle {
                             albumExists = true
                             albumExistsArtistName = album["artistName"] ?? ""
                         }
                     }
-                    if(!albumExists || (albumExists && albumExistsArtistName != artist)){
+                    //If the album with a name does not exist or the name is the same but the artist's name
+                    //is different, get the album cover.
+                    if(!albumExists || (albumExists && albumExistsArtistName != metadata.artist)){
                         let image = metadata.artwork?.image(at: CGSize(width: size.intValue, height: size.intValue))
                         
                         //Resize image since there is an issue with getting the album cover with the desired size
@@ -244,48 +214,27 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                         //Convert image to Uint8 Array to send to Flutter (Taken from https://stackoverflow.com/a/29734526)
                         let imgdata = resizedImage?.jpegData(compressionQuality: 0.85)
                         
-                        let song: [String: Any] = [
-                            "artist": artist ?? "",
-                            "songTitle": songTitle ?? "",
-                            "albumTitle": albumTitle ?? "",
-                            "albumArtist": albumArtist ?? "",
-                            "trackNumber": albumTrackNumber,
-                            "albumTrackNumber": albumTrackNumber,
-                            "albumTrackCount": albumTrackCount,
-                            "genre": genre ?? "",
-                            "releaseDate": releaseDate,
-                            "playCount": playCount,
-                            "discCount": discCount,
-                            "discNumber": discNumber,
-                            "isExplicitItem": isExplicitItem,
-                            "songID": songID,
-                            "playbackDuration": playbackDuration,
-                            "image": imgdata ?? []
-                        ];
-                        mysongs.append(song)
-                        albums.append(["albumTitle": albumTitle!, "artistName": artist!])
+                        songDict["image"] = imgdata ?? []
+                        mysongs.append(songDict)
+                        albums.append(["albumTitle": metadata.albumTitle ?? "", "artistName": metadata.artist ?? ""])
                     }
                     else {
-                        let song: [String: Any] = [
-                            "artist": artist ?? "",
-                            "songTitle": songTitle ?? "",
-                            "albumTitle": albumTitle ?? "",
-                            "albumArtist": albumArtist ?? "",
-                            "trackNumber": albumTrackNumber,
-                            "albumTrackNumber": albumTrackNumber,
-                            "albumTrackCount": albumTrackCount,
-                            "playCount": playCount,
-                            "genre": genre ?? "",
-                            "releaseDate": releaseDate,
-                            "discCount": discCount,
-                            "discNumber": discNumber,
-                            "isExplicitItem": isExplicitItem,
-                            "songID": songID
-                        ];
-                        mysongs.append(song)
+                        mysongs.append(songDict)
                     }
                 }
                 result(mysongs)
+            }
+            else if(call.method == "getPlaylists") {
+                let playlists = player.getPlaylists()
+                let res: [[String: Any]] = playlists?.map({ playlist in
+                    [
+                        "title": playlist.value(forProperty: MPMediaPlaylistPropertyName) ?? "",
+                        "songIDs": playlist.items.map({song in
+                            song.persistentID
+                        })
+                    ]
+                }) ?? []
+                result(res)
             }
         }
         else {

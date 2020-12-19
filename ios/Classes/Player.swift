@@ -174,4 +174,13 @@ public class Player {
     func isPlaying() -> Bool {
         return player.playbackState == MPMusicPlaybackState.playing
     }
+    
+    ///Get all the playlists.
+    func getPlaylists() -> [MPMediaItemCollection]? {
+        let query = MPMediaQuery.playlists()
+        if let playlists = query.collections {
+            return playlists
+        }
+        return nil
+    }
 }
