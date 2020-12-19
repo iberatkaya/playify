@@ -3,8 +3,9 @@ import 'package:playify/src/class/album/album.dart';
 import 'package:playify/src/class/artist/artist.dart';
 import 'package:playify/src/class/song/song.dart';
 
-class SongInfo {
-  SongInfo({@required this.album, @required this.song, @required this.artist});
+class SongInformation {
+  SongInformation(
+      {@required this.album, @required this.song, @required this.artist});
   Album album;
   Song song;
   Artist artist;
