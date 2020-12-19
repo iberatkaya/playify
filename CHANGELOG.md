@@ -1,3 +1,13 @@
+## 1.5.0
+
+- Added prepend, append, skipToBeginning, and getPlaylists.
+
+Breaking Changes:
+
+- Renamed `SongInfo` to `SongInformation`.
+- Functions now throw `PlatformExceptions`.
+- Several functions do not return boolean values anymore.
+
 ## 1.4.0+2
 
 - Updated README.

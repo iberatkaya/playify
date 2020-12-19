@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:playify/playify.dart';
 
 class Songs extends StatefulWidget {
-  List<Song> songs;
-  Songs({List<Song> songs}) {
-    this.songs = songs;
-  }
+  final List<Song> songs;
+  Songs(this.songs);
 
   @override
   _SongsState createState() => _SongsState();
@@ -33,20 +31,23 @@ class _SongsState extends State<Songs> {
                             FlatButton(
                               onPressed: () async {
                                 List<String> songs = [];
-                                for (int i = index; i < widget.songs.length; i++) {
+                                for (int i = 0; i < widget.songs.length; i++) {
                                   songs.add(widget.songs[i].iOSSongID);
                                 }
                                 Playify myplayer = Playify();
-                                await myplayer.setQueue(songIDs: songs);
+                                await myplayer.setQueue(
+                                    songIDs: songs, startID: songs[index]);
                               },
                               color: Colors.blueGrey[50],
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
                               child: Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Column(
                                   children: <Widget>[
                                     Text(
-                                      widget.songs[index].trackNumber.toString() +
+                                      widget.songs[index].trackNumber
+                                              .toString() +
                                           ". " +
                                           widget.songs[index].title,
                                       style: TextStyle(

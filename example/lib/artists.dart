@@ -3,10 +3,8 @@ import 'package:playify_example/albums.dart';
 import 'package:playify/playify.dart';
 
 class Artists extends StatefulWidget {
-  List<Artist> artists;
-  Artists({List<Artist> artists}) {
-    this.artists = artists;
-  }
+  final List<Artist> artists;
+  Artists(this.artists);
 
   @override
   _ArtistsState createState() => _ArtistsState();
@@ -37,8 +35,7 @@ class _ArtistsState extends State<Artists> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => Albums(
-                                              albums: widget
-                                                  .artists[index].albums)));
+                                              widget.artists[index].albums)));
                                 },
                                 color: Colors.blueGrey[50],
                                 shape: RoundedRectangleBorder(

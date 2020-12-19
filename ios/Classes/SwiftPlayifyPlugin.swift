@@ -9,227 +9,233 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
     
-    @available(iOS 10.1, *)
-    private lazy var player = Player()
+    @available(iOS 10.3, *)
+    private lazy var player = PlayifyPlayer()
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        if #available(iOS 10.1, *) {
+        if #available(iOS 10.3, *) {
             if(call.method == "play"){
-                self.play()
-                result(Bool(true))
+                player.play()
+                result(nil)
             }
             else if(call.method == "playItem"){
                 guard let args = call.arguments as? [String: Any] else {
-                    print("Param is empty")
-                    result(Bool(false))
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
                     return
                 }
-                self.playItem(songID: args["songID"] as! String)
-                result(Bool(true))
+                guard let songID = args["songID"] as? String else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter songID was not provided!"))
+                    return
+                }
+                player.playItem(songID: songID)
+                result(nil)
             }
             else if(call.method == "pause") {
-                self.pause()
-                result(Bool(true))
+                player.pause()
+                result(nil)
             }
             else if(call.method == "next") {
-                self.next()
-                result(Bool(true))
+                player.next()
+                result(nil)
             }
             else if(call.method == "previous") {
-                self.previous()
-                result(Bool(true))
+                player.previous()
+                result(nil)
             }
             else if(call.method == "seekForward") {
-                self.seekForward()
-                result(Bool(true))
+                player.seekForward()
+                result(nil)
             }
             else if(call.method == "seekBackward") {
-                self.seekBackward()
-                result(Bool(true))
+                player.seekBackward()
+                result(nil)
             }
             else if(call.method == "endSeeking") {
-                self.endSeeking()
-                result(Bool(true))
+                player.endSeeking()
+                result(nil)
             }
             else if(call.method == "isPlaying"){
-                let isplaying = self.isPlaying()
+                let isplaying = player.isPlaying()
                 result(Bool(isplaying))
             }
             else if(call.method == "setShuffleMode") {
                 guard let args = call.arguments as? [String: Any] else {
-                    print("Param is empty")
-                    result(Bool(false))
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
                     return
                 }
-                let mode = args["mode"] as! String
-                self.setShuffleMode(mode: mode)
-                result(Bool(true))
+                guard let mode = args["mode"] as? String else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter mode was not provided!"))
+                    return
+                }
+                player.setShuffleMode(mode: mode)
+                result(nil)
             }
             else if(call.method == "setRepeatMode") {
                 guard let args = call.arguments as? [String: Any] else {
-                    print("Param is empty")
-                    result(Bool(false))
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
                     return
                 }
-                let mode = args["mode"] as! String
-                self.setRepeatMode(mode: mode)
-                result(Bool(true))
+                guard let mode = args["mode"] as? String else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter mode was not provided!"))
+                    return
+                }
+                player.setRepeatMode(mode: mode)
+                result(nil)
             }
             else if(call.method == "getPlaybackTime") {
-                let time = self.getPlaybackTime()
+                let time = player.getPlaybackTime()
                 result(Float(time))
+            }
+            else if(call.method == "skipToBeginning") {
+                player.skipToBeginning()
+                result(nil)
+            }
+            else if(call.method == "prepend") {
+                guard let args = call.arguments as? [String: Any] else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
+                    return
+                }
+                guard let songIDs = args["songIDs"] as? [String] else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter songIDs was not provided!"))
+                    return
+                }
+                player.prepend(songIDs: songIDs)
+                result(nil)
+            }
+            else if(call.method == "append") {
+                guard let args = call.arguments as? [String: Any] else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
+                    return
+                }
+                guard let songIDs = args["songIDs"] as? [String] else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter songIDs was not provided!"))
+                    return
+                }
+                player.append(songIDs: songIDs)
+                result(nil)
             }
             else if(call.method == "setPlaybackTime") {
                 guard let args = call.arguments as? [String: Any] else {
-                    print("Param is empty")
-                    result(Bool(false))
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
                     return
                 }
-                let time = (args["time"] as! NSNumber).floatValue
-                self.setPlaybackTime(time: time)
-                result(Bool(true))
+                guard let time = args["time"] as? NSNumber else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter time was not provided!"))
+                    return
+                }
+                player.setPlaybackTime(time: time.floatValue)
+                result(nil)
             }
             else if(call.method == "setQueue"){
                 guard let args = call.arguments as? [String: Any] else {
-                    print("Param is empty")
-                    result(Bool(false))
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
                     return
                 }
-                let songIDs = args["songIDs"] as! [String]
-                let startPlaying = args["startPlaying"] as! Bool
-                self.setQueue(songIDs: songIDs, startPlaying: startPlaying)
-                result(Bool(true))
+                guard let songIDs = args["songIDs"] as? [String] else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter songIDs was not provided!"))
+                    return
+                }
+                guard let startPlaying = args["startPlaying"] as? Bool else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter startPlaying was not provided!"))
+                    return
+                }
+                let startID = args["startID"] as? String
+                do {
+                    try player.setQueue(songIDs: songIDs, startPlaying: startPlaying, startID: startID)
+                    result(nil)
+                } catch PlayifyError.runtimeError(let errorMessage) {
+                    result(FlutterError(code: "setQueueError", message: "Set Queue Error", details: errorMessage))
+                } catch {
+                    result(FlutterError(code: "setQueueError", message: "Set Queue Error", details: error.localizedDescription))
+                }
+                
             }
             else if(call.method == "nowPlaying") {
                 guard let args = call.arguments as? [String: Any] else {
-                    print("Param is empty")
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
                     return
                 }
-                let metadata = self.nowPlaying()
-                if(metadata == nil){
-                    result(nil)
+                guard let size = args["size"] as? NSNumber else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter size was not provided!"))
+                    return
+                }
+                guard let metadata = player.nowPlaying() else {
+                    result(FlutterError(code: "songError", message: "Current Song Error", details: "An error occured while getting the current song playing!"))
                     return
                 }
                 
-                let image = metadata?.artwork?.image(at: CGSize(width: (args["size"]! as! NSNumber).intValue, height: (args["size"]! as! NSNumber).intValue))
+                let image = metadata.artwork?.image(at: CGSize(width: size.intValue, height: size.intValue))
                 
                 //Resize image since there is an issue with getting the album cover with the desired size
-                let resizedImage = (image != nil) ? resizeImage(image: image!, targetSize: CGSize(width: (args["size"]! as! NSNumber).intValue, height: (args["size"]! as! NSNumber).intValue)) : nil
+                let resizedImage = (image != nil) ? resizeImage(image: image!, targetSize: CGSize(width: size.intValue, height: size.intValue)) : nil
                 
                 //Convert image to Uint8 Array to send to Flutter (Taken from https://stackoverflow.com/a/29734526)
-                guard let imgdata = resizedImage?.jpegData(compressionQuality: 1.0) else {
-                    return
-                }
+                let imgdata = resizedImage?.jpegData(compressionQuality: 1.0)
 
-                guard let duration = metadata?.playbackDuration else {
-                    return
-                }
                 
-                let data: [String: Any] = [
-                    "artist": metadata?.artist ?? "",
-                    "songTitle": metadata?.title ?? "",
-                    "albumTitle": metadata?.albumTitle ?? "",
-                    "albumArtist": metadata?.albumArtist ?? "",
-                    "trackNumber": metadata?.albumTrackNumber ?? -1,
-                    "albumTrackCount": metadata?.albumTrackCount ?? -1,
-                    "playCount": metadata?.playCount ?? -1,
-                    "discCount": metadata?.discCount ?? -1,
-                    "discNumber": metadata?.discNumber ?? -1,
-                    "genre": metadata?.genre ?? "",
-                    "releaseDate": Int64((metadata?.releaseDate?.timeIntervalSince1970 ?? 0) * 1000),
-                    "isExplicitItem": metadata?.isExplicitItem ?? "",
-                    "songID": metadata?.persistentID ?? "",
-                    "playbackDuration": Float(duration),
-                    "image": imgdata
-                ]
+                var data = metadata.toDict()
+                data["image"] = imgdata ?? []
+                
                 result(data)
             }
             else if(call.method == "getAllSongs"){
-                let allsongs = self.getAllSongs()
+                let allsongs = player.getAllSongs()
                 var mysongs: [[String: Any]] = []
                 guard let args = call.arguments as? [String: Any] else {
-                    print("Param is empty")
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
+                    return
+                }
+                guard let size = args["size"] as? NSNumber else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter size was not provided!"))
                     return
                 }
                 var albums: [[String: String]] = []
                 for metadata in allsongs {
-                    let artist = metadata.artist
-                    let songTitle = metadata.title
-                    let albumTitle = metadata.albumTitle
-                    let albumArtist = metadata.albumArtist
-                    let albumTrackNumber = metadata.albumTrackNumber
-                    let albumTrackCount = metadata.albumTrackCount
-                    let genre = metadata.genre
-                    let playCount = metadata.playCount
-                    let discCount = metadata.discCount
-                    let discNumber = metadata.discNumber
-                    let isExplicitItem = metadata.isExplicitItem
-                    let songID = metadata.persistentID
-                    let playbackDuration = Float(metadata.playbackDuration)
-                    let releaseDate = Int64((metadata.releaseDate?.timeIntervalSince1970 ?? 0) * 1000)
-                
+                    var songDict = metadata.toDict()
                     
                     var albumExists = false
                     var albumExistsArtistName = ""
 
                     for album in albums {
                         let myalbumTitle = album["albumTitle"]
-                        if myalbumTitle == albumTitle {
+                        if myalbumTitle == metadata.albumTitle {
                             albumExists = true
                             albumExistsArtistName = album["artistName"] ?? ""
                         }
                     }
-                    if(!albumExists || (albumExists && albumExistsArtistName != artist)){
-                        let image = metadata.artwork?.image(at: CGSize(width: (args["size"]! as! NSNumber).intValue, height: (args["size"]!  as! NSNumber).intValue))
+                    //If the album with a name does not exist or the name is the same but the artist's name
+                    //is different, get the album cover.
+                    if(!albumExists || (albumExists && albumExistsArtistName != metadata.artist)){
+                        let image = metadata.artwork?.image(at: CGSize(width: size.intValue, height: size.intValue))
                         
                         //Resize image since there is an issue with getting the album cover with the desired size
-                        let resizedImage = (image != nil) ? resizeImage(image: image!, targetSize: CGSize(width: (args["size"]! as! NSNumber).intValue, height: (args["size"]! as! NSNumber).intValue)) : nil
+                        let resizedImage = (image != nil) ? resizeImage(image: image!, targetSize: CGSize(width: size.intValue, height: size.intValue)) : nil
 
                         //Convert image to Uint8 Array to send to Flutter (Taken from https://stackoverflow.com/a/29734526)
                         let imgdata = resizedImage?.jpegData(compressionQuality: 0.85)
                         
-                        let song: [String: Any] = [
-                            "artist": artist ?? "",
-                            "songTitle": songTitle ?? "",
-                            "albumTitle": albumTitle ?? "",
-                            "albumArtist": albumArtist ?? "",
-                            "trackNumber": albumTrackNumber,
-                            "albumTrackNumber": albumTrackNumber,
-                            "albumTrackCount": albumTrackCount,
-                            "genre": genre ?? "",
-                            "releaseDate": releaseDate,
-                            "playCount": playCount,
-                            "discCount": discCount,
-                            "discNumber": discNumber,
-                            "isExplicitItem": isExplicitItem,
-                            "songID": songID,
-                            "playbackDuration": playbackDuration,
-                            "image": imgdata ?? []
-                        ];
-                        mysongs.append(song)
-                        albums.append(["albumTitle": albumTitle!, "artistName": artist!])
+                        songDict["image"] = imgdata ?? []
+                        mysongs.append(songDict)
+                        albums.append(["albumTitle": metadata.albumTitle ?? "", "artistName": metadata.artist ?? ""])
                     }
                     else {
-                        let song: [String: Any] = [
-                            "artist": artist ?? "",
-                            "songTitle": songTitle ?? "",
-                            "albumTitle": albumTitle ?? "",
-                            "albumArtist": albumArtist ?? "",
-                            "trackNumber": albumTrackNumber,
-                            "albumTrackNumber": albumTrackNumber,
-                            "albumTrackCount": albumTrackCount,
-                            "playCount": playCount,
-                            "genre": genre ?? "",
-                            "releaseDate": releaseDate,
-                            "discCount": discCount,
-                            "discNumber": discNumber,
-                            "isExplicitItem": isExplicitItem,
-                            "songID": songID
-                        ];
-                        mysongs.append(song)
+                        mysongs.append(songDict)
                     }
                 }
                 result(mysongs)
+            }
+            else if(call.method == "getPlaylists") {
+                let playlists = player.getPlaylists()
+                let res: [[String: Any]] = playlists?.map({ playlist in
+                    [
+                        "title": playlist.value(forProperty: MPMediaPlaylistPropertyName) ?? "",
+                        "playlistID": playlist.persistentID,
+                        "songIDs": playlist.items.map({song in
+                            song.persistentID
+                        })
+                    ]
+                }) ?? []
+                result(res)
             }
         }
         else {
@@ -263,85 +269,5 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
         UIGraphicsEndImageContext()
 
         return newImage!
-    }
-    
-    @available(iOS 10.1, *)
-    public func setQueue(songIDs: [String], startPlaying: Bool){
-        player.setQueue(songIDs: songIDs, startPlaying: startPlaying)
-    }
-
-    @available(iOS 10.1, *)
-    public func play(){
-        player.play()
-    }
-    
-    @available(iOS 10.1, *)
-    public func playItem(songID: String){
-        player.playItem(songID: songID)
-    }
-    
-    @available(iOS 10.1, *)
-    public func seekForward(){
-        player.seekForward()
-    }
-    
-    @available(iOS 10.1, *)
-    public func seekBackward(){
-        player.seekBackward()
-    }
-    
-    @available(iOS 10.1, *)
-    public func endSeeking(){
-        player.endSeeking()
-    }
-    
-    @available(iOS 10.1, *)
-    public func isPlaying() -> Bool{
-        return player.isPlaying()
-    }
-    
-    @available(iOS 10.1, *)
-    public func getPlaybackTime() -> Float{
-        return player.getPlaybackTime()
-    }
-    
-    @available(iOS 10.1, *)
-    public func setPlaybackTime(time: Float){
-        player.setPlaybackTime(time: time)
-    }
-    
-    @available(iOS 10.1, *)
-    public func setShuffleMode(mode: String){
-        player.setShuffleMode(mode: mode)
-    }
-
-    @available(iOS 10.1, *)
-    public func setRepeatMode(mode: String){
-        player.setRepeatMode(mode: mode)
-    }
-
-    @available(iOS 10.1, *)
-    public func pause(){
-        player.pause()
-    }
-    
-    @available(iOS 10.1, *)
-    public func next(){
-        player.next()
-    }
-    
-    @available(iOS 10.1, *)
-    public func previous(){
-        player.previous()
-    }
-
-    @available(iOS 10.1, *)
-    public func nowPlaying() -> MPMediaItem? {
-        return player.nowPlaying()
-    }
-
-    @available(iOS 10.1, *)
-    public func getAllSongs() -> [MPMediaItem] {
-        return player.getAllSongs()
     }
 }

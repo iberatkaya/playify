@@ -28,15 +28,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePage extends State<MyHomePage> {
   bool fetchingAllSong = false;
   bool playing = false;
-  SongInfo data;
+  SongInformation data;
   Shuffle shufflemode = Shuffle.off;
   Repeat repeatmode = Repeat.none;
   var myplayer = Playify();
   List<Artist> artists = [];
   double time = 0.0;
 
-  updateInfo() async {
-    SongInfo res = await myplayer.nowPlaying();
+  Future<void> getNowPlaying() async {
+    SongInformation res = await myplayer.nowPlaying();
     setState(() {
       data = res;
     });
@@ -45,7 +45,7 @@ class _MyHomePage extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    updateInfo();
+    getNowPlaying();
   }
 
   @override
@@ -93,7 +93,7 @@ class _MyHomePage extends State<MyHomePage> {
                                 icon: Icon(Icons.arrow_back_ios),
                                 onPressed: () async {
                                   await myplayer.previous();
-                                  await updateInfo();
+                                  await getNowPlaying();
                                 },
                               ),
                             ),
@@ -116,7 +116,7 @@ class _MyHomePage extends State<MyHomePage> {
                                 icon: Icon(Icons.arrow_forward_ios),
                                 onPressed: () async {
                                   await myplayer.next();
-                                  await updateInfo();
+                                  await getNowPlaying();
                                 },
                               ),
                             ),
@@ -150,7 +150,7 @@ class _MyHomePage extends State<MyHomePage> {
                 FlatButton(
                   child: Text("Get Now Playing Info"),
                   onPressed: () async {
-                    await updateInfo();
+                    await getNowPlaying();
                   },
                 ),
                 FlatButton(
@@ -159,7 +159,9 @@ class _MyHomePage extends State<MyHomePage> {
                     setState(() {
                       fetchingAllSong = true;
                     });
+
                     var res = await myplayer.getAllSongs(sort: true);
+                    print(res);
                     setState(() {
                       artists = res;
                       fetchingAllSong = false;
@@ -173,7 +175,7 @@ class _MyHomePage extends State<MyHomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => Artists(
-                                  artists: artists,
+                                  artists,
                                 )));
                   },
                 ),
@@ -199,6 +201,18 @@ class _MyHomePage extends State<MyHomePage> {
                   child: Text("End Seek"),
                   onPressed: () async {
                     await myplayer.endSeeking();
+                  },
+                ),
+                FlatButton(
+                  child: Text("Skip To Beginning"),
+                  onPressed: () async {
+                    await myplayer.skipToBeginning();
+                  },
+                ),
+                FlatButton(
+                  child: Text("Get Playlists"),
+                  onPressed: () async {
+                    await myplayer.getPlaylists();
                   },
                 ),
                 Text("Shuffle:"),
