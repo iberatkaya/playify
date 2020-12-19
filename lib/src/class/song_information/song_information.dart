@@ -6,8 +6,14 @@ import 'package:playify/src/class/song/song.dart';
 class SongInformation {
   SongInformation(
       {@required this.album, @required this.song, @required this.artist});
+
+  ///The album of the song.
   Album album;
+
+  ///The song.
   Song song;
+
+  ///The artist of the song.
   Artist artist;
 
   @override

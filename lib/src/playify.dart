@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:playify/src/class/album/album.dart';
 import 'package:playify/src/class/artist/artist.dart';
+import 'package:playify/src/class/playlist/playlist.dart';
 import 'package:playify/src/class/song/song.dart';
 import 'package:playify/src/class/song_information/song_information.dart';
 
@@ -69,13 +70,13 @@ class Playify {
   }
 
   ///Seek forward in the song currently playing in the queue.
-  ///Must call [endSeeking()] or will not stop seeking.
+  ///Must call `endSeeking()` or will not stop seeking.
   Future<void> seekForward() async {
     await playerChannel.invokeMethod('seekForward');
   }
 
   ///Seek backward in the song currently playing in the queue.
-  ///Must call [endSeeking()] or will not stop seeking.
+  ///Must call `endSeeking()` or will not stop seeking.
   Future<void> seekBackward() async {
     await playerChannel.invokeMethod('seekBackward');
   }
@@ -168,7 +169,7 @@ class Playify {
   ///[sort] can be set to true in order to sort the artists alphabetically.
   Future<List<Artist>> getAllSongs(
       {bool sort = false, int coverArtSize = 500}) async {
-    List<Artist> artists = [];
+    final List<Artist> artists = [];
     var result = await playerChannel
         .invokeMethod('getAllSongs', <String, dynamic>{"size": coverArtSize});
     for (int a = 0; a < result.length; a++) {
@@ -181,7 +182,7 @@ class Playify {
           title: resobj["albumTitle"],
           albumTrackCount: resobj["albumTrackCount"],
           coverArt: image,
-          diskCount: resobj["diskCount"],
+          diskCount: resobj["discCount"],
           artistName: artist.name);
       Song song = Song(
           albumTitle: album.title,
@@ -239,21 +240,21 @@ class Playify {
   ///
   ///Specify a [coverArtSize] to fetch the current song with the [coverArtSize].
   Future<SongInformation> nowPlaying({int coverArtSize = 800}) async {
-    var result = await playerChannel
+    final result = await playerChannel
         .invokeMethod('nowPlaying', <String, dynamic>{"size": coverArtSize});
     if (result == null) {
       return null;
     }
-    var resobj = new Map<String, dynamic>.from(result);
-    Artist artist = Artist(albums: [], name: resobj["artist"]);
-    Album album = Album(
+    final Map<String, dynamic> resobj = Map<String, dynamic>.from(result);
+    final Artist artist = Artist(albums: [], name: resobj["artist"]);
+    final Album album = Album(
         songs: [],
         title: resobj["albumTitle"],
         albumTrackCount: resobj["albumTrackCount"],
         coverArt: resobj["image"],
-        diskCount: resobj["diskCount"],
+        diskCount: resobj["discCount"],
         artistName: artist.name);
-    Song song = Song(
+    final Song song = Song(
         albumTitle: album.title,
         duration: resobj["playbackDuration"],
         title: resobj["songTitle"],
@@ -271,5 +272,19 @@ class Playify {
     SongInformation info =
         SongInformation(album: album, artist: artist, song: song);
     return info;
+  }
+
+  ///Get all the playlists.
+  Future<List<Playlist>> getPlaylists() async {
+    final List<dynamic> result =
+        await playerChannel.invokeMethod<List<dynamic>>('getPlaylists');
+    final List<Map<String, dynamic>> playlistMaps =
+        result.map((i) => Map<String, dynamic>.from(i)).toList();
+    final List<Playlist> playlists = playlistMaps
+        .map<Playlist>((i) => Playlist(
+            songIDs: List<String>.from(i["songIDs"].map((j) => j.toString())),
+            title: i["title"]))
+        .toList();
+    return playlists;
   }
 }
