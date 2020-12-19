@@ -2,7 +2,7 @@ import Foundation
 import MediaPlayer
 
 @available(iOS 10.3, *)
-public class Player {
+public class PlayifyPlayer {
     ///The music player controller instance.
     var player: MPMusicPlayerController = MPMusicPlayerController.systemMusicPlayer
     
@@ -37,7 +37,6 @@ public class Player {
             else {
                 player.prepareToPlay()
             }
-            
         }
     }
     

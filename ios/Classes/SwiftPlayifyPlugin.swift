@@ -10,7 +10,7 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
     }
     
     @available(iOS 10.3, *)
-    private lazy var player = Player()
+    private lazy var player = PlayifyPlayer()
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if #available(iOS 10.3, *) {
