@@ -280,8 +280,10 @@ class Playify {
         result.map((i) => Map<String, dynamic>.from(i)).toList();
     final playlists = playlistMaps
         .map<Playlist>((i) => Playlist(
-            songIDs: List<String>.from(i['songIDs'].map((j) => j.toString())),
-            title: i['title']))
+              songIDs: List<String>.from(i['songIDs'].map((j) => j.toString())),
+              title: i['title'],
+              playlistID: i['playlistID'],
+            ))
         .toList();
     return playlists;
   }
