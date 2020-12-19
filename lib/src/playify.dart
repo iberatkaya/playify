@@ -59,8 +59,9 @@ class Playify {
   }
 
   ///Check if there is a song currently playing.
-  Future<void> isPlaying() async {
-    await playerChannel.invokeMethod('isPlaying');
+  Future<bool> isPlaying() async {
+    final isPlaying = await playerChannel.invokeMethod('isPlaying');
+    return isPlaying;
   }
 
   ///Skip to the previous song in the queue.
