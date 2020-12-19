@@ -97,7 +97,7 @@ class Playify {
         .invokeMethod('setPlaybackTime', <String, dynamic>{"time": time});
   }
 
-  ///Skip to the beginning of the queue.
+  ///Skip to the beginning of the current song.
   Future<void> skipToBeginning() async {
     await playerChannel.invokeMethod('skipToBeginning');
   }
