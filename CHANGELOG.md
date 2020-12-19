@@ -1,3 +1,7 @@
+## 1.5.0+1
+
+- Updated README.
+
 ## 1.5.0
 
 - Added prepend, append, skipToBeginning, and getPlaylists.

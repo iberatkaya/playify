@@ -4,11 +4,11 @@
   <img src="https://img.shields.io/pub/v/playify.svg?style=flat-square&label=Pub" alt="Pub Version">
 </a>
 
-<b>Playify</b> is a Flutter plugin for play/pause/seek songs, fetching music metadata, and browsing music library. Playify was built using iOS's Media Player Framework to fetch and play music from iOS's Music Library. Currently supports only iOS.
+<b>Playify</b> is a Flutter plugin for play/pause/seek songs, fetching music metadata, and browsing music library. Playify was built using iOS's Media Player Framework to fetch and play music from iOS's Music Library. Currently supports only iOS. Checkout the [documentation](https://pub.dev/documentation/playify/).
 
 Requirements:
 
-- iOS: >= iOS 10.3 (Due to [append](https://developer.apple.com/documentation/mediaplayer/mpmusicplayercontroller/2817539-append) and [prepend](https://developer.apple.com/documentation/mediaplayer/mpmusicplayercontroller/2817538-prepend))
+- iOS: >= iOS 10.3 (Due to [append](https://developer.apple.com/documentation/mediaplayer/mpmusicplayercontroller/2817539-append) and [prepend](https://developer.apple.com/documentation/mediaplayer/mpmusicplayercontroller/2817538-prepend)).
 
 ## Usage
 
@@ -30,7 +30,7 @@ Future<List<Artist>> getAllSongs() async {
 }
 
 //Fetch song information about the currently playing song in the queue.
-Future<SongInfo> nowPlaying() async {
+Future<SongInformation> nowPlaying() async {
 	var songinfo = await myplayer.nowPlaying();
 	return songinfo;
 }
