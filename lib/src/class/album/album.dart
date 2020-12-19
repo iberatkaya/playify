@@ -9,13 +9,13 @@ class Album {
       @required this.albumTrackCount,
       @required this.artistName,
       @required this.coverArt,
-      @required this.diskCount})
+      @required this.discCount})
       : assert(title != null),
         assert(songs != null),
         assert(albumTrackCount != null),
         assert(artistName != null),
         assert(coverArt != null),
-        assert(diskCount != null);
+        assert(discCount != null);
 
   ///The title of the album.
   String title;
@@ -36,8 +36,8 @@ class Album {
   ///convert to an image and display in the UI.
   Uint8List coverArt;
 
-  ///The total disk number of the album.
-  int diskCount;
+  ///The total disc number of the album.
+  int discCount;
 
   @override
   String toString() {

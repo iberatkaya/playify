@@ -181,7 +181,7 @@ class Playify {
           title: resobj['albumTitle'],
           albumTrackCount: resobj['albumTrackCount'],
           coverArt: image,
-          diskCount: resobj['discCount'],
+          discCount: resobj['discCount'],
           artistName: artist.name);
       final song = Song(
           albumTitle: album.title,
@@ -251,7 +251,7 @@ class Playify {
         title: resobj['albumTitle'],
         albumTrackCount: resobj['albumTrackCount'],
         coverArt: resobj['image'],
-        diskCount: resobj['discCount'],
+        discCount: resobj['discCount'],
         artistName: artist.name);
     final song = Song(
         albumTitle: album.title,
