@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:playify/src/class/song/song.dart';
+import 'dart:typed_data';
 
 class Album {
   Album(
@@ -14,7 +15,7 @@ class Album {
   List<Song> songs;
   String artistName;
   int albumTrackCount;
-  List<int> coverArt;
+  Uint8List coverArt;
   int diskCount;
 
   @override
