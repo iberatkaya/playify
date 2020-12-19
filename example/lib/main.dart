@@ -209,6 +209,12 @@ class _MyHomePage extends State<MyHomePage> {
                     await myplayer.skipToBeginning();
                   },
                 ),
+                FlatButton(
+                  child: Text("Get Playlists"),
+                  onPressed: () async {
+                    await myplayer.getPlaylists();
+                  },
+                ),
                 Text("Shuffle:"),
                 DropdownButton<Shuffle>(
                   hint: Text("Shuffle"),
