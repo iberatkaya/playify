@@ -18,11 +18,11 @@ class SongInformation {
 
   @override
   String toString() {
-    return "Artist: " +
-        this.artist.toString() +
-        "Album: " +
-        this.album.toString() +
-        "Song: " +
-        this.song.toString();
+    return 'Artist: ' +
+        artist.toString() +
+        'Album: ' +
+        album.toString() +
+        'Song: ' +
+        song.toString();
   }
 }

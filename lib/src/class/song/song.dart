@@ -49,14 +49,14 @@ class Song {
 
   @override
   String toString() {
-    return "Album Title: " +
-        this.albumTitle +
-        ", Artist Name: " +
-        this.artistName +
-        ", title: " +
-        this.title +
-        ", Duration: " +
-        this.duration.toString() +
-        "\n";
+    return 'Album Title: ' +
+        albumTitle +
+        ', Artist Name: ' +
+        artistName +
+        ', title: ' +
+        title +
+        ', Duration: ' +
+        duration.toString() +
+        '\n';
   }
 }

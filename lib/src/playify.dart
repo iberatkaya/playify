@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +14,7 @@ import 'class/shuffle/shuffle.dart';
 
 class Playify {
   static const MethodChannel playerChannel =
-      const MethodChannel('com.kaya.playify/playify');
+      MethodChannel('com.kaya.playify/playify');
 
   ///Set the queue by giving the [songIDs] desired to be added to the queue.
   ///If [startPlaying] is false, the queue will not autoplay.
@@ -28,13 +27,13 @@ class Playify {
     assert(songIDs != null);
     if (startID != null && !songIDs.contains(startID)) {
       throw PlatformException(
-          code: "Incorrect Arguments!",
-          message: "songIDs must contain startID if provided.");
+          code: 'Incorrect Arguments!',
+          message: 'songIDs must contain startID if provided.');
     }
     await playerChannel.invokeMethod('setQueue', <String, dynamic>{
-      "songIDs": songIDs,
-      "startPlaying": startPlaying,
-      "startID": startID
+      'songIDs': songIDs,
+      'startPlaying': startPlaying,
+      'startID': startID
     });
   }
 
@@ -46,7 +45,7 @@ class Playify {
   ///Play a single song by giving its [songID].
   Future<void> playItem({@required String songID}) async {
     await playerChannel
-        .invokeMethod('playItem', <String, dynamic>{"songID": songID});
+        .invokeMethod('playItem', <String, dynamic>{'songID': songID});
   }
 
   ///Pause playing.
@@ -88,14 +87,14 @@ class Playify {
 
   ///Get the playback time of the current song in the queue.
   Future<double> getPlaybackTime() async {
-    var result = await playerChannel.invokeMethod('getPlaybackTime');
+    final result = await playerChannel.invokeMethod('getPlaybackTime');
     return result;
   }
 
   ///Set the playback [time] of the current song in the queue.
   Future<void> setPlaybackTime(double time) async {
     await playerChannel
-        .invokeMethod('setPlaybackTime', <String, dynamic>{"time": time});
+        .invokeMethod('setPlaybackTime', <String, dynamic>{'time': time});
   }
 
   ///Skip to the beginning of the current song.
@@ -106,55 +105,55 @@ class Playify {
   ///Prepend [songIDs] to the queue.
   Future<void> prepend(List<String> songIDs) async {
     await playerChannel.invokeMethod('prepend', <String, dynamic>{
-      "songIDs": songIDs,
+      'songIDs': songIDs,
     });
   }
 
   ///Append [songIDs] to the queue.
   Future<void> append(List<String> songIDs) async {
     await playerChannel.invokeMethod('append', <String, dynamic>{
-      "songIDs": songIDs,
+      'songIDs': songIDs,
     });
   }
 
   ///Set the shuffle [mode].
   Future<void> setShuffleMode(Shuffle mode) async {
-    String mymode = "";
+    var mymode = '';
     switch (mode.index) {
       case 0:
-        mymode = "off";
+        mymode = 'off';
         break;
       case 1:
-        mymode = "songs";
+        mymode = 'songs';
         break;
       case 2:
-        mymode = "albums";
+        mymode = 'albums';
         break;
       default:
-        throw "Incorrent mode!";
+        throw 'Incorrent mode!';
     }
     await playerChannel
-        .invokeMethod('setShuffleMode', <String, dynamic>{"mode": mymode});
+        .invokeMethod('setShuffleMode', <String, dynamic>{'mode': mymode});
   }
 
   ///Set the repeat [mode].
   Future<void> setRepeatMode(Repeat mode) async {
-    String mymode = "";
+    var mymode = '';
     switch (mode.index) {
       case 0:
-        mymode = "none";
+        mymode = 'none';
         break;
       case 1:
-        mymode = "one";
+        mymode = 'one';
         break;
       case 2:
-        mymode = "all";
+        mymode = 'all';
         break;
       default:
-        throw "Incorrent mode!";
+        throw 'Incorrent mode!';
     }
     await playerChannel
-        .invokeMethod('setRepeatMode', <String, dynamic>{"mode": mymode});
+        .invokeMethod('setRepeatMode', <String, dynamic>{'mode': mymode});
   }
 
   ///Fetch all songs in the Apple Music library.
@@ -169,43 +168,42 @@ class Playify {
   ///[sort] can be set to true in order to sort the artists alphabetically.
   Future<List<Artist>> getAllSongs(
       {bool sort = false, int coverArtSize = 500}) async {
-    final List<Artist> artists = [];
-    var result = await playerChannel
-        .invokeMethod('getAllSongs', <String, dynamic>{"size": coverArtSize});
-    for (int a = 0; a < result.length; a++) {
-      var resobj = new Map<String, dynamic>.from(result[a]);
-      Artist artist = Artist(albums: [], name: resobj["artist"]);
-      Uint8List image =
-          Uint8List.fromList(List<int>.from(resobj["image"] ?? []));
-      Album album = Album(
+    final artists = <Artist>[];
+    final result = await playerChannel
+        .invokeMethod('getAllSongs', <String, dynamic>{'size': coverArtSize});
+    for (var a = 0; a < result.length; a++) {
+      final resobj = Map<String, dynamic>.from(result[a]);
+      final artist = Artist(albums: [], name: resobj['artist']);
+      final image = Uint8List.fromList(List<int>.from(resobj['image'] ?? []));
+      final album = Album(
           songs: [],
-          title: resobj["albumTitle"],
-          albumTrackCount: resobj["albumTrackCount"],
+          title: resobj['albumTitle'],
+          albumTrackCount: resobj['albumTrackCount'],
           coverArt: image,
-          diskCount: resobj["discCount"],
+          diskCount: resobj['discCount'],
           artistName: artist.name);
-      Song song = Song(
+      final song = Song(
           albumTitle: album.title,
-          title: resobj["songTitle"],
-          duration: resobj["playbackDuration"],
-          trackNumber: resobj["albumTrackNumber"],
-          genre: resobj["genre"],
+          title: resobj['songTitle'],
+          duration: resobj['playbackDuration'],
+          trackNumber: resobj['albumTrackNumber'],
+          genre: resobj['genre'],
           releaseDate:
-              DateTime.fromMillisecondsSinceEpoch(resobj["releaseDate"]),
-          discNumber: resobj["discNumber"],
-          isExplicit: resobj["isExplicitItem"],
-          playCount: resobj["playCount"],
-          iOSSongID: resobj["songID"].toString(),
+              DateTime.fromMillisecondsSinceEpoch(resobj['releaseDate']),
+          discNumber: resobj['discNumber'],
+          isExplicit: resobj['isExplicitItem'],
+          playCount: resobj['playCount'],
+          iOSSongID: resobj['songID'].toString(),
           artistName: artist.name);
       album.songs.add(song);
       artist.albums.add(album);
       album.artistName = artist.name;
-      bool foundArtist = false;
-      for (int i = 0; i < artists.length; i++) {
+      var foundArtist = false;
+      for (var i = 0; i < artists.length; i++) {
         if (artist.name == artists[i].name) {
           foundArtist = true;
-          bool foundAlbum = false;
-          for (int j = 0; j < artists[i].albums.length; j++) {
+          var foundAlbum = false;
+          for (var j = 0; j < artists[i].albums.length; j++) {
             if (artists[i].albums[j].title == album.title) {
               //If the album does not have a cover art
               if ((artists[i].albums[j].coverArt == null &&
@@ -241,49 +239,48 @@ class Playify {
   ///Specify a [coverArtSize] to fetch the current song with the [coverArtSize].
   Future<SongInformation> nowPlaying({int coverArtSize = 800}) async {
     final result = await playerChannel
-        .invokeMethod('nowPlaying', <String, dynamic>{"size": coverArtSize});
+        .invokeMethod('nowPlaying', <String, dynamic>{'size': coverArtSize});
     if (result == null) {
       return null;
     }
-    final Map<String, dynamic> resobj = Map<String, dynamic>.from(result);
-    final Artist artist = Artist(albums: [], name: resobj["artist"]);
-    final Album album = Album(
+    final resobj = Map<String, dynamic>.from(result);
+    final artist = Artist(albums: [], name: resobj['artist']);
+    final album = Album(
         songs: [],
-        title: resobj["albumTitle"],
-        albumTrackCount: resobj["albumTrackCount"],
-        coverArt: resobj["image"],
-        diskCount: resobj["discCount"],
+        title: resobj['albumTitle'],
+        albumTrackCount: resobj['albumTrackCount'],
+        coverArt: resobj['image'],
+        diskCount: resobj['discCount'],
         artistName: artist.name);
-    final Song song = Song(
+    final song = Song(
         albumTitle: album.title,
-        duration: resobj["playbackDuration"],
-        title: resobj["songTitle"],
-        trackNumber: resobj["trackNumber"],
-        discNumber: resobj["discNumber"],
-        isExplicit: resobj["isExplicitItem"],
-        genre: resobj["genre"],
-        releaseDate: DateTime.fromMillisecondsSinceEpoch(resobj["releaseDate"]),
-        playCount: resobj["playCount"],
+        duration: resobj['playbackDuration'],
+        title: resobj['songTitle'],
+        trackNumber: resobj['trackNumber'],
+        discNumber: resobj['discNumber'],
+        isExplicit: resobj['isExplicitItem'],
+        genre: resobj['genre'],
+        releaseDate: DateTime.fromMillisecondsSinceEpoch(resobj['releaseDate']),
+        playCount: resobj['playCount'],
         artistName: artist.name,
-        iOSSongID: resobj["songID"].toString());
+        iOSSongID: resobj['songID'].toString());
     album.songs.add(song);
     artist.albums.add(album);
     album.artistName = artist.name;
-    SongInformation info =
-        SongInformation(album: album, artist: artist, song: song);
+    final info = SongInformation(album: album, artist: artist, song: song);
     return info;
   }
 
   ///Get all the playlists.
   Future<List<Playlist>> getPlaylists() async {
-    final List<dynamic> result =
+    final result =
         await playerChannel.invokeMethod<List<dynamic>>('getPlaylists');
-    final List<Map<String, dynamic>> playlistMaps =
+    final playlistMaps =
         result.map((i) => Map<String, dynamic>.from(i)).toList();
-    final List<Playlist> playlists = playlistMaps
+    final playlists = playlistMaps
         .map<Playlist>((i) => Playlist(
-            songIDs: List<String>.from(i["songIDs"].map((j) => j.toString())),
-            title: i["title"]))
+            songIDs: List<String>.from(i['songIDs'].map((j) => j.toString())),
+            title: i['title']))
         .toList();
     return playlists;
   }

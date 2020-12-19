@@ -41,12 +41,12 @@ class Album {
 
   @override
   String toString() {
-    return "Title: " +
-        this.title +
-        " has " +
+    return 'Title: ' +
+        title +
+        ' has ' +
         songs.length.toString() +
-        " songs and artist is " +
-        this.artistName +
-        "\n";
+        ' songs and artist is ' +
+        artistName +
+        '\n';
   }
 }

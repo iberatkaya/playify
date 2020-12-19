@@ -14,10 +14,6 @@ class Artist {
 
   @override
   String toString() {
-    return "Name: " +
-        this.name +
-        " has " +
-        albums.length.toString() +
-        " albums\n";
+    return 'Name: ' + name + ' has ' + albums.length.toString() + ' albums\n';
   }
 }
