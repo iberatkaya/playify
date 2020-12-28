@@ -230,8 +230,8 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                     [
                         "title": playlist.value(forProperty: MPMediaPlaylistPropertyName) ?? "",
                         "playlistID": playlist.persistentID,
-                        "songIDs": playlist.items.map({song in
-                            song.persistentID
+                        "songs": playlist.items.map({song in
+                            song.toDict()
                         })
                     ]
                 }) ?? []

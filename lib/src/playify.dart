@@ -183,19 +183,7 @@ class Playify {
           coverArt: image,
           discCount: resobj['discCount'],
           artistName: artist.name);
-      final song = Song(
-          albumTitle: album.title,
-          title: resobj['songTitle'],
-          duration: resobj['playbackDuration'],
-          trackNumber: resobj['albumTrackNumber'],
-          genre: resobj['genre'],
-          releaseDate:
-              DateTime.fromMillisecondsSinceEpoch(resobj['releaseDate']),
-          discNumber: resobj['discNumber'],
-          isExplicit: resobj['isExplicitItem'],
-          playCount: resobj['playCount'],
-          iOSSongID: resobj['songID'].toString(),
-          artistName: artist.name);
+      final song = Song.fromJson(resobj);
       album.songs.add(song);
       artist.albums.add(album);
       album.artistName = artist.name;
@@ -253,18 +241,7 @@ class Playify {
         coverArt: resobj['image'],
         discCount: resobj['discCount'],
         artistName: artist.name);
-    final song = Song(
-        albumTitle: album.title,
-        duration: resobj['playbackDuration'],
-        title: resobj['songTitle'],
-        trackNumber: resobj['trackNumber'],
-        discNumber: resobj['discNumber'],
-        isExplicit: resobj['isExplicitItem'],
-        genre: resobj['genre'],
-        releaseDate: DateTime.fromMillisecondsSinceEpoch(resobj['releaseDate']),
-        playCount: resobj['playCount'],
-        artistName: artist.name,
-        iOSSongID: resobj['songID'].toString());
+    final song = Song.fromJson(resobj);
     album.songs.add(song);
     artist.albums.add(album);
     album.artistName = artist.name;
@@ -280,9 +257,10 @@ class Playify {
         result.map((i) => Map<String, dynamic>.from(i)).toList();
     final playlists = playlistMaps
         .map<Playlist>((i) => Playlist(
-              songIDs: List<String>.from(i['songIDs'].map((j) => j.toString())),
+              songs: List<Song>.from(i['songs']
+                  .map((j) => Song.fromJson(Map<String, dynamic>.from(j)))),
               title: i['title'],
-              playlistID: i['playlistID'],
+              playlistID: i['playlistID'].toString(),
             ))
         .toList();
     return playlists;

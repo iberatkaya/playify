@@ -212,7 +212,8 @@ class _MyHomePage extends State<MyHomePage> {
                 FlatButton(
                   child: Text("Get Playlists"),
                   onPressed: () async {
-                    await myplayer.getPlaylists();
+                    final playlists = await myplayer.getPlaylists();
+                    print(playlists);
                   },
                 ),
                 Text("Shuffle:"),

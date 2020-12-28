@@ -12,7 +12,18 @@ class Song {
       @required this.genre,
       @required this.releaseDate,
       @required this.duration,
-      @required this.isExplicit});
+      @required this.isExplicit})
+      : assert(iOSSongID != null),
+        assert(title != null),
+        assert(artistName != null),
+        assert(albumTitle != null),
+        assert(trackNumber != null),
+        assert(playCount != null),
+        assert(discNumber != null),
+        assert(genre != null),
+        assert(releaseDate != null),
+        assert(duration != null),
+        assert(isExplicit != null);
 
   ///The title of the album.
   String albumTitle;
@@ -47,16 +58,34 @@ class Song {
   ///Shows if the song is explicit.
   bool isExplicit;
 
+  static Song fromJson(Map<String, dynamic> map) {
+    print(map);
+    return Song(
+        albumTitle: map['albumTitle'],
+        duration: map['playbackDuration'],
+        title: map['songTitle'],
+        trackNumber: map['trackNumber'],
+        discNumber: map['discNumber'],
+        isExplicit: map['isExplicitItem'],
+        genre: map['genre'],
+        releaseDate: DateTime.fromMillisecondsSinceEpoch(map['releaseDate']),
+        playCount: map['playCount'],
+        artistName: map['albumArtist'],
+        iOSSongID: map['songID'].toString());
+  }
+
   @override
   String toString() {
-    return 'Album Title: ' +
+    return 'Song Title: ' +
+        title +
+        ', Album Title: ' +
         albumTitle +
         ', Artist Name: ' +
         artistName +
-        ', title: ' +
-        title +
         ', Duration: ' +
         duration.toString() +
+        ', SongID: ' +
+        iOSSongID +
         '\n';
   }
 }
