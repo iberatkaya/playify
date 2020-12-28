@@ -237,6 +237,22 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                 }) ?? []
                 result(res)
             }
+            else if(call.method == "setVolume") {
+                guard let args = call.arguments as? [String: Any] else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
+                    return
+                }
+                guard let volume = args["volume"] as? NSNumber else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter volume was not provided!"))
+                    return
+                }
+                player.setVolume(volume: volume.floatValue)
+                result(nil)
+            }
+            else if(call.method == "getVolume") {
+                let volume = player.getVolume()
+                result(Float(volume))
+            }
         }
         else {
             print("Requires min iOS 10.3")

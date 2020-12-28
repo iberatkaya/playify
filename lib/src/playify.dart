@@ -265,4 +265,19 @@ class Playify {
         .toList();
     return playlists;
   }
+
+  ///Set the [volume].
+  ///
+  ///The audio is set using MPVolumeView, so the volume changing indicator
+  ///will appear in the left side of the device on iOS.
+  Future<void> setVolume(double value) async {
+    await playerChannel
+        .invokeMethod<void>('setVolume', <String, dynamic>{'volume': value});
+  }
+
+  ///Get the volume.
+  Future<double> getVolume() async {
+    final volume = await playerChannel.invokeMethod<double>('getVolume');
+    return volume;
+  }
 }

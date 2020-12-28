@@ -23,3 +23,18 @@ extension MPMediaItem {
         ]
     }
 }
+
+///Update system volume
+///Taken from https://stackoverflow.com/a/57449875.
+///@author: https://stackoverflow.com/users/1371853/swiftboy
+extension MPVolumeView {
+    static func setVolume(_ volume: Float) {
+        let volumeView = MPVolumeView(frame: .zero)
+        
+        let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.01) {
+            slider?.value = volume
+        }
+    }
+}

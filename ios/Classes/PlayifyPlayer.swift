@@ -6,6 +6,10 @@ public class PlayifyPlayer {
     ///The music player controller instance.
     var player: MPMusicPlayerController = MPMusicPlayerController.systemMusicPlayer
     
+    ///The audio player controller instance.
+    ///Used to set the volume.
+    var audioPlayer: AVAudioSession = AVAudioSession.sharedInstance()
+    
     ///Set the queue with unique song ids.
     func setQueue(songIDs: [String], startPlaying: Bool?, startID: String?) throws {
         if let startID = startID {
@@ -181,5 +185,14 @@ public class PlayifyPlayer {
             return playlists
         }
         return nil
+    }
+    
+    func setVolume(volume: Float){
+        //audioPlayer.volume = volume
+        MPVolumeView.setVolume(volume)
+    }
+    
+    func getVolume() -> Float {
+        return audioPlayer.outputVolume
     }
 }

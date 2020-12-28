@@ -34,6 +34,7 @@ class _MyHomePage extends State<MyHomePage> {
   var myplayer = Playify();
   List<Artist> artists = [];
   double time = 0.0;
+  double volume = 0.0;
 
   Future<void> getNowPlaying() async {
     SongInformation res = await myplayer.nowPlaying();
@@ -45,7 +46,12 @@ class _MyHomePage extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    getNowPlaying();
+    getNowPlaying().then((value) async {
+      final myVolume = await myplayer.getVolume();
+      setState(() {
+        volume = myVolume;
+      });
+    });
   }
 
   @override
@@ -125,6 +131,18 @@ class _MyHomePage extends State<MyHomePage> {
                       ],
                     ),
                   ),
+                Slider(
+                  divisions: 15,
+                  value: volume,
+                  min: 0,
+                  max: 1,
+                  onChanged: (val) async {
+                    setState(() {
+                      volume = val;
+                    });
+                    await myplayer.setVolume(val);
+                  },
+                ),
                 if (!playing)
                   IconButton(
                     icon: Icon(Icons.play_arrow),
