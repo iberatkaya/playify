@@ -106,9 +106,17 @@ public class PlayifyPlayer {
         else if(mode == "songs"){
             player.shuffleMode =  MPMusicShuffleMode.songs
         }
-        else if(mode == "albums"){
-            player.shuffleMode = MPMusicShuffleMode.albums
+    }
+    
+    ///Get the shuffle mode.
+    func getShuffleMode() -> String? {
+        if(player.shuffleMode == MPMusicShuffleMode.off){
+            return "off"
         }
+        else if(player.shuffleMode == MPMusicShuffleMode.songs){
+            return "songs"
+        }
+        return nil
     }
     
     ///Set a repeat mode.
@@ -122,6 +130,20 @@ public class PlayifyPlayer {
         else if(mode == "all"){
             player.repeatMode = MPMusicRepeatMode.all
         }
+    }
+    
+    ///Get the repeat mode.
+    func getRepeatMode() -> String? {
+        if(player.repeatMode == MPMusicRepeatMode.none){
+            return "none"
+        }
+        else if(player.repeatMode ==  MPMusicRepeatMode.one){
+            return "one"
+        }
+        else if(player.repeatMode == MPMusicRepeatMode.all){
+            return "all"
+        }
+        return nil
     }
     
     ///Play a song with an ID.
@@ -181,5 +203,31 @@ public class PlayifyPlayer {
             return playlists
         }
         return nil
+    }
+    
+    ///Set the volume to a value.
+    func setVolume(volume: Float){
+        MPVolumeView.setVolume(volume)
+    }
+    
+    ///Get the device's current output volume.
+    func getVolume(completionHandler: @escaping (Float) -> Void) {
+        MPVolumeView.getVolume(completionHandler: completionHandler)
+    }
+    
+    ///Increment the volume by an amount. The volume can be incremented with negative number in order to decrease it..
+    func incrementVolume(amount: Float){
+        getVolume(completionHandler: {volume in
+            guard volume + amount > 0 else {
+                MPVolumeView.setVolume(0)
+                return
+            }
+            guard volume + amount < 1 else {
+                MPVolumeView.setVolume(1)
+                return
+            }
+            
+            MPVolumeView.setVolume(volume + amount)
+        })
     }
 }

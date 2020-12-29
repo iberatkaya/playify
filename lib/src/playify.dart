@@ -127,14 +127,22 @@ class Playify {
       case 1:
         mymode = 'songs';
         break;
-      case 2:
-        mymode = 'albums';
-        break;
       default:
         throw 'Incorrent mode!';
     }
     await playerChannel
         .invokeMethod('setShuffleMode', <String, dynamic>{'mode': mymode});
+  }
+
+  ///Get the shuffle mode.
+  Future<Shuffle> getShuffleMode() async {
+    final mode = await playerChannel.invokeMethod<String>('getShuffleMode');
+    if (mode == 'off') {
+      return Shuffle.off;
+    } else if (mode == 'songs') {
+      return Shuffle.songs;
+    }
+    throw 'Mode ' + mode + ' is not a valid shuffle mode!';
   }
 
   ///Set the repeat [mode].
@@ -155,6 +163,19 @@ class Playify {
     }
     await playerChannel
         .invokeMethod('setRepeatMode', <String, dynamic>{'mode': mymode});
+  }
+
+  ///Get the repeat mode.
+  Future<Repeat> getRepeatMode() async {
+    final mode = await playerChannel.invokeMethod<String>('getRepeatMode');
+    if (mode == 'all') {
+      return Repeat.all;
+    } else if (mode == 'one') {
+      return Repeat.one;
+    } else if (mode == 'none') {
+      return Repeat.none;
+    }
+    throw 'Mode ' + mode + ' is not a valid repeat mode!';
   }
 
   ///Fetch all songs in the Apple Music library.
@@ -183,19 +204,7 @@ class Playify {
           coverArt: image,
           discCount: resobj['discCount'],
           artistName: artist.name);
-      final song = Song(
-          albumTitle: album.title,
-          title: resobj['songTitle'],
-          duration: resobj['playbackDuration'],
-          trackNumber: resobj['albumTrackNumber'],
-          genre: resobj['genre'],
-          releaseDate:
-              DateTime.fromMillisecondsSinceEpoch(resobj['releaseDate']),
-          discNumber: resobj['discNumber'],
-          isExplicit: resobj['isExplicitItem'],
-          playCount: resobj['playCount'],
-          iOSSongID: resobj['songID'].toString(),
-          artistName: artist.name);
+      final song = Song.fromJson(resobj);
       album.songs.add(song);
       artist.albums.add(album);
       album.artistName = artist.name;
@@ -253,18 +262,7 @@ class Playify {
         coverArt: resobj['image'],
         discCount: resobj['discCount'],
         artistName: artist.name);
-    final song = Song(
-        albumTitle: album.title,
-        duration: resobj['playbackDuration'],
-        title: resobj['songTitle'],
-        trackNumber: resobj['trackNumber'],
-        discNumber: resobj['discNumber'],
-        isExplicit: resobj['isExplicitItem'],
-        genre: resobj['genre'],
-        releaseDate: DateTime.fromMillisecondsSinceEpoch(resobj['releaseDate']),
-        playCount: resobj['playCount'],
-        artistName: artist.name,
-        iOSSongID: resobj['songID'].toString());
+    final song = Song.fromJson(resobj);
     album.songs.add(song);
     artist.albums.add(album);
     album.artistName = artist.name;
@@ -280,11 +278,38 @@ class Playify {
         result.map((i) => Map<String, dynamic>.from(i)).toList();
     final playlists = playlistMaps
         .map<Playlist>((i) => Playlist(
-              songIDs: List<String>.from(i['songIDs'].map((j) => j.toString())),
+              songs: List<Song>.from(i['songs']
+                  .map((j) => Song.fromJson(Map<String, dynamic>.from(j)))),
               title: i['title'],
-              playlistID: i['playlistID'],
+              playlistID: i['playlistID'].toString(),
             ))
         .toList();
     return playlists;
+  }
+
+  ///Set the [volume] between 0 to 1.
+  ///
+  ///The audio is set using MPVolumeView, so the volume changing indicator
+  ///will appear in the left side of the device on iOS.
+  Future<void> setVolume(double value) async {
+    await playerChannel
+        .invokeMethod<void>('setVolume', <String, dynamic>{'volume': value});
+  }
+
+  ///Get the volume between 0 to 1.
+  Future<double> getVolume() async {
+    final volume = await playerChannel.invokeMethod<double>('getVolume');
+    return volume;
+  }
+
+  ///Increment the volume by [amount].
+  ///
+  ///In order to decrease the volume, pass a negative value to this function.
+  ///
+  ///If the current volume + [amount] is over 1, the volume will be set to 1.
+  ///If the current volume + [amount] is under 0, the volume will be set to 0.
+  Future<void> incrementVolume(double amount) async {
+    await playerChannel.invokeMethod<double>(
+        'incrementVolume', <String, dynamic>{'amount': amount});
   }
 }

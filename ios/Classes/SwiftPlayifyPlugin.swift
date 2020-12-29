@@ -230,16 +230,61 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                     [
                         "title": playlist.value(forProperty: MPMediaPlaylistPropertyName) ?? "",
                         "playlistID": playlist.persistentID,
-                        "songIDs": playlist.items.map({song in
-                            song.persistentID
+                        "songs": playlist.items.map({song in
+                            song.toDict()
                         })
                     ]
                 }) ?? []
                 result(res)
             }
+            else if(call.method == "setVolume") {
+                guard let args = call.arguments as? [String: Any] else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
+                    return
+                }
+                guard let volume = args["volume"] as? NSNumber else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter volume was not provided!"))
+                    return
+                }
+                player.setVolume(volume: volume.floatValue)
+                result(nil)
+            }
+            else if(call.method == "getVolume") {
+                player.getVolume(completionHandler: {volume in
+                    result(Float(volume))
+                })
+            }
+            else if(call.method == "getShuffleMode") {
+                let mode = player.getShuffleMode()
+                guard let shuffleMode = mode else {
+                    result(FlutterError(code: "Error", message: "Error Getting Shuffle Mode", details: "An error occurred while getting the shuffle mode!"))
+                    return
+                }
+                return result(shuffleMode)
+            }
+            else if(call.method == "getRepeatMode") {
+                let mode = player.getRepeatMode()
+                guard let repeatMode = mode else {
+                    result(FlutterError(code: "Error", message: "Error Getting Shuffle Mode", details: "An error occurred while getting the repeat mode!"))
+                    return
+                }
+                return result(repeatMode)
+            }
+            else if(call.method == "incrementVolume") {
+                guard let args = call.arguments as? [String: Any] else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
+                    return
+                }
+                guard let amount = args["amount"] as? NSNumber else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter amount was not provided!"))
+                    return
+                }
+                player.incrementVolume(amount: amount.floatValue)
+                result(nil)
+            }
         }
         else {
-            print("Requires min iOS 10.3")
+            result(FlutterError(code: "invalidOSVersion", message: "Requires Min iOS 10.3", details: "Playify requires a minimum of iOS 10.3!"))
          }
     }
     

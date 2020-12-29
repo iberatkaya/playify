@@ -1,24 +1,25 @@
 import 'package:flutter/foundation.dart';
+import 'package:playify/playify.dart';
 
 class Playlist {
   Playlist({
     @required this.title,
     @required this.playlistID,
-    @required this.songIDs,
+    @required this.songs,
   })  : assert(title != null),
         assert(playlistID != null),
-        assert(songIDs != null);
+        assert(songs != null);
 
   ///The title of the playlist.
   String title;
 
-  ///The songIDs in that playlist.
-  List<String> songIDs;
+  ///The songs in that playlist.
+  List<Song> songs;
 
   ///The ID of the playlist.
-  List<String> playlistID;
+  String playlistID;
 
   @override
   String toString() =>
-      'Playlist title: $title, playlistID: $playlistID, songIDs: $songIDs';
+      'Playlist title: $title, playlistID: $playlistID, songs: $songs';
 }

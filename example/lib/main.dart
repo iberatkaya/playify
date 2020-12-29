@@ -34,6 +34,7 @@ class _MyHomePage extends State<MyHomePage> {
   var myplayer = Playify();
   List<Artist> artists = [];
   double time = 0.0;
+  double volume = 0.0;
 
   Future<void> getNowPlaying() async {
     SongInformation res = await myplayer.nowPlaying();
@@ -45,7 +46,12 @@ class _MyHomePage extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    getNowPlaying();
+    getNowPlaying().then((value) async {
+      final myVolume = await myplayer.getVolume();
+      setState(() {
+        volume = myVolume;
+      });
+    });
   }
 
   @override
@@ -179,10 +185,33 @@ class _MyHomePage extends State<MyHomePage> {
                                 )));
                   },
                 ),
+                Slider(
+                  label: volume.toStringAsFixed(2),
+                  divisions: 20,
+                  value: volume,
+                  min: 0,
+                  max: 1,
+                  onChanged: (val) async {
+                    setState(() {
+                      volume = val;
+                    });
+                    await myplayer.setVolume(val);
+                  },
+                ),
+                FlatButton(
+                  child: Text("Get Volume"),
+                  onPressed: () async {
+                    final myVolume = await myplayer.getVolume();
+                    setState(() {
+                      volume = myVolume;
+                    });
+                  },
+                ),
                 FlatButton(
                   child: Text("Get Playback Time"),
                   onPressed: () async {
-                    await myplayer.getPlaybackTime();
+                    final playbackTime = await myplayer.getPlaybackTime();
+                    print(playbackTime);
                   },
                 ),
                 FlatButton(
@@ -212,7 +241,22 @@ class _MyHomePage extends State<MyHomePage> {
                 FlatButton(
                   child: Text("Get Playlists"),
                   onPressed: () async {
-                    await myplayer.getPlaylists();
+                    final playlists = await myplayer.getPlaylists();
+                    print(playlists);
+                  },
+                ),
+                FlatButton(
+                  child: Text("Get Shuffle Mode"),
+                  onPressed: () async {
+                    final shuffleMode = await myplayer.getShuffleMode();
+                    print(shuffleMode);
+                  },
+                ),
+                FlatButton(
+                  child: Text("Get Repeat Mode"),
+                  onPressed: () async {
+                    final repeatMode = await myplayer.getRepeatMode();
+                    print(repeatMode);
                   },
                 ),
                 Text("Shuffle:"),
@@ -234,10 +278,6 @@ class _MyHomePage extends State<MyHomePage> {
                       value: Shuffle.songs,
                       child: Text("Songs"),
                     ),
-                    DropdownMenuItem(
-                      value: Shuffle.albums,
-                      child: Text("Albums"),
-                    )
                   ],
                 ),
                 Text("Repeat:"),
@@ -257,11 +297,11 @@ class _MyHomePage extends State<MyHomePage> {
                     ),
                     DropdownMenuItem(
                       value: Repeat.one,
-                      child: Text("Songs"),
+                      child: Text("One"),
                     ),
                     DropdownMenuItem(
                       value: Repeat.all,
-                      child: Text("Albums"),
+                      child: Text("All"),
                     )
                   ],
                 )
