@@ -187,12 +187,28 @@ public class PlayifyPlayer {
         return nil
     }
     
+    ///Set the volume to a value.
     func setVolume(volume: Float){
-        //audioPlayer.volume = volume
         MPVolumeView.setVolume(volume)
     }
     
+    ///Get the device's current output volume.
     func getVolume() -> Float {
         return audioPlayer.outputVolume
+    }
+    
+    ///Increment the volume by an amount. The volume can be incremented with negative number in order to decrease it..
+    func incrementVolume(amount: Float){
+        let volume = getVolume()
+        guard volume + amount > 0 else {
+            MPVolumeView.setVolume(0)
+            return
+        }
+        guard volume + amount < 1 else {
+            MPVolumeView.setVolume(0)
+            return
+        }
+        
+        MPVolumeView.setVolume(volume + amount)
     }
 }

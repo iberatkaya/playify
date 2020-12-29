@@ -266,7 +266,7 @@ class Playify {
     return playlists;
   }
 
-  ///Set the [volume].
+  ///Set the [volume] between 0 to 1.
   ///
   ///The audio is set using MPVolumeView, so the volume changing indicator
   ///will appear in the left side of the device on iOS.
@@ -275,9 +275,20 @@ class Playify {
         .invokeMethod<void>('setVolume', <String, dynamic>{'volume': value});
   }
 
-  ///Get the volume.
+  ///Get the volume between 0 to 1.
   Future<double> getVolume() async {
     final volume = await playerChannel.invokeMethod<double>('getVolume');
     return volume;
+  }
+
+  ///Increment the volume by [amount].
+  ///
+  ///In order to decrease the volume, pass a negative value to this function.
+  ///
+  ///If the current volume + [amount] is over 1, the volume will be set to 1.
+  ///If the current volume + [amount] is under 0, the volume will be set to 0.
+  Future<void> incrementVolume(double amount) async {
+    await playerChannel.invokeMethod<double>(
+        'incrementVolume', <String, dynamic>{'amount': amount});
   }
 }
