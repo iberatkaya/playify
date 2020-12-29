@@ -1,3 +1,8 @@
+## 1.6.0
+
+- Added getting and setting volume.
+- Added getting and setting shuffle and repeat modes.
+
 ## 1.5.0+1
 
 - Updated README.
