@@ -6,10 +6,6 @@ public class PlayifyPlayer {
     ///The music player controller instance.
     var player: MPMusicPlayerController = MPMusicPlayerController.systemMusicPlayer
     
-    ///The audio player controller instance.
-    ///Used to set the volume.
-    var audioPlayer: AVAudioSession = AVAudioSession.sharedInstance()
-    
     ///Set the queue with unique song ids.
     func setQueue(songIDs: [String], startPlaying: Bool?, startID: String?) throws {
         if let startID = startID {
@@ -193,22 +189,23 @@ public class PlayifyPlayer {
     }
     
     ///Get the device's current output volume.
-    func getVolume() -> Float {
-        return audioPlayer.outputVolume
+    func getVolume(completionHandler: @escaping (Float) -> Void) {
+        MPVolumeView.getVolume(completionHandler: completionHandler)
     }
     
     ///Increment the volume by an amount. The volume can be incremented with negative number in order to decrease it..
     func incrementVolume(amount: Float){
-        let volume = getVolume()
-        guard volume + amount > 0 else {
-            MPVolumeView.setVolume(0)
-            return
-        }
-        guard volume + amount < 1 else {
-            MPVolumeView.setVolume(0)
-            return
-        }
-        
-        MPVolumeView.setVolume(volume + amount)
+        getVolume(completionHandler: {volume in
+            guard volume + amount > 0 else {
+                MPVolumeView.setVolume(0)
+                return
+            }
+            guard volume + amount < 1 else {
+                MPVolumeView.setVolume(1)
+                return
+            }
+            
+            MPVolumeView.setVolume(volume + amount)
+        })
     }
 }

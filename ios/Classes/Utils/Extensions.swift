@@ -37,4 +37,16 @@ extension MPVolumeView {
             slider?.value = volume
         }
     }
+    
+    static func getVolume(completionHandler: @escaping (Float) -> Void) {
+        
+        let volumeView = MPVolumeView(frame: .zero)
+        
+        let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.01) {
+            print(slider?.value)
+            completionHandler(slider?.value ?? 0)
+        }
+    }
 }

@@ -250,8 +250,9 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                 result(nil)
             }
             else if(call.method == "getVolume") {
-                let volume = player.getVolume()
-                result(Float(volume))
+                player.getVolume(completionHandler: {volume in
+                    result(Float(volume))
+                })
             }
             else if(call.method == "incrementVolume") {
                 guard let args = call.arguments as? [String: Any] else {
