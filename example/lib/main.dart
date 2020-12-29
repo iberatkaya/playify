@@ -131,18 +131,6 @@ class _MyHomePage extends State<MyHomePage> {
                       ],
                     ),
                   ),
-                Slider(
-                  divisions: 15,
-                  value: volume,
-                  min: 0,
-                  max: 1,
-                  onChanged: (val) async {
-                    setState(() {
-                      volume = val;
-                    });
-                    await myplayer.setVolume(val);
-                  },
-                ),
                 if (!playing)
                   IconButton(
                     icon: Icon(Icons.play_arrow),
@@ -195,6 +183,28 @@ class _MyHomePage extends State<MyHomePage> {
                             builder: (context) => Artists(
                                   artists,
                                 )));
+                  },
+                ),
+                Slider(
+                  label: volume.toStringAsFixed(2),
+                  divisions: 20,
+                  value: volume,
+                  min: 0,
+                  max: 1,
+                  onChanged: (val) async {
+                    setState(() {
+                      volume = val;
+                    });
+                    await myplayer.setVolume(val);
+                  },
+                ),
+                FlatButton(
+                  child: Text("Get Volume"),
+                  onPressed: () async {
+                    final myVolume = await myplayer.getVolume();
+                    setState(() {
+                      volume = myVolume;
+                    });
                   },
                 ),
                 FlatButton(
