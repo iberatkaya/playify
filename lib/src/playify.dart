@@ -127,14 +127,22 @@ class Playify {
       case 1:
         mymode = 'songs';
         break;
-      case 2:
-        mymode = 'albums';
-        break;
       default:
         throw 'Incorrent mode!';
     }
     await playerChannel
         .invokeMethod('setShuffleMode', <String, dynamic>{'mode': mymode});
+  }
+
+  ///Get the shuffle mode.
+  Future<Shuffle> getShuffleMode() async {
+    final mode = await playerChannel.invokeMethod<String>('getShuffleMode');
+    if (mode == 'off') {
+      return Shuffle.off;
+    } else if (mode == 'songs') {
+      return Shuffle.songs;
+    }
+    throw 'Mode ' + mode + ' is not a valid shuffle mode!';
   }
 
   ///Set the repeat [mode].
@@ -155,6 +163,19 @@ class Playify {
     }
     await playerChannel
         .invokeMethod('setRepeatMode', <String, dynamic>{'mode': mymode});
+  }
+
+  ///Get the repeat mode.
+  Future<Repeat> getRepeatMode() async {
+    final mode = await playerChannel.invokeMethod<String>('getRepeatMode');
+    if (mode == 'all') {
+      return Repeat.all;
+    } else if (mode == 'one') {
+      return Repeat.one;
+    } else if (mode == 'none') {
+      return Repeat.none;
+    }
+    throw 'Mode ' + mode + ' is not a valid repeat mode!';
   }
 
   ///Fetch all songs in the Apple Music library.

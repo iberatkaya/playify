@@ -210,7 +210,8 @@ class _MyHomePage extends State<MyHomePage> {
                 FlatButton(
                   child: Text("Get Playback Time"),
                   onPressed: () async {
-                    await myplayer.getPlaybackTime();
+                    final playbackTime = await myplayer.getPlaybackTime();
+                    print(playbackTime);
                   },
                 ),
                 FlatButton(
@@ -244,6 +245,20 @@ class _MyHomePage extends State<MyHomePage> {
                     print(playlists);
                   },
                 ),
+                FlatButton(
+                  child: Text("Get Shuffle Mode"),
+                  onPressed: () async {
+                    final shuffleMode = await myplayer.getShuffleMode();
+                    print(shuffleMode);
+                  },
+                ),
+                FlatButton(
+                  child: Text("Get Repeat Mode"),
+                  onPressed: () async {
+                    final repeatMode = await myplayer.getRepeatMode();
+                    print(repeatMode);
+                  },
+                ),
                 Text("Shuffle:"),
                 DropdownButton<Shuffle>(
                   hint: Text("Shuffle"),
@@ -263,10 +278,6 @@ class _MyHomePage extends State<MyHomePage> {
                       value: Shuffle.songs,
                       child: Text("Songs"),
                     ),
-                    DropdownMenuItem(
-                      value: Shuffle.albums,
-                      child: Text("Albums"),
-                    )
                   ],
                 ),
                 Text("Repeat:"),
@@ -286,11 +297,11 @@ class _MyHomePage extends State<MyHomePage> {
                     ),
                     DropdownMenuItem(
                       value: Repeat.one,
-                      child: Text("Songs"),
+                      child: Text("One"),
                     ),
                     DropdownMenuItem(
                       value: Repeat.all,
-                      child: Text("Albums"),
+                      child: Text("All"),
                     )
                   ],
                 )

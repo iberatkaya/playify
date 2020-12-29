@@ -45,7 +45,6 @@ extension MPVolumeView {
         let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.01) {
-            print(slider?.value)
             completionHandler(slider?.value ?? 0)
         }
     }

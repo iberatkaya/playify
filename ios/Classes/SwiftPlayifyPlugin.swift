@@ -254,6 +254,22 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                     result(Float(volume))
                 })
             }
+            else if(call.method == "getShuffleMode") {
+                let mode = player.getShuffleMode()
+                guard let shuffleMode = mode else {
+                    result(FlutterError(code: "Error", message: "Error Getting Shuffle Mode", details: "An error occurred while getting the shuffle mode!"))
+                    return
+                }
+                return result(shuffleMode)
+            }
+            else if(call.method == "getRepeatMode") {
+                let mode = player.getRepeatMode()
+                guard let repeatMode = mode else {
+                    result(FlutterError(code: "Error", message: "Error Getting Shuffle Mode", details: "An error occurred while getting the repeat mode!"))
+                    return
+                }
+                return result(repeatMode)
+            }
             else if(call.method == "incrementVolume") {
                 guard let args = call.arguments as? [String: Any] else {
                     result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
@@ -268,7 +284,7 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
             }
         }
         else {
-            print("Requires min iOS 10.3")
+            result(FlutterError(code: "invalidOSVersion", message: "Requires Min iOS 10.3", details: "Playify requires a minimum of iOS 10.3!"))
          }
     }
     
