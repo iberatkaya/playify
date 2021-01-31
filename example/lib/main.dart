@@ -26,7 +26,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePage extends State<MyHomePage> {
-  bool fetchingAllSong = false;
+  bool fetchingAllSongs = false;
   bool playing = false;
   SongInformation data;
   Shuffle shufflemode = Shuffle.off;
@@ -37,10 +37,16 @@ class _MyHomePage extends State<MyHomePage> {
   double volume = 0.0;
 
   Future<void> getNowPlaying() async {
-    SongInformation res = await myplayer.nowPlaying();
-    setState(() {
-      data = res;
-    });
+    try {
+      SongInformation res = await myplayer.nowPlaying();
+      setState(() {
+        data = res;
+      });
+    } catch (e) {
+      setState(() {
+        fetchingAllSongs = false;
+      });
+    }
   }
 
   @override
@@ -63,7 +69,7 @@ class _MyHomePage extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Center(
           child: IgnorePointer(
-            ignoring: fetchingAllSong,
+            ignoring: fetchingAllSongs,
             child: Column(
               children: <Widget>[
                 if (data != null)
@@ -163,14 +169,14 @@ class _MyHomePage extends State<MyHomePage> {
                   child: Text("All Songs"),
                   onPressed: () async {
                     setState(() {
-                      fetchingAllSong = true;
+                      fetchingAllSongs = true;
                     });
 
                     var res = await myplayer.getAllSongs(sort: true);
                     print(res);
                     setState(() {
                       artists = res;
-                      fetchingAllSong = false;
+                      fetchingAllSongs = false;
                     });
                   },
                 ),
