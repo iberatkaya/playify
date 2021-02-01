@@ -4,7 +4,7 @@
   <img src="https://img.shields.io/pub/v/playify.svg?style=flat-square&label=Pub" alt="Pub Version">
 </a>
 
-<b>Playify</b> is a Flutter plugin for play/pause/seek songs, fetching music metadata, and browsing music library. Playify was built using iOS's Media Player Framework to fetch and play music from iOS's Music Library. Currently supports only iOS. Checkout the [documentation](https://pub.dev/documentation/playify/).
+<b>Playify</b> is a Flutter plugin for play/pause/seek songs, fetching music metadata, and browsing music library. Playify was built using iOS's Media Player Framework to fetch and play music from iOS's Music Library. Currently supports only iOS, but Android support is being developed. PR are welcomed. Checkout the [documentation](https://pub.dev/documentation/playify/).
 
 Requirements:
 
