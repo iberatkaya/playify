@@ -1,13 +1,16 @@
 package com.kaya.playify.playify
 
+import android.content.Context
+import android.database.Cursor
+import android.provider.MediaStore
+import android.util.Log
 import androidx.annotation.NonNull
-
+import com.kaya.playify.playify.Classes.Artist
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry.Registrar
 
 /** PlayifyPlugin */
 class PlayifyPlugin: FlutterPlugin, MethodCallHandler {
@@ -15,16 +18,29 @@ class PlayifyPlugin: FlutterPlugin, MethodCallHandler {
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
   /// when the Flutter Engine is detached from the Activity
-  private lateinit var channel : MethodChannel
+  private lateinit var channel: MethodChannel
+  private var applicationContext: Context? = null
+
+  private var playifyPlayer = PlayifyPlayer()
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "playify")
+    applicationContext = flutterPluginBinding.applicationContext
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.kaya.playify/playify")
     channel.setMethodCallHandler(this)
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
+    if (call.method == "getAllSongs") {
+      val songs = applicationContext?.let {
+        playifyPlayer.getAllSongs(it)
+      }
+      val allArtists = arrayListOf<Artist>()
+      val songsIterator = songs?.iterator()
+
+      result.success(
+        songs?.map {
+          it.toMap()
+        }?.toList())
     } else {
       result.notImplemented()
     }
