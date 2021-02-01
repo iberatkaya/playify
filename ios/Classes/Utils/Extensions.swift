@@ -8,7 +8,6 @@ extension MPMediaItem {
             "artist": artist ?? "",
             "songTitle": title ?? "",
             "albumTitle": albumTitle ?? "",
-            "albumArtist": albumArtist ?? "",
             "trackNumber": albumTrackNumber,
             "albumTrackNumber": albumTrackNumber,
             "albumTrackCount": albumTrackCount,

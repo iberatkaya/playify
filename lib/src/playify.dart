@@ -200,9 +200,9 @@ class Playify {
       final album = Album(
           songs: [],
           title: resobj['albumTitle'],
-          albumTrackCount: resobj['albumTrackCount'],
+          albumTrackCount: resobj['albumTrackCount'] ?? 0,
           coverArt: image,
-          discCount: resobj['discCount'],
+          discCount: resobj['discCount'] ?? 0,
           artistName: artist.name);
       final song = Song.fromJson(resobj);
       album.songs.add(song);
@@ -258,9 +258,9 @@ class Playify {
     final album = Album(
         songs: [],
         title: resobj['albumTitle'],
-        albumTrackCount: resobj['albumTrackCount'],
+        albumTrackCount: resobj['albumTrackCount'] ?? 0,
         coverArt: resobj['image'],
-        discCount: resobj['discCount'],
+        discCount: resobj['discCount'] ?? 0,
         artistName: artist.name);
     final song = Song.fromJson(resobj);
     album.songs.add(song);

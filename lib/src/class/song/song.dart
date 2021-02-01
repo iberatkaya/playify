@@ -59,17 +59,17 @@ class Song {
   bool isExplicit;
 
   static Song fromJson(Map<String, dynamic> map) => Song(
-      albumTitle: map['albumTitle'],
-      duration: map['playbackDuration'],
-      title: map['songTitle'],
-      trackNumber: map['trackNumber'],
-      discNumber: map['discNumber'],
-      isExplicit: map['isExplicitItem'],
-      genre: map['genre'],
-      releaseDate: DateTime.fromMillisecondsSinceEpoch(map['releaseDate']),
-      playCount: map['playCount'],
-      artistName: map['albumArtist'],
-      iOSSongID: map['songID'].toString());
+      albumTitle: map['albumTitle'] ?? '',
+      duration: map['playbackDuration'] ?? '',
+      title: map['songTitle'] ?? '',
+      trackNumber: map['trackNumber'] ?? 0,
+      discNumber: map['discNumber'] ?? 0,
+      isExplicit: map['isExplicitItem'] ?? false,
+      genre: map['genre'] ?? '',
+      releaseDate: DateTime.fromMillisecondsSinceEpoch(map['releaseDate'] ?? 0),
+      playCount: map['playCount'] ?? 0,
+      artistName: map['artist'] ?? '',
+      iOSSongID: (map['songID'] ?? '').toString());
 
   @override
   String toString() {
