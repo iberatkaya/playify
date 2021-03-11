@@ -1,3 +1,7 @@
+## 2.0.0
+
+- Migrated to null safety.
+
 ## 1.6.0
 
 - Added getting and setting volume.

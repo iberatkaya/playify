@@ -25,7 +25,7 @@ void main() {
   group('setQueue', () {
     test('call setQueue correctly', () async {
       final ids = <String>['s1', 's2'];
-      await playify.setQueue(songIDs: ids);
+      await playify.setQueue(songIDs: ids, startID: 's1');
       expect(log, <Matcher>[
         isMethodCall(
           'setQueue',

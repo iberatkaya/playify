@@ -17,71 +17,58 @@ class _AlbumsState extends State<Albums> {
         appBar: AppBar(
           title: const Text('Playify'),
         ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.85,
-                    child: ListView.builder(
-                        itemCount: widget.albums.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(
-                            children: <Widget>[
-                              FlatButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Songs(
-                                              widget.albums[index].songs)));
-                                },
-                                color: Colors.blueGrey[50],
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Padding(
-                                  padding: EdgeInsets.all(12),
-                                  child: Column(
-                                    children: <Widget>[
-                                      if (widget.albums[index].coverArt != null)
-                                        Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.3,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.3,
-                                            child: Image(
-                                              image: Image.memory(widget
-                                                      .albums[index].coverArt)
-                                                  .image,
-                                              fit: BoxFit.fill,
-                                            )),
-                                      Text(
-                                        widget.albums[index].title,
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Divider(
-                                color: Color.fromRGBO(220, 220, 220, 1),
-                              )
-                            ],
-                          );
-                        }),
+        body: ListView.builder(
+            itemCount: widget.albums.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Column(
+                children: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Songs(widget.albums[index].songs)));
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(12),
+                      child: Column(
+                        children: <Widget>[
+                          if (widget.albums[index].coverArt != null)
+                            Container(
+                                width: MediaQuery.of(context).size.height * 0.3,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.3,
+                                child: Image(
+                                  image: Image.memory(
+                                          widget.albums[index].coverArt!)
+                                      .image,
+                                  fit: BoxFit.fill,
+                                )),
+                          Text(
+                            widget.albums[index].title,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                )
-              ],
-            ),
-          ),
-        ));
+                  Divider(
+                    color: Color.fromRGBO(220, 220, 220, 1),
+                  )
+                ],
+              );
+            }));
   }
 }

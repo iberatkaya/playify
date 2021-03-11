@@ -2,28 +2,17 @@ import 'package:flutter/material.dart';
 
 class Song {
   Song(
-      {@required this.iOSSongID,
-      @required this.title,
-      @required this.artistName,
-      @required this.albumTitle,
-      @required this.trackNumber,
-      @required this.playCount,
-      @required this.discNumber,
-      @required this.genre,
-      @required this.releaseDate,
-      @required this.duration,
-      @required this.isExplicit})
-      : assert(iOSSongID != null),
-        assert(title != null),
-        assert(artistName != null),
-        assert(albumTitle != null),
-        assert(trackNumber != null),
-        assert(playCount != null),
-        assert(discNumber != null),
-        assert(genre != null),
-        assert(releaseDate != null),
-        assert(duration != null),
-        assert(isExplicit != null);
+      {required this.iOSSongID,
+      required this.title,
+      required this.artistName,
+      required this.albumTitle,
+      required this.trackNumber,
+      required this.playCount,
+      required this.discNumber,
+      required this.genre,
+      required this.releaseDate,
+      required this.duration,
+      required this.isExplicit});
 
   ///The title of the album.
   String albumTitle;
