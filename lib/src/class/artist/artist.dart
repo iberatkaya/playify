@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:playify/src/class/album/album.dart';
 
 class Artist {
-  Artist({@required this.name, @required this.albums})
-      : assert(name != null),
-        assert(albums != null);
+  Artist({required this.name, required this.albums});
 
   ///The name of the artist.
   String name;

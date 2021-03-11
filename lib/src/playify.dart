@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -20,12 +21,12 @@ class Playify {
   ///If [startPlaying] is false, the queue will not autoplay.
   ///If [startID] is provided, the queue will start from the song with
   ///the id [startID].
-  Future<void> setQueue(
-      {@required List<String> songIDs,
-      bool startPlaying = true,
-      String startID}) async {
-    assert(songIDs != null);
-    if (startID != null && !songIDs.contains(startID)) {
+  Future<void> setQueue({
+    required List<String> songIDs,
+    required String startID,
+    bool startPlaying = true,
+  }) async {
+    if (!songIDs.contains(startID)) {
       throw PlatformException(
           code: 'Incorrect Arguments!',
           message: 'songIDs must contain startID if provided.');
@@ -43,7 +44,7 @@ class Playify {
   }
 
   ///Play a single song by giving its [songID].
-  Future<void> playItem({@required String songID}) async {
+  Future<void> playItem({required String songID}) async {
     await playerChannel
         .invokeMethod('playItem', <String, dynamic>{'songID': songID});
   }
@@ -60,7 +61,7 @@ class Playify {
 
   ///Check if there is a song currently playing.
   Future<bool> isPlaying() async {
-    final isPlaying = await playerChannel.invokeMethod('isPlaying');
+    final isPlaying = await playerChannel.invokeMethod('isPlaying') ?? false;
     return isPlaying;
   }
 
@@ -142,7 +143,7 @@ class Playify {
     } else if (mode == 'songs') {
       return Shuffle.songs;
     }
-    throw 'Mode ' + mode + ' is not a valid shuffle mode!';
+    throw 'Mode ' + (mode ?? '') + ' is not a valid shuffle mode!';
   }
 
   ///Set the repeat [mode].
@@ -175,7 +176,7 @@ class Playify {
     } else if (mode == 'none') {
       return Repeat.none;
     }
-    throw 'Mode ' + mode + ' is not a valid repeat mode!';
+    throw 'Mode ' + (mode ?? '') + ' is not a valid repeat mode!';
   }
 
   ///Fetch all songs in the Apple Music library.
@@ -196,7 +197,21 @@ class Playify {
     for (var a = 0; a < result.length; a++) {
       final resobj = Map<String, dynamic>.from(result[a]);
       final artist = Artist(albums: [], name: resobj['artist']);
-      final image = Uint8List.fromList(List<int>.from(resobj['image'] ?? []));
+      Uint8List? image;
+      if (Platform.isIOS) {
+        if (resobj['image'] != null) {
+          image = Uint8List.fromList(List<int>.from(resobj['image']));
+        }
+      } else if (Platform.isAndroid) {
+        final String imageFilePath = resobj['imagePath'];
+        print(imageFilePath);
+        if (imageFilePath != null) {
+          final imageFile = File(imageFilePath);
+          if (await imageFile.exists()) {
+            image = await imageFile.readAsBytes();
+          }
+        }
+      }
       final album = Album(
           songs: [],
           title: resobj['albumTitle'],
@@ -219,7 +234,7 @@ class Playify {
               if ((artists[i].albums[j].coverArt == null &&
                       album.coverArt != null) ||
                   (artists[i].name != album.artistName)) {
-                artists[i].albums[j].coverArt = album.coverArt;
+                album.coverArt = artists[i].albums[j].coverArt = album.coverArt;
               }
               artists[i].albums[j].songs.add(song);
               artists[i]
@@ -247,7 +262,7 @@ class Playify {
   ///Retrieve information about the current playing song on the queue.
   ///
   ///Specify a [coverArtSize] to fetch the current song with the [coverArtSize].
-  Future<SongInformation> nowPlaying({int coverArtSize = 800}) async {
+  Future<SongInformation?> nowPlaying({int coverArtSize = 800}) async {
     final result = await playerChannel
         .invokeMethod('nowPlaying', <String, dynamic>{'size': coverArtSize});
     if (result == null) {
@@ -271,13 +286,13 @@ class Playify {
   }
 
   ///Get all the playlists.
-  Future<List<Playlist>> getPlaylists() async {
+  Future<List<Playlist>?> getPlaylists() async {
     final result =
         await playerChannel.invokeMethod<List<dynamic>>('getPlaylists');
     final playlistMaps =
-        result.map((i) => Map<String, dynamic>.from(i)).toList();
+        result?.map((i) => Map<String, dynamic>.from(i)).toList();
     final playlists = playlistMaps
-        .map<Playlist>((i) => Playlist(
+        ?.map<Playlist>((i) => Playlist(
               songs: List<Song>.from(i['songs']
                   .map((j) => Song.fromJson(Map<String, dynamic>.from(j)))),
               title: i['title'],
@@ -297,7 +312,7 @@ class Playify {
   }
 
   ///Get the volume between 0 to 1.
-  Future<double> getVolume() async {
+  Future<double?> getVolume() async {
     final volume = await playerChannel.invokeMethod<double>('getVolume');
     return volume;
   }

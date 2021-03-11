@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:playify/playify.dart';
 import 'package:playify_example/artists.dart';
@@ -28,19 +30,32 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePage extends State<MyHomePage> {
   bool fetchingAllSongs = false;
   bool playing = false;
-  SongInformation data;
+  SongInformation? data;
   Shuffle shufflemode = Shuffle.off;
   Repeat repeatmode = Repeat.none;
   var myplayer = Playify();
   List<Artist> artists = [];
   double time = 0.0;
-  double volume = 0.0;
+  double? volume = 0.0;
 
   Future<void> getNowPlaying() async {
     try {
-      SongInformation res = await myplayer.nowPlaying();
+      final SongInformation? res = await myplayer.nowPlaying();
       setState(() {
         data = res;
+      });
+    } catch (e) {
+      setState(() {
+        fetchingAllSongs = false;
+      });
+    }
+  }
+
+  Future<void> getIsPlaying() async {
+    try {
+      final bool isPlaying = await myplayer.isPlaying();
+      setState(() {
+        playing = isPlaying;
       });
     } catch (e) {
       setState(() {
@@ -76,19 +91,19 @@ class _MyHomePage extends State<MyHomePage> {
                   Container(
                     child: Column(
                       children: <Widget>[
-                        if (data.album.coverArt != null)
+                        if (data!.album.coverArt != null)
                           Image(
                             image: Image.memory(
-                              data.album.coverArt,
+                              data!.album.coverArt!,
                               width: 800,
                             ).image,
                             height: MediaQuery.of(context).size.height * 0.3,
                           ),
                         Slider(
-                          divisions: data.song.duration.toInt(),
+                          divisions: data!.song.duration.toInt(),
                           value: time,
                           min: 0,
-                          max: data.song.duration,
+                          max: data!.song.duration,
                           onChanged: (val) async {
                             setState(() {
                               time = val;
@@ -113,12 +128,12 @@ class _MyHomePage extends State<MyHomePage> {
                               flex: 10,
                               child: Column(
                                 children: <Widget>[
-                                  Text(data.artist.name),
-                                  Text(data.album.title),
-                                  Text(data.song.title),
-                                  Text(data.song.trackNumber.toString() +
+                                  Text(data!.artist.name),
+                                  Text(data!.album.title),
+                                  Text(data!.song.title),
+                                  Text(data!.song.trackNumber.toString() +
                                       "/" +
-                                      data.album.albumTrackCount.toString()),
+                                      data!.album.albumTrackCount.toString()),
                                 ],
                               ),
                             ),
@@ -142,10 +157,8 @@ class _MyHomePage extends State<MyHomePage> {
                     icon: Icon(Icons.play_arrow),
                     onPressed: () async {
                       await myplayer.play();
-                      await myplayer.isPlaying();
-                      setState(() {
-                        playing = true;
-                      });
+                      await getIsPlaying();
+                      await getNowPlaying();
                     },
                   )
                 else
@@ -153,26 +166,44 @@ class _MyHomePage extends State<MyHomePage> {
                     icon: Icon(Icons.pause),
                     onPressed: () async {
                       await myplayer.pause();
-                      await myplayer.isPlaying();
-                      setState(() {
-                        playing = false;
-                      });
+                      await getIsPlaying();
+                      await getNowPlaying();
                     },
                   ),
-                FlatButton(
+                TextButton(
+                  child: Text("Get IsPlaying"),
+                  onPressed: () async {
+                    await getIsPlaying();
+                  },
+                ),
+                TextButton(
                   child: Text("Get Now Playing Info"),
                   onPressed: () async {
                     await getNowPlaying();
                   },
                 ),
-                FlatButton(
+                TextButton(
+                  child: Text("Play Random Song"),
+                  onPressed: () async {
+                    final randomArtist =
+                        artists[Random().nextInt(artists.length)];
+                    final randomAlbum = randomArtist
+                        .albums[Random().nextInt(randomArtist.albums.length)];
+                    final randomSong = randomAlbum
+                        .songs[Random().nextInt(randomAlbum.songs.length)];
+                    await myplayer.playItem(songID: randomSong.iOSSongID);
+                    await getNowPlaying();
+                  },
+                ),
+                TextButton(
                   child: Text("All Songs"),
                   onPressed: () async {
                     setState(() {
                       fetchingAllSongs = true;
                     });
 
-                    var res = await myplayer.getAllSongs(sort: true);
+                    final List<Artist> res =
+                        await myplayer.getAllSongs(sort: true);
                     print(res);
                     setState(() {
                       artists = res;
@@ -180,7 +211,7 @@ class _MyHomePage extends State<MyHomePage> {
                     });
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text("Artists"),
                   onPressed: () async {
                     Navigator.push(
@@ -192,9 +223,9 @@ class _MyHomePage extends State<MyHomePage> {
                   },
                 ),
                 Slider(
-                  label: volume.toStringAsFixed(2),
+                  label: volume?.toStringAsFixed(2),
                   divisions: 20,
-                  value: volume,
+                  value: volume ?? 0,
                   min: 0,
                   max: 1,
                   onChanged: (val) async {
@@ -204,7 +235,7 @@ class _MyHomePage extends State<MyHomePage> {
                     await myplayer.setVolume(val);
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text("Get Volume"),
                   onPressed: () async {
                     final myVolume = await myplayer.getVolume();
@@ -213,52 +244,52 @@ class _MyHomePage extends State<MyHomePage> {
                     });
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text("Get Playback Time"),
                   onPressed: () async {
                     final playbackTime = await myplayer.getPlaybackTime();
                     print(playbackTime);
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text("Seek Forward"),
                   onPressed: () async {
                     await myplayer.seekForward();
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text("Seek Backward"),
                   onPressed: () async {
                     await myplayer.seekBackward();
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text("End Seek"),
                   onPressed: () async {
                     await myplayer.endSeeking();
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text("Skip To Beginning"),
                   onPressed: () async {
                     await myplayer.skipToBeginning();
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text("Get Playlists"),
                   onPressed: () async {
                     final playlists = await myplayer.getPlaylists();
                     print(playlists);
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text("Get Shuffle Mode"),
                   onPressed: () async {
                     final shuffleMode = await myplayer.getShuffleMode();
                     print(shuffleMode);
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text("Get Repeat Mode"),
                   onPressed: () async {
                     final repeatMode = await myplayer.getRepeatMode();
@@ -269,10 +300,12 @@ class _MyHomePage extends State<MyHomePage> {
                 DropdownButton<Shuffle>(
                   hint: Text("Shuffle"),
                   onChanged: (mode) async {
-                    await myplayer.setShuffleMode(mode);
-                    setState(() {
-                      shufflemode = mode;
-                    });
+                    if (mode != null) {
+                      await myplayer.setShuffleMode(mode);
+                      setState(() {
+                        shufflemode = mode;
+                      });
+                    }
                   },
                   value: shufflemode,
                   items: [
@@ -290,10 +323,12 @@ class _MyHomePage extends State<MyHomePage> {
                 DropdownButton<Repeat>(
                   hint: Text("Repeat"),
                   onChanged: (mode) async {
-                    await myplayer.setRepeatMode(mode);
-                    setState(() {
-                      repeatmode = mode;
-                    });
+                    if (mode != null) {
+                      await myplayer.setRepeatMode(mode);
+                      setState(() {
+                        repeatmode = mode;
+                      });
+                    }
                   },
                   value: repeatmode,
                   items: [

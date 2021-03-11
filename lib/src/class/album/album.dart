@@ -4,18 +4,12 @@ import 'dart:typed_data';
 
 class Album {
   Album(
-      {@required this.title,
-      @required this.songs,
-      @required this.albumTrackCount,
-      @required this.artistName,
-      @required this.coverArt,
-      @required this.discCount})
-      : assert(title != null),
-        assert(songs != null),
-        assert(albumTrackCount != null),
-        assert(artistName != null),
-        assert(coverArt != null),
-        assert(discCount != null);
+      {required this.title,
+      required this.songs,
+      required this.albumTrackCount,
+      required this.artistName,
+      required this.coverArt,
+      required this.discCount});
 
   ///The title of the album.
   String title;
@@ -34,7 +28,7 @@ class Album {
 
   ///The cover art as a `UInt8List`. This can be used with `Image.memory()` to
   ///convert to an image and display in the UI.
-  Uint8List coverArt;
+  Uint8List? coverArt;
 
   ///The total disc number of the album.
   int discCount;
