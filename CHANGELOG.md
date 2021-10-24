@@ -1,3 +1,7 @@
+## 2.0.1
+
+- Added getting all genres and songs by genres.
+
 ## 2.0.0
 
 - Migrated to null safety.
