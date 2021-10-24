@@ -159,6 +159,30 @@ public class PlayifyPlayer {
         })
     }
     
+    //Get songs by genre.
+    func getSongsByGenre(genre: String) -> [MPMediaItem] {
+        let genrePredicate = MPMediaPropertyPredicate(value: genre, forProperty: MPMediaItemPropertyGenre)
+        let query = MPMediaQuery(filterPredicates: Set([genrePredicate]))
+        return query.items ?? []
+    }
+    
+    //Get all genres.
+    func getAllGenres() -> Set<String> {
+        let query = MPMediaQuery.genres()
+        var genres: Set<String> = []
+        guard let collections = query.collections else {
+            return []
+        }
+        for genre in collections {
+            if !genre.items.isEmpty {
+                if let genre = genre.items[0].genre {
+                    genres.insert(genre)
+                }
+            }
+        }
+        return genres
+    }
+    
     ///Play the current queue.
     func play(){
         player.play()
