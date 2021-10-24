@@ -203,8 +203,7 @@ class Playify {
           image = Uint8List.fromList(List<int>.from(resobj['image']));
         }
       } else if (Platform.isAndroid) {
-        final String imageFilePath = resobj['imagePath'];
-        print(imageFilePath);
+        final String? imageFilePath = resobj['imagePath'];
         if (imageFilePath != null) {
           final imageFile = File(imageFilePath);
           if (await imageFile.exists()) {
@@ -326,5 +325,27 @@ class Playify {
   Future<void> incrementVolume(double amount) async {
     await playerChannel.invokeMethod<double>(
         'incrementVolume', <String, dynamic>{'amount': amount});
+  }
+
+  ///Get all the genres in the Apple Music library.
+  Future<List<String>> getAllGenres() async {
+    final result = await playerChannel.invokeMethod('getAllGenres');
+    return List<String>.from(result);
+  }
+
+  ///Get all the songs in the Apple Music library with the [genre].
+  ///Specify a [coverArtSize] to fetch the current song with that [coverArtSize].
+  Future<List<Song>> getSongsByGenre(
+      {required String genre, int coverArtSize = 500}) async {
+    final result = await playerChannel.invokeMethod<List<dynamic>>(
+        'getSongsByGenre',
+        <String, dynamic>{'genre': genre, 'size': coverArtSize});
+    final songs = <Song>[];
+    if (result != null) {
+      for (var i = 0; i < result.length; i++) {
+        songs.add(Song.fromJson(Map<String, dynamic>.from(result[i])));
+      }
+    }
+    return songs;
   }
 }

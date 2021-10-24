@@ -282,6 +282,40 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
                 player.incrementVolume(amount: amount.floatValue)
                 result(nil)
             }
+            else if(call.method == "getAllGenres") {
+                let genres = Array(player.getAllGenres())
+                result(genres)
+            }
+            else if(call.method == "getSongsByGenre") {
+                guard let args = call.arguments as? [String: Any] else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The arguments were not provided!"))
+                    return
+                }
+                guard let genre = args["genre"] as? String else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter genre was not provided!"))
+                    return
+                }
+                guard let size = args["size"] as? NSNumber else {
+                    result(FlutterError(code: "invalidArgs", message: "Invalid Arguments", details: "The parameter size was not provided!"))
+                    return
+                }
+
+                let songs: [[String: Any]] = player.getSongsByGenre(genre: genre).map { metadata in
+                    var dict = metadata.toDict()   
+                    
+                    let image = metadata.artwork?.image(at: CGSize(width: size.intValue, height: size.intValue))
+                    
+                    //Resize image since there is an issue with getting the album cover with the desired size
+                    let resizedImage = (image != nil) ? resizeImage(image: image!, targetSize: CGSize(width: size.intValue, height: size.intValue)) : nil
+
+                    //Convert image to Uint8 Array to send to Flutter (Taken from https://stackoverflow.com/a/29734526)
+                    let imgdata = resizedImage?.jpegData(compressionQuality: 0.85)
+                    
+                    dict["image"] = imgdata ?? []
+                    return dict
+                }
+                result(songs)
+            }
         }
         else {
             result(FlutterError(code: "invalidOSVersion", message: "Requires Min iOS 10.3", details: "Playify requires a minimum of iOS 10.3!"))
