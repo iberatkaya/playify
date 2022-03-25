@@ -173,24 +173,27 @@ class _MyHomePage extends State<MyHomePage> {
                         ],
                       ),
                     ),
-                  if (!playing)
-                    IconButton(
-                      icon: Icon(Icons.play_arrow),
-                      onPressed: () async {
-                        await myplayer.play();
-                        await getIsPlaying();
-                        await getNowPlaying();
-                      },
-                    )
-                  else
-                    IconButton(
-                      icon: Icon(Icons.pause),
-                      onPressed: () async {
-                        await myplayer.pause();
-                        await getIsPlaying();
-                        await getNowPlaying();
-                      },
-                    ),
+                  StreamBuilder<PlayifyStatus>(
+                      stream: myplayer.statusStream,
+                      builder: (context, snapshot) {
+                        if (snapshot.data != PlayifyStatus.playing) {
+                          return IconButton(
+                            icon: Icon(Icons.play_arrow),
+                            onPressed: () async {
+                              await myplayer.play();
+                              await getNowPlaying();
+                            },
+                          );
+                        } else {
+                          return IconButton(
+                            icon: Icon(Icons.pause),
+                            onPressed: () async {
+                              await myplayer.pause();
+                              await getNowPlaying();
+                            },
+                          );
+                        }
+                      }),
                   TextButton(
                     child: Text("Get IsPlaying"),
                     onPressed: () async {
@@ -388,8 +391,7 @@ class _MyHomePage extends State<MyHomePage> {
                   TextButton(
                     child: Text("Get Songs With Selected Genre"),
                     onPressed: () async {
-                      final songs =
-                          await myplayer.getSongsByGenre(genre: selectedGenre);
+                      final songs = await myplayer.getSongsByGenre(genre: selectedGenre);
                       print(songs);
                       Navigator.push(
                         context,
@@ -400,7 +402,7 @@ class _MyHomePage extends State<MyHomePage> {
                         ),
                       );
                     },
-                  )
+                  ),
                 ],
               ),
             ),
