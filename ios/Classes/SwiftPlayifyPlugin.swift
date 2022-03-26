@@ -2,10 +2,20 @@ import Flutter
 import UIKit
 import MediaPlayer
 
-public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
+public class SwiftPlayifyPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
+    override init() {
+        super.init()
+        player.stateUpdateDelegate = updateHandler
+    }
+    private var eventSink: FlutterEventSink?
+
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "com.kaya.playify/playify", binaryMessenger: registrar.messenger())
+        let streamChannel = FlutterEventChannel(
+            name: "com.kaya.playify/playify_status",
+            binaryMessenger: registrar.messenger())
         let instance = SwiftPlayifyPlugin()
+        streamChannel.setStreamHandler(instance)
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
     
@@ -347,5 +357,25 @@ public class SwiftPlayifyPlugin: NSObject, FlutterPlugin {
         UIGraphicsEndImageContext()
 
         return newImage!
+    }
+
+    public func onListen(
+        withArguments _: Any?,
+        eventSink events: @escaping FlutterEventSink
+    ) -> FlutterError? {
+        eventSink = events
+        player.startNotifications()
+        updateHandler(controller: player.player)
+        return nil
+    }
+
+    private func updateHandler(controller: MPMusicPlayerController) {
+        eventSink?(controller.playbackState.rawValue)
+    }
+
+    public func onCancel(withArguments _: Any?) -> FlutterError? {
+        player.stopNotifications()
+        eventSink = nil
+        return nil
     }
 }

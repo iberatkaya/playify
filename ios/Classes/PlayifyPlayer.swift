@@ -1,11 +1,14 @@
 import Foundation
 import MediaPlayer
 
+typealias StateUpdateDelegate = (MPMusicPlayerController) -> Void
+
 @available(iOS 10.3, *)
 public class PlayifyPlayer {
     ///The music player controller instance.
     var player: MPMusicPlayerController = MPMusicPlayerController.systemMusicPlayer
-    
+    var stateUpdateDelegate: StateUpdateDelegate?
+
     ///Set the queue with unique song ids.
     func setQueue(songIDs: [String], startPlaying: Bool?, startID: String?) throws {
         if let startID = startID {
@@ -253,5 +256,30 @@ public class PlayifyPlayer {
             
             MPVolumeView.setVolume(volume + amount)
         })
+    }
+    public func startNotifications() {
+        player.beginGeneratingPlaybackNotifications()
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(stateChanged),
+            name: .MPMusicPlayerControllerPlaybackStateDidChange,
+            object: player)
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(stateChanged),
+            name: .MPMusicPlayerControllerNowPlayingItemDidChange,
+            object: player)
+    }
+
+    public func stopNotifications() {
+        player.endGeneratingPlaybackNotifications()
+        NotificationCenter.default.removeObserver(self,
+            name: .MPMusicPlayerControllerPlaybackStateDidChange,
+            object: player)
+        NotificationCenter.default.removeObserver(self,
+            name: .MPMusicPlayerControllerNowPlayingItemDidChange,
+            object: player)
+    }
+
+    @objc private func stateChanged(notification: NSNotification) {
+        stateUpdateDelegate?(player)
     }
 }
