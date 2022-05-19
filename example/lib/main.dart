@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:playify/playify.dart';
 import 'package:playify_example/artists.dart';
 import 'package:playify_example/songs.dart';
@@ -83,9 +84,14 @@ class _MyHomePage extends State<MyHomePage> {
     }
   }
 
+  Future<void> getAndroidPermission() async {
+    await Permission.manageExternalStorage.request();
+  }
+
   @override
   void initState() {
     super.initState();
+    getAndroidPermission();
     getNowPlaying().then((value) async {
       final myVolume = await myplayer.getVolume();
       setState(() {
@@ -215,7 +221,7 @@ class _MyHomePage extends State<MyHomePage> {
                           .albums[Random().nextInt(randomArtist.albums.length)];
                       final randomSong = randomAlbum
                           .songs[Random().nextInt(randomAlbum.songs.length)];
-                      await myplayer.playItem(songID: randomSong.iOSSongID);
+                      await myplayer.playItem(songID: randomSong.songID);
                       await getNowPlaying();
                     },
                   ),
@@ -391,7 +397,8 @@ class _MyHomePage extends State<MyHomePage> {
                   TextButton(
                     child: Text("Get Songs With Selected Genre"),
                     onPressed: () async {
-                      final songs = await myplayer.getSongsByGenre(genre: selectedGenre);
+                      final songs =
+                          await myplayer.getSongsByGenre(genre: selectedGenre);
                       print(songs);
                       Navigator.push(
                         context,

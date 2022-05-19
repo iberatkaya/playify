@@ -34,14 +34,13 @@ class PlayifyPlugin: FlutterPlugin, MethodCallHandler {
       val songs = applicationContext?.let {
         playifyPlayer.getAllSongs(it)
       }
-      val allArtists = arrayListOf<Artist>()
-      val songsIterator = songs?.iterator()
 
       result.success(
         songs?.map {
           it.toMap()
         }?.toList())
-    } else {
+    }
+    else {
       result.notImplemented()
     }
   }

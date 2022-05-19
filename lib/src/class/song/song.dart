@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Song {
   Song(
-      {required this.iOSSongID,
+      {required this.songID,
       required this.title,
       required this.artistName,
       required this.albumTitle,
@@ -30,7 +30,7 @@ class Song {
   String title;
 
   ///The Persistent Song ID of the song. Used to play or enqueue a song.
-  String iOSSongID;
+  String songID;
 
   ///The track number of the song in an album.
   int trackNumber;
@@ -58,7 +58,7 @@ class Song {
       releaseDate: DateTime.fromMillisecondsSinceEpoch(map['releaseDate'] ?? 0),
       playCount: map['playCount'] ?? 0,
       artistName: map['artist'] ?? '',
-      iOSSongID: (map['songID'] ?? '').toString());
+      songID: (map['songID'] ?? '').toString());
 
   @override
   String toString() {
@@ -71,7 +71,7 @@ class Song {
         ', Duration: ' +
         duration.toString() +
         ', SongID: ' +
-        iOSSongID +
+        songID +
         '\n';
   }
 }
