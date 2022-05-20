@@ -3,6 +3,8 @@ package com.kaya.playify.playify
 import android.content.Context
 import android.database.Cursor
 import android.graphics.BitmapFactory
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.provider.MediaStore
 import com.kaya.playify.playify.Classes.Song
 import java.nio.ByteBuffer
@@ -11,6 +13,9 @@ import kotlin.collections.ArrayList
 
 
 class PlayifyPlayer {
+    val player = MediaPlayer()
+
+
     fun getAllSongs(context: Context): Array<Song> {
         var songs = ArrayList<Song>()
         val selection = MediaStore.Audio.Media.IS_MUSIC + " != 0"
@@ -127,5 +132,61 @@ class PlayifyPlayer {
             cursor.close()
         }
         return songs.toTypedArray()
+    }
+
+    fun playItem(context: Context, id: String): Boolean {
+        val selection = MediaStore.Audio.Media._ID + " == " + id
+
+        val projection = arrayOf(
+            MediaStore.Audio.Media.DATA,
+        )
+
+        val cursor = context?.getContentResolver()?.query(
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+            projection,
+            selection,
+            null,
+            null
+        )
+
+        if (cursor != null) {
+            cursor.moveToFirst()
+            val data = cursor.getString(0)
+
+            if (data != null) {
+                player.setDataSource(data)
+                player.prepare()
+                player.start()
+                return true
+            }
+        }
+
+        return false
+    }
+
+    fun getVolume(context: Context): Int {
+        val service = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        return service.getStreamVolume(AudioManager.STREAM_MUSIC)
+    }
+
+    fun setVolume(context: Context, volume: Double) {
+        val service = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val multiplier = volMultiplier(context)
+        val min = minVol(context)
+        val myVol = (min + volume * multiplier).toInt()
+        service.setStreamVolume(AudioManager.STREAM_MUSIC, myVol, AudioManager.FLAG_SHOW_UI)
+    }
+
+    private fun volMultiplier(context: Context): Int {
+        val service = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val max = service.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        val min = minVol(context)
+        return max - min
+    }
+
+    private fun minVol(context: Context): Int {
+        val service = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val min = service.getStreamMinVolume(AudioManager.STREAM_MUSIC)
+        return min
     }
 }
