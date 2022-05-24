@@ -23,6 +23,7 @@ class PlayifyPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHandl
     private lateinit var channel: MethodChannel
     private lateinit var eventChannel: EventChannel
     private var applicationContext: Context? = null
+    private var eventSink: EventChannel.EventSink? = null
 
 
     private var playifyPlayer = PlayifyPlayer()
@@ -139,10 +140,15 @@ class PlayifyPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHandl
     }
 
     override fun onListen(arguments: Any?, events: EventSink?) {
-        TODO("Not yet implemented")
+        eventSink = events
+        playifyPlayer.statusStream = {
+            println(it.value)
+            eventSink?.success(it.value)
+        }
     }
 
     override fun onCancel(arguments: Any?) {
-        TODO("Not yet implemented")
+        playifyPlayer.statusStream = null
+        eventSink = null
     }
 }

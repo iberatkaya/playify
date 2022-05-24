@@ -13,6 +13,7 @@ import android.os.IBinder
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.kaya.playify.playify.Classes.PlayerStatus
 import com.kaya.playify.playify.Classes.Song
 import java.nio.ByteBuffer
 import java.util.*
@@ -20,20 +21,12 @@ import kotlin.Exception
 import kotlin.collections.ArrayList
 
 
-abstract class SongListener {
-    abstract fun onSongChange(song: String);
-}
-
 class PlayifyPlayer: Service() {
     val player = MediaPlayer().apply {
 //        setWakeMode(applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
     }
 
-    private lateinit var callback: SongListener
-
-    fun setListener(callback: SongListener) {
-        this.callback = callback;
-    }
+    var statusStream: ((state: PlayerStatus) -> Unit)? = null
 
     private var songQueue: ArrayList<Song> = ArrayList<Song>()
     private var queueIndex: Int? = null
@@ -270,6 +263,7 @@ class PlayifyPlayer: Service() {
             }
             cursor.close()
         }
+
         return songs.toTypedArray()
     }
 
@@ -312,6 +306,9 @@ class PlayifyPlayer: Service() {
             player.setDataSource(song.path)
             player.prepare()
             player.start()
+            statusStream?.let {
+                it(PlayerStatus.playing)
+            }
             return true
         }
 
@@ -340,10 +337,16 @@ class PlayifyPlayer: Service() {
 
     fun play() {
         player.start()
+        statusStream?.let {
+            it(PlayerStatus.playing)
+        }
     }
 
     fun pause() {
         player.pause()
+        statusStream?.let {
+            it(PlayerStatus.paused)
+        }
     }
 
     fun getPlaybackTime(): Double {
