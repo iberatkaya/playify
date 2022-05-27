@@ -129,6 +129,14 @@ class PlayifyPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHandl
             applicationContext?.let {
                 playifyPlayer.previous(it)
             }
+        } else if (call.method == "getShuffleMode") {
+            result.success(playifyPlayer.getShuffleMode())
+        } else if (call.method == "setShuffleMode") {
+            val mode = call.argument<String>("mode")
+
+            mode?.let {
+                playifyPlayer.setShuffleMode(it)
+            }
         } else {
             result.notImplemented()
         }
@@ -142,7 +150,6 @@ class PlayifyPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHandl
     override fun onListen(arguments: Any?, events: EventSink?) {
         eventSink = events
         playifyPlayer.statusStream = {
-            println(it.value)
             eventSink?.success(it.value)
         }
     }

@@ -14,6 +14,7 @@ import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.kaya.playify.playify.Classes.PlayerStatus
+import com.kaya.playify.playify.Classes.ShuffleMode
 import com.kaya.playify.playify.Classes.Song
 import java.nio.ByteBuffer
 import java.util.*
@@ -29,7 +30,11 @@ class PlayifyPlayer: Service() {
     var statusStream: ((state: PlayerStatus) -> Unit)? = null
 
     private var songQueue: ArrayList<Song> = ArrayList<Song>()
+
+    // Store the original queue in case the queue is shuffled
+    private var originalQueue: ArrayList<Song> = ArrayList<Song>()
     private var queueIndex: Int? = null
+    private var shuffleMode: ShuffleMode = ShuffleMode.off
 
     private fun getSongFromMediaStore(context: Context, id: String): Song? {
         val selection = MediaStore.Audio.Media._ID + " == " + id
@@ -273,6 +278,7 @@ class PlayifyPlayer: Service() {
         }.filterNotNull()
 
         songQueue = ArrayList(songs)
+        originalQueue = ArrayList(songs)
         queueIndex = 0
 
         player.setOnCompletionListener { onSongComplete(context) }
@@ -300,6 +306,7 @@ class PlayifyPlayer: Service() {
             player.reset()
             if (modifyQueue) {
                 songQueue = arrayListOf(song)
+                originalQueue = arrayListOf(song)
                 queueIndex = 0
             }
             player.setOnCompletionListener { onSongComplete(context) }
@@ -431,5 +438,29 @@ class PlayifyPlayer: Service() {
                 queueIndex = 0
             }
         }
+    }
+
+    fun setShuffleMode(mode: String){
+        if(mode == "off"){
+            shuffleMode = ShuffleMode.off
+            songQueue = ArrayList(originalQueue)
+        }
+        else if(mode == "songs"){
+            shuffleMode = ShuffleMode.songs
+            originalQueue = ArrayList(songQueue)
+            songQueue.shuffle()
+
+            queueIndex?.let { index ->
+                val curSongIndex = songQueue.indexOfFirst {
+                    it.songID == originalQueue[index].songID
+                }
+
+                Collections.swap(songQueue, index, curSongIndex)
+            }
+        }
+    }
+
+    fun getShuffleMode(): String {
+        return shuffleMode.value
     }
 }
