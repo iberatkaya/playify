@@ -14,6 +14,7 @@ import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.kaya.playify.playify.Classes.PlayerStatus
+import com.kaya.playify.playify.Classes.RepeatMode
 import com.kaya.playify.playify.Classes.ShuffleMode
 import com.kaya.playify.playify.Classes.Song
 import java.nio.ByteBuffer
@@ -35,6 +36,7 @@ class PlayifyPlayer: Service() {
     private var originalQueue: ArrayList<Song> = ArrayList<Song>()
     private var queueIndex: Int? = null
     private var shuffleMode: ShuffleMode = ShuffleMode.off
+    private var repeatMode: RepeatMode = RepeatMode.none
 
     private fun getSongFromMediaStore(context: Context, id: String): Song? {
         val selection = MediaStore.Audio.Media._ID + " == " + id
@@ -335,6 +337,14 @@ class PlayifyPlayer: Service() {
         service.setStreamVolume(AudioManager.STREAM_MUSIC, myVol, AudioManager.FLAG_SHOW_UI)
     }
 
+    fun incrementVolume(context: Context, volume: Double) {
+        val service = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val multiplier = volMultiplier(context)
+        val min = getVolume(context)
+        val myVol = (min + volume * multiplier).toInt()
+        service.setStreamVolume(AudioManager.STREAM_MUSIC, myVol, AudioManager.FLAG_SHOW_UI)
+    }
+
     private fun volMultiplier(context: Context): Int {
         val service = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val max = service.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
@@ -362,6 +372,10 @@ class PlayifyPlayer: Service() {
 
     fun setPlaybackTime(time: Int) {
         player.seekTo(time)
+    }
+
+    fun skipToBeginning() {
+        player.seekTo(0)
     }
 
     fun nowPlaying(): Song? {
@@ -429,13 +443,30 @@ class PlayifyPlayer: Service() {
 
     private fun onSongComplete(context: Context){
         queueIndex?.let { index ->
-            if (index + 1 < songQueue.size) {
-                songQueue[index + 1].songID?.let {
+            if (repeatMode == RepeatMode.one) {
+                songQueue[index].songID?.let {
                     playItem(context, it)
                 }
-                queueIndex = queueIndex?.inc()
             } else {
-                queueIndex = 0
+                if (index + 1 < songQueue.size) {
+                    songQueue[index + 1].songID?.let {
+                        playItem(context, it)
+                    }
+                    queueIndex = queueIndex?.inc()
+                } else {
+                    queueIndex = 0
+
+                    // If repeat mode is set to "all", repeat from the start of the queue
+                    if (repeatMode == RepeatMode.all) {
+                        songQueue.first().songID?.let {
+                            playItem(context, it)
+                        }
+                    } else {
+                        statusStream?.let {
+                            it(PlayerStatus.paused)
+                        }
+                    }
+                }
             }
         }
     }
@@ -462,5 +493,21 @@ class PlayifyPlayer: Service() {
 
     fun getShuffleMode(): String {
         return shuffleMode.value
+    }
+
+    fun getRepeatMode(): String {
+        return repeatMode.value
+    }
+
+    fun setRepeatMode(mode: String) {
+        if (mode == "none") {
+            repeatMode = RepeatMode.none
+        }
+        else if (mode == "one") {
+            repeatMode = RepeatMode.one
+        }
+        else if (mode == "all") {
+            repeatMode = RepeatMode.all
+        }
     }
 }

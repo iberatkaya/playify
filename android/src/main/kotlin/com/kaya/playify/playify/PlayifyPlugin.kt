@@ -87,6 +87,17 @@ class PlayifyPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHandl
             } ?: run {
                 result.error("ArgumentError", "Argument volume was not provided!", null)
             }
+        }  else if (call.method == "incrementVolume") {
+            val amount = call.argument<Double>("amount")
+
+            amount?.let { volumeAmount ->
+                applicationContext?.let {
+                    playifyPlayer.incrementVolume(it, volumeAmount)
+                    result.success(null)
+                }
+            } ?: run {
+                result.error("ArgumentError", "Argument amount was not provided!", null)
+            }
         } else if (call.method == "play") {
             playifyPlayer.play()
         } else if (call.method == "pause") {
@@ -114,6 +125,8 @@ class PlayifyPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHandl
             } ?: run {
                 result.error("ArgumentError", "Argument time was not provided!", null)
             }
+        }  else if (call.method == "skipToBeginning"){
+            playifyPlayer.skipToBeginning()
         } else if (call.method == "nowPlaying") {
             val song = playifyPlayer.nowPlaying()
             song?.let {
@@ -136,6 +149,14 @@ class PlayifyPlugin : FlutterPlugin, MethodCallHandler, EventChannel.StreamHandl
 
             mode?.let {
                 playifyPlayer.setShuffleMode(it)
+            }
+        } else if (call.method == "getRepeatMode") {
+            result.success(playifyPlayer.getRepeatMode())
+        } else if (call.method == "setRepeatMode") {
+            val mode = call.argument<String>("mode")
+
+            mode?.let {
+                playifyPlayer.setRepeatMode(it)
             }
         } else {
             result.notImplemented()
