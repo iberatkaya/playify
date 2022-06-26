@@ -73,8 +73,6 @@ class PlayifyPlayer {
 
                 val albumArt = albumArtCursor?.getString(0)
 
-                Log.d("playify", albumArt)
-
                 val bitmap = BitmapFactory.decodeFile(albumArt)
 
                 val size: Int = bitmap.getRowBytes() * bitmap.getHeight()
