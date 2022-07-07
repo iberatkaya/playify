@@ -1,3 +1,7 @@
+## 2.2.0
+
+- Added Android support.
+
 ## 2.0.1
 
 - Added getting all genres and songs by genres.
