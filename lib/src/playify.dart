@@ -13,15 +13,27 @@ import '../playify.dart';
 import 'class/repeat/repeat.dart';
 import 'class/shuffle/shuffle.dart';
 
-enum PlayifyStatus { stopped, playing, paused, interrupted, seekingForward, seekingBackward, unknown }
+enum PlayifyStatus {
+  stopped,
+  playing,
+  paused,
+  interrupted,
+  seekingForward,
+  seekingBackward,
+  unknown
+}
 
 class Playify {
   static const MethodChannel playerChannel =
       MethodChannel('com.kaya.playify/playify');
-  static const EventChannel _eventChannel = EventChannel('com.kaya.playify/playify_status');
+  static const EventChannel _eventChannel =
+      EventChannel('com.kaya.playify/playify_status');
 
   Stream<PlayifyStatus> get statusStream {
-    return _eventChannel.receiveBroadcastStream().cast().map((event) => _intToStatus(event));
+    return _eventChannel
+        .receiveBroadcastStream()
+        .cast()
+        .map((event) => _intToStatus(event));
   }
 
   ///Set the queue by giving the [songIDs] desired to be added to the queue.
@@ -34,10 +46,15 @@ class Playify {
     bool startPlaying = true,
   }) async {
     if (!songIDs.contains(startID)) {
-      throw PlatformException(code: 'Incorrect Arguments!', message: 'songIDs must contain startID if provided.');
+      throw PlatformException(
+          code: 'Incorrect Arguments!',
+          message: 'songIDs must contain startID if provided.');
     }
-    await playerChannel.invokeMethod(
-        'setQueue', <String, dynamic>{'songIDs': songIDs, 'startPlaying': startPlaying, 'startID': startID});
+    await playerChannel.invokeMethod('setQueue', <String, dynamic>{
+      'songIDs': songIDs,
+      'startPlaying': startPlaying,
+      'startID': startID
+    });
   }
 
   ///Play the most recent queue.
@@ -48,7 +65,7 @@ class Playify {
   ///Play a single song by giving its [songID].
   Future<void> playItem({required String songID}) async {
     await playerChannel
-      .invokeMethod('playItem', <String, dynamic>{'songID': songID});
+        .invokeMethod('playItem', <String, dynamic>{'songID': songID});
   }
 
   ///Pause playing.
@@ -165,7 +182,7 @@ class Playify {
         throw 'Incorrent mode!';
     }
     await playerChannel
-      .invokeMethod('setRepeatMode', <String, dynamic>{'mode': mymode});
+        .invokeMethod('setRepeatMode', <String, dynamic>{'mode': mymode});
   }
 
   ///Get the repeat mode.
@@ -288,14 +305,14 @@ class Playify {
 
   ///Get all the playlists.
   Future<List<Playlist>?> getPlaylists() async {
-    final result = 
+    final result =
         await playerChannel.invokeMethod<List<dynamic>>('getPlaylists');
     final playlistMaps =
         result?.map((i) => Map<String, dynamic>.from(i)).toList();
     final playlists = playlistMaps
         ?.map<Playlist>((i) => Playlist(
               songs: List<Song>.from(i['songs']
-              .map((j) => Song.fromJson(Map<String, dynamic>.from(j)))),
+                  .map((j) => Song.fromJson(Map<String, dynamic>.from(j)))),
               title: i['title'],
               playlistID: i['playlistID'].toString(),
             ))
@@ -353,7 +370,8 @@ class Playify {
 }
 
 PlayifyStatus _intToStatus(int value) {
-  final index = PlayifyStatus.values.map((e) => e.index).toList().indexOf(value);
+  final index =
+      PlayifyStatus.values.map((e) => e.index).toList().indexOf(value);
   if (index == -1) return PlayifyStatus.unknown;
   return PlayifyStatus.values[index];
 }

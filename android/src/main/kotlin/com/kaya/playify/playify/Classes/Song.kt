@@ -2,7 +2,7 @@ package com.kaya.playify.playify.Classes
 
 class Song {
     constructor(albumTitle: String? = null, artist: String? = null, releaseDate: Long? = null,
-                path: String? = null, genre: String? = null, title: String? = null,
+                path: String? = null, genre: String? = null, songTitle: String? = null,
                 songID: String? = null, trackNumber: Int? = null, playCount: Int? = null,
                 discNumber: Int? = null, playbackDuration: Double? = null,
                 isExplicit: Boolean? = null, image: Array<Int>? = null) {
@@ -11,7 +11,7 @@ class Song {
         this.releaseDate = releaseDate
         this.path = path
         this.genre = genre
-        this.title = title
+        this.songTitle = songTitle
         this.songID = songID
         this.trackNumber = trackNumber
         this.playCount = playCount
@@ -37,7 +37,7 @@ class Song {
     var genre: String?
 
     ///The title of the song.
-    var title: String?
+    var songTitle: String?
 
     ///The Persistent Song ID of the song. Used to play or enqueue a song.
     var songID: String?
@@ -67,7 +67,7 @@ class Song {
         hashMap.put("releaseDate", releaseDate)
         hashMap.put("path", path)
         hashMap.put("genre", genre)
-        hashMap.put("title", title)
+        hashMap.put("songTitle", songTitle)
         hashMap.put("songID", songID)
         hashMap.put("trackNumber", trackNumber)
         hashMap.put("playCount", playCount)
@@ -79,6 +79,6 @@ class Song {
     }
 
     override fun toString(): String {
-        return "Song(albumTitle=$albumTitle, artist=$artist, releaseDate=$releaseDate, genre=$genre, title=$title, songID=$songID, trackNumber=$trackNumber, playCount=$playCount, discNumber=$discNumber, playbackDuration=$playbackDuration, isExplicit=$isExplicit)"
+        return "Song(albumTitle=$albumTitle, artist=$artist, releaseDate=$releaseDate, genre=$genre, songTitle=$songTitle, songID=$songID, trackNumber=$trackNumber, playCount=$playCount, discNumber=$discNumber, playbackDuration=$playbackDuration, isExplicit=$isExplicit)"
     }
 }

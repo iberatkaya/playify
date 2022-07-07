@@ -25,7 +25,7 @@ class _SongsState extends State<Songs> {
                   onPressed: () async {
                     final List<String> songs = [];
                     for (int i = 0; i < widget.songs.length; i++) {
-                      songs.add(widget.songs[i].iOSSongID);
+                      songs.add(widget.songs[i].songID);
                     }
                     final Playify myplayer = Playify();
                     await myplayer.setQueue(
