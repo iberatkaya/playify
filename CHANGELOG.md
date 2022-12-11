@@ -1,3 +1,7 @@
+## 2.2.1
+
+- Fixed crash when album art is empty.
+
 ## 2.2.0
 
 - Added Android support.
