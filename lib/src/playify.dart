@@ -288,11 +288,15 @@ class Playify {
     }
     final resobj = Map<String, dynamic>.from(result);
     final artist = Artist(albums: [], name: resobj['artist']);
+    Uint8List? coverArt;
+    try {
+      coverArt = resobj['image'];
+    } catch (_) {}
     final album = Album(
         songs: [],
         title: resobj['albumTitle'],
         albumTrackCount: resobj['albumTrackCount'] ?? 0,
-        coverArt: resobj['image'],
+        coverArt: coverArt,
         discCount: resobj['discCount'] ?? 0,
         artistName: artist.name);
     final song = Song.fromJson(resobj);
